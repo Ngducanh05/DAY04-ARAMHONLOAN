@@ -1,0 +1,141 @@
+{
+  "session_id": "session_nkyalf",
+  "version": "v3",
+  "user_message": "Cho tôi 5 bài báo mới nhất về Robotics ngày hôm nay",
+  "history_turns": 2,
+  "created_at": "2026-07-29T17:45:13",
+  "status": "answered",
+  "assistant_text": "Dưới đây là 5 bài báo mới nhất về Robotics ngày hôm nay:\n\n1. **[Shanghai Electric expands AI robotics for industrial ...](https://www.automotivemanufacturingsolutions.com/automation/shanghai-electric-expands-ai-robotics-for-industrial-manufacturing/2707852)**  \n   Nguồn: automotivemanufacturingsolutions.com  \n   Tóm tắt: Công ty đã giới thiệu robot bionic Mermaid có khả năng nhận diện các nút, công tắc và tự động tạo ra các đường đi hoạt động, giảm thiểu nhu cầu lập trình thủ công. Họ cũng đã phát triển một robot chà nhám ống tự động cho các môi trường công nghiệp chật hẹp.\n\n2. **[All Saints School robotics teams win Innovate Award at premier event](https://www.thealpenanews.com/news/local-news/2026/07/all-saints-school-robotics-teams-win-innovate-award-at-premier-event)**  \n   Nguồn: thealpenanews.com  \n   Tóm tắt: Đội robotics của trường All Saints đã giành giải Innovate tại sự kiện Premier, vinh danh sự sáng tạo và thiết kế độc đáo trong việc xây dựng robot.\n\n3. **[Developing Healthcare Robotics with GPU-Native Medical ...](https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation)**  \n   Nguồn: developer.nvidia.com  \n   Tóm tắt: Bài viết thảo luận về những thách thức trong phát triển robot y tế, bao gồm sự khan hiếm dữ liệu và tốc độ phát triển chậm do yêu cầu thiết bị chuyên dụng và môi trường lâm sàng.\n\n4. **[FCC bans humanoid robots from China, citing ‘unacceptable risks’](https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china)**  \n   Nguồn: theguardian.com  \n   Tóm tắt: FCC đã cấm các robot humanoid từ Trung Quốc do lo ngại về việc thu thập dữ liệu có thể bị lợi dụng bởi các tác nhân xấu để giám sát người dân Mỹ.\n\n5. **[Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy](https://www.scmp.com/tech/tech-trends/article/3362213/lenovo-capital-takes-aim-robotics-coding-agents-sniper-ai-investment-strategy)**  \n   Nguồn: scmp.com  \n   Tóm tắt: Lenovo Capital đang mở rộng đầu tư vào trí tuệ nhân tạo và robotics, với kế hoạch đầu tư dài hạn vào hơn 100 công ty AI trong chuỗi giá trị.\n\nNếu bạn cần thêm thông tin hoặc chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "lookup",
+          "args": {
+            "query": "Robotics",
+            "topic": "news",
+            "timeframe": "day",
+            "max_results": 5
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Robotics",
+            "topic": "news",
+            "timeframe": "day",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Robotics",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "Shanghai Electric expands AI robotics for industrial ...",
+                "url": "https://www.automotivemanufacturingsolutions.com/automation/shanghai-electric-expands-ai-robotics-for-industrial-manufacturing/2707852",
+                "source": "automotivemanufacturingsolutions.com",
+                "summary": "Meanwhile, the Mermaid bionic wheeled humanoid robot is capable of recognising buttons, knobs and air switches before autonomously generating operating paths, reducing the need for manual programming. The company also demonstrated an autonomous pipe inner-wall chamfering robot developed for confined industrial environments. The system can process thousands of pipe hole edges while maintaining positioning accuracy within ±1mm and simultaneously transmitting operational data in real time. [...] The company's robotics portfolio is focused on five manufacturing applications including connector insertion, electrical operations, flexible sorting, intelligent assembly and pipe processing. [...] Presented under the theme \"AI for All: Smart Squad, Shining Without Limits\", the company's latest developments span complete robotic systems, core robotic components, industrial software and factory architecture. Together they reflect an effort to integrate intelligence across every layer of manufacturing, from physical equipment on the shop floor to decision-making systems overseeing production.",
+                "score": 0.41819844
+              },
+              {
+                "title": "All Saints School robotics teams win Innovate Award at premier event",
+                "url": "https://www.thealpenanews.com/news/local-news/2026/07/all-saints-school-robotics-teams-win-innovate-award-at-premier-event",
+                "source": "thealpenanews.com",
+                "summary": "The Innovate Award in the FIRST Tech Challenge celebrates a team with imaginative ingenuity, creativity, and inventiveness to bring a unique robot design solution to life, according to a Tuesday press release from ASCS. It highlights out-of-the-box thinking for the mechanisms used in the robot.\n\nEach year a new game is released in September and robotics teams have to design a robot that can complete the tasks in that game. [...] In the 2025-2026 season, teams had to build a robot that could collect and shoot different colored balls into a target area. The teams could earn extra points if they shot the balls in a specific color pattern. [...] website logo\n\n# All Saints School robotics teams win Innovate Award at premier event\n\n## Trending\n\nALPENA -- After a successful 2025-2026 robotics season, the All Saints Holy Gears were one of 48 teams from across the world invited to the Canadian Rockies Premier Event, where they were the winners of the Innovate Award.",
+                "score": 0.39564833
+              },
+              {
+                "title": "Developing Healthcare Robotics with GPU-Native Medical ...",
+                "url": "https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation",
+                "source": "developer.nvidia.com",
+                "summary": "Healthcare robotics faces critical challenges in data scarcity, generalization, and development velocity due to limited access to annotated demonstrations, the prevalence of rare but clinically important scenarios, and slow, resource-intensive prototyping cycles. [...] AI-generated content may summarize information incompletely. Verify important information. Learn more\n\nUnlike autonomous driving or industrial robotics, healthcare robotics can’t rely on internet-scale data collection or unlimited real-world experimentation. Every demonstration requires specialized equipment, clinical expertise, and access to patients or laboratory environments. This creates three fundamental challenges for developers. [...] The third challenge is development velocity. Medical robotics development relies on benchtop phantoms, cadaver studies, animal models, and limited clinical evaluations. These remain essential, but they are inherently sequential, expensive, and difficult to scale. Iterating on designs and algorithms currently takes months, pushing total development cycles to 4–7 years.",
+                "score": 0.37586737
+              },
+              {
+                "title": "FCC bans humanoid robots from China, citing ‘unacceptable risks’",
+                "url": "https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china",
+                "source": "theguardian.com",
+                "summary": "The FCC defines the banned robots as “advanced robotic devices”, which include humanoids and animal-like quadrupeds.\n\n“Advanced robotic devices collect data that could be leveraged by malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots,” FCC officials wrote in their determination of the threat posed by robots. [...] “The President has made clear that the United States must have independent and secure supply chains for critical and emerging technologies like robotic devices and power inverters,” an ⁠administration official, who declined to be named, told Reuters.\n\n“Economic security is national security, and the Trump administration continues to implement a nuanced and multi-faceted policy agenda to reindustrialize America,” he added.",
+                "score": 0.34468657
+              },
+              {
+                "title": "Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy | South China Morning Post",
+                "url": "https://www.scmp.com/tech/tech-trends/article/3362213/lenovo-capital-takes-aim-robotics-coding-agents-sniper-ai-investment-strategy",
+                "source": "scmp.com",
+                "summary": "The venture capital arm of Lenovo Group is doubling down on artificial intelligence for the next industrial cycle, expanding its focus beyond foundational models into robotics, computing infrastructure and AI agents, according to a senior executive. [...] Artificial intelligence\n\nTechTech Trends\n\n# Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy\n\nChinese firm makes long-term bets on 100 artificial intelligence companies, from chip and hardware manufacturers to models and applications\n\n2-MIN READ2-MIN\n\nA Lenovo robot forms a heart shape with its hands during the 2025 World AI Conference in Shanghai. Photo: VCG\n\nBen Jiangin Beijing [...] Lenovo Capital has made long-term bets on more than 100 AI companies across the value chain, ranging from chips and hardware infrastructure to models and applications, Song Chunyu, chief investment officer and senior partner at the unit, told the South China Morning Post and other media on Tuesday.\n\nAI-related businesses now make up nearly one-third of the fund’s roughly 300 portfolio holdings, he said.",
+                "score": 0.32749674
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "assistant_text": "Dưới đây là 5 bài báo mới nhất về Robotics ngày hôm nay:\n\n1. **[Shanghai Electric expands AI robotics for industrial ...](https://www.automotivemanufacturingsolutions.com/automation/shanghai-electric-expands-ai-robotics-for-industrial-manufacturing/2707852)**  \n   Nguồn: automotivemanufacturingsolutions.com  \n   Tóm tắt: Công ty đã giới thiệu robot bionic Mermaid có khả năng nhận diện các nút, công tắc và tự động tạo ra các đường đi hoạt động, giảm thiểu nhu cầu lập trình thủ công. Họ cũng đã phát triển một robot chà nhám ống tự động cho các môi trường công nghiệp chật hẹp.\n\n2. **[All Saints School robotics teams win Innovate Award at premier event](https://www.thealpenanews.com/news/local-news/2026/07/all-saints-school-robotics-teams-win-innovate-award-at-premier-event)**  \n   Nguồn: thealpenanews.com  \n   Tóm tắt: Đội robotics của trường All Saints đã giành giải Innovate tại sự kiện Premier, vinh danh sự sáng tạo và thiết kế độc đáo trong việc xây dựng robot.\n\n3. **[Developing Healthcare Robotics with GPU-Native Medical ...](https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation)**  \n   Nguồn: developer.nvidia.com  \n   Tóm tắt: Bài viết thảo luận về những thách thức trong phát triển robot y tế, bao gồm sự khan hiếm dữ liệu và tốc độ phát triển chậm do yêu cầu thiết bị chuyên dụng và môi trường lâm sàng.\n\n4. **[FCC bans humanoid robots from China, citing ‘unacceptable risks’](https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china)**  \n   Nguồn: theguardian.com  \n   Tóm tắt: FCC đã cấm các robot humanoid từ Trung Quốc do lo ngại về việc thu thập dữ liệu có thể bị lợi dụng bởi các tác nhân xấu để giám sát người dân Mỹ.\n\n5. **[Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy](https://www.scmp.com/tech/tech-trends/article/3362213/lenovo-capital-takes-aim-robotics-coding-agents-sniper-ai-investment-strategy)**  \n   Nguồn: scmp.com  \n   Tóm tắt: Lenovo Capital đang mở rộng đầu tư vào trí tuệ nhân tạo và robotics, với kế hoạch đầu tư dài hạn vào hơn 100 công ty AI trong chuỗi giá trị.\n\nNếu bạn cần thêm thông tin hoặc chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "lookup",
+      "args": {
+        "query": "Robotics",
+        "topic": "news",
+        "timeframe": "day",
+        "max_results": 5
+      },
+      "result": {
+        "tool": "web_search",
+        "query": "Robotics",
+        "topic": "news",
+        "timeframe": "day",
+        "items": [
+          {
+            "title": "Shanghai Electric expands AI robotics for industrial ...",
+            "url": "https://www.automotivemanufacturingsolutions.com/automation/shanghai-electric-expands-ai-robotics-for-industrial-manufacturing/2707852",
+            "source": "automotivemanufacturingsolutions.com",
+            "summary": "Meanwhile, the Mermaid bionic wheeled humanoid robot is capable of recognising buttons, knobs and air switches before autonomously generating operating paths, reducing the need for manual programming. The company also demonstrated an autonomous pipe inner-wall chamfering robot developed for confined industrial environments. The system can process thousands of pipe hole edges while maintaining positioning accuracy within ±1mm and simultaneously transmitting operational data in real time. [...] The company's robotics portfolio is focused on five manufacturing applications including connector insertion, electrical operations, flexible sorting, intelligent assembly and pipe processing. [...] Presented under the theme \"AI for All: Smart Squad, Shining Without Limits\", the company's latest developments span complete robotic systems, core robotic components, industrial software and factory architecture. Together they reflect an effort to integrate intelligence across every layer of manufacturing, from physical equipment on the shop floor to decision-making systems overseeing production.",
+            "score": 0.41819844
+          },
+          {
+            "title": "All Saints School robotics teams win Innovate Award at premier event",
+            "url": "https://www.thealpenanews.com/news/local-news/2026/07/all-saints-school-robotics-teams-win-innovate-award-at-premier-event",
+            "source": "thealpenanews.com",
+            "summary": "The Innovate Award in the FIRST Tech Challenge celebrates a team with imaginative ingenuity, creativity, and inventiveness to bring a unique robot design solution to life, according to a Tuesday press release from ASCS. It highlights out-of-the-box thinking for the mechanisms used in the robot.\n\nEach year a new game is released in September and robotics teams have to design a robot that can complete the tasks in that game. [...] In the 2025-2026 season, teams had to build a robot that could collect and shoot different colored balls into a target area. The teams could earn extra points if they shot the balls in a specific color pattern. [...] website logo\n\n# All Saints School robotics teams win Innovate Award at premier event\n\n## Trending\n\nALPENA -- After a successful 2025-2026 robotics season, the All Saints Holy Gears were one of 48 teams from across the world invited to the Canadian Rockies Premier Event, where they were the winners of the Innovate Award.",
+            "score": 0.39564833
+          },
+          {
+            "title": "Developing Healthcare Robotics with GPU-Native Medical ...",
+            "url": "https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation",
+            "source": "developer.nvidia.com",
+            "summary": "Healthcare robotics faces critical challenges in data scarcity, generalization, and development velocity due to limited access to annotated demonstrations, the prevalence of rare but clinically important scenarios, and slow, resource-intensive prototyping cycles. [...] AI-generated content may summarize information incompletely. Verify important information. Learn more\n\nUnlike autonomous driving or industrial robotics, healthcare robotics can’t rely on internet-scale data collection or unlimited real-world experimentation. Every demonstration requires specialized equipment, clinical expertise, and access to patients or laboratory environments. This creates three fundamental challenges for developers. [...] The third challenge is development velocity. Medical robotics development relies on benchtop phantoms, cadaver studies, animal models, and limited clinical evaluations. These remain essential, but they are inherently sequential, expensive, and difficult to scale. Iterating on designs and algorithms currently takes months, pushing total development cycles to 4–7 years.",
+            "score": 0.37586737
+          },
+          {
+            "title": "FCC bans humanoid robots from China, citing ‘unacceptable risks’",
+            "url": "https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china",
+            "source": "theguardian.com",
+            "summary": "The FCC defines the banned robots as “advanced robotic devices”, which include humanoids and animal-like quadrupeds.\n\n“Advanced robotic devices collect data that could be leveraged by malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots,” FCC officials wrote in their determination of the threat posed by robots. [...] “The President has made clear that the United States must have independent and secure supply chains for critical and emerging technologies like robotic devices and power inverters,” an ⁠administration official, who declined to be named, told Reuters.\n\n“Economic security is national security, and the Trump administration continues to implement a nuanced and multi-faceted policy agenda to reindustrialize America,” he added.",
+            "score": 0.34468657
+          },
+          {
+            "title": "Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy | South China Morning Post",
+            "url": "https://www.scmp.com/tech/tech-trends/article/3362213/lenovo-capital-takes-aim-robotics-coding-agents-sniper-ai-investment-strategy",
+            "source": "scmp.com",
+            "summary": "The venture capital arm of Lenovo Group is doubling down on artificial intelligence for the next industrial cycle, expanding its focus beyond foundational models into robotics, computing infrastructure and AI agents, according to a senior executive. [...] Artificial intelligence\n\nTechTech Trends\n\n# Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy\n\nChinese firm makes long-term bets on 100 artificial intelligence companies, from chip and hardware manufacturers to models and applications\n\n2-MIN READ2-MIN\n\nA Lenovo robot forms a heart shape with its hands during the 2025 World AI Conference in Shanghai. Photo: VCG\n\nBen Jiangin Beijing [...] Lenovo Capital has made long-term bets on more than 100 AI companies across the value chain, ranging from chips and hardware infrastructure to models and applications, Song Chunyu, chief investment officer and senior partner at the unit, told the South China Morning Post and other media on Tuesday.\n\nAI-related businesses now make up nearly one-third of the fund’s roughly 300 portfolio holdings, he said.",
+            "score": 0.32749674
+          }
+        ]
+      }
+    }
+  ],
+  "artifact_version": "v3+pccca4ce231f0+t890b77c2a230"
+}

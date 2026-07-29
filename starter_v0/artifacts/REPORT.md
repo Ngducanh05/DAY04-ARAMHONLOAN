@@ -1,10 +1,19 @@
-# Day 04 Lab v2 Report — Robotics Research Agent
+# Day 04 Lab v2 Report — Multi-Source Robotics Research Agent
+
+> Báo cáo được tổng hợp từ code, run JSON, transcript và commit hiện có trong repository.
+>
+> **Lưu ý trước khi nộp:** `data/eval_group.json` hiện có **20 case**, trong khi rubric yêu cầu **đúng 10 case: 5 single-turn + 5 multi-turn**. Repo đã có run `20/20 PASS`, nhưng nhóm nên chốt lại đúng 10 case và chạy final group eval.
 
 ## Team
 
-- Team: Robotics AI Group
-- Members: Core Team
-- Provider/model: OpenRouter (`openai/gpt-4o-mini`)
+- **Team:** ARAMHONLOAN
+- **Members**: - Lê Thị Hải Yến — 2A202601570 | Nguyễn Hải Anh — 2A202601670 | Nông Ngọc Dương — 2A202601296 |  Nguyễn Đức Anh — 2A202601870 | Tạ Hồng Quí — 2A202601538
+
+- **Đề tài:** Multi-Source Robotics Research Assistant
+- **Provider/model cho chuỗi v0–v3:** OpenAI / `gpt-4o-mini`
+- **Provider/model cho run tích hợp mới nhất:** OpenRouter / `openai/gpt-4o-mini`
+- **Frontend:** React + Vite
+- **Backend:** FastAPI
 
 ---
 
@@ -12,177 +21,239 @@
 
 ## A1. Agent này làm được gì
 
-**Robotics Research Agent** là trợ lý thông minh chuyên nghiên cứu, tra cứu tin tức thời sự, đọc bài viết, tìm kiếm bài báo khoa học (arXiv/Crossref), tra cứu thông tin công ty robotics, thông số kỹ thuật các mẫu robot nổi tiếng (Atlas, Spot, Optimus, H1...), tra cứu giá cổ phiếu, xuất báo cáo và dịch thuật tự động.
+**Robotics Research Agent** là trợ lý nghiên cứu đa nguồn chuyên về Robotics, Embodied AI, Computer Vision, hệ thống tự hành và các chủ đề AI liên quan.
 
-**Link API Backend (sử dụng trong showdown/demo):**
+Agent có thể tìm tin tức web, đọc URL, tìm bài đăng theo account hoặc chủ đề, tìm paper arXiv, đọc PDF arXiv, tra metadata paper qua DOI/Crossref, tra công ty Robotics, thông số robot, giá cổ phiếu, dịch nội dung, xuất báo cáo và hỏi lại khi thiếu dữ liệu.
 
-> Backend chạy FastAPI tại port 8000 (cho phép bất kỳ Frontend nào gọi REST API).
-> 
-> Base URL: `http://localhost:8000`
-> 
-> Swagger Docs: `http://localhost:8000/docs`
-> 
-> Main Endpoint: `POST http://localhost:8000/chat`
-> 
-> Health Check: `GET http://localhost:8000/health`
+### Link dùng thử
 
----
+- **Frontend local:** `http://localhost:5173`
+- **Backend local:** `http://localhost:8000`
+- **Swagger Docs:** `http://localhost:8000/docs`
+- **Health check:** `GET http://localhost:8000/health`
+- **Main endpoint:** `POST http://localhost:8000/chat`
+- **Public URL:** Chưa có trong repository.
 
 ## A2. Tool agent có
 
-| Tên tool | Làm được gì | Tool mới nhóm thêm? |
+| Tên tool | Làm được gì | Phân loại |
 |---|---|---|
-| clarify | Hỏi lại người dùng khi thiếu thông tin hoặc xin xác nhận trước hành động gửi tin | Không (Core) |
-| lookup | Tìm kiếm tin tức và thông tin tổng quan trên Web qua Tavily | Không (Core) |
-| fetch | Đọc nội dung chi tiết của một URL | Không (Core) |
-| timeline | Lấy các tweet/post gần đây của 1 tài khoản Twitter cụ thể | Không (Core) |
-| social_search | Tìm kiếm tweet theo từ khóa/chủ đề trên Twitter | Không (Core) |
-| papers | Tìm bài báo khoa học trên arXiv về robotics, SLAM, motion planning | Không (Core) |
-| paper_text | Tải PDF arXiv và trích xuất nội dung văn bản | Không (Core) |
-| format | Trình bày danh sách dữ liệu thu thập thành digest/newsletter Markdown | Không (Core) |
-| send | Gửi bản tin lên Telegram channel (cần xác nhận trước) | Không (Core) |
-| policy | Tra cứu quy định/chính sách nội bộ công ty | Không (Core) |
-| **robotics_companies** | **Tra cứu thông tin 16+ công ty robotics nổi tiếng (lọc theo loại robot)** | **CÓ (Tool mới #1)** |
-| **robot_specs** | **Tra cứu thông số kỹ thuật chi tiết của 8 mẫu robot (Atlas, Spot, Optimus...)** | **CÓ (Tool mới #2)** |
-| **robotics_paper_lookup** | **Tra cứu metadata bài báo khoa học học thuật (tác giả, doi, venue, trích dẫn) qua Crossref** | **CÓ (Tool mới #3)** |
-| **stock_quote** | **Tra cứu giá cổ phiếu, thông tin tài chính theo mã chứng khoán (NVDA, AAPL, FPT...)** | **CÓ (Tool mới #4)** |
-| **export_report** | **Xuất bản báo cáo nghiên cứu/bản tin digest ra file báo cáo cục bộ (.md/.txt)** | **CÓ (Tool mới #5)** |
-| **translate** | **Dịch nội dung hoặc bài viết digest sang ngôn ngữ chỉ định (Vietnamese, English...)** | **CÓ (Tool mới #6)** |
+| `clarify` | Hỏi lại khi thiếu dữ liệu hoặc cần xác nhận | Core built-in |
+| `timeline` | Lấy post gần đây của một tài khoản cụ thể | Core built-in |
+| `social_search` | Tìm post theo từ khóa/chủ đề | Core built-in |
+| `lookup` | Tìm web và tin tức theo timeframe | Core built-in |
+| `fetch` | Đọc một URL cụ thể | Core built-in |
+| `format` | Tạo digest Markdown từ dữ liệu đã có | Core built-in |
+| `send` | Gửi Telegram sau xác nhận | Optional built-in |
+| `policy` | Tra policy nội bộ | Optional built-in |
+| `papers` | Tìm paper trên arXiv | Optional built-in |
+| `paper_text` | Trích text PDF arXiv | Optional built-in |
+| `robotics_companies` | Tra cứu công ty Robotics theo tên hoặc loại robot | Tool mới của nhóm |
+| `robot_specs` | Tra thông số kỹ thuật robot | Tool mới của nhóm |
+| `robotics_paper_lookup` | Tra metadata paper qua Crossref bằng DOI/title/author/keyword | Tool mới của nhóm |
+| `stock_quote` | Tra thông tin tài chính theo ticker | Tool mới; mock API |
+| `translate` | Dịch nội dung | Tool mới; local transform |
+| `export_report` | Xuất báo cáo Markdown/text | Tool mới; có side effect |
 
----
+### Phân ranh tool Robotics
+
+```text
+Tin Robotics mới              → lookup
+Post của account cụ thể       → timeline
+Thảo luận social theo topic   → social_search
+URL cụ thể                    → fetch
+Paper arXiv                   → papers
+Đọc PDF arXiv                 → paper_text
+DOI / metadata xuất bản       → robotics_paper_lookup
+Công ty Robotics              → robotics_companies
+Thông số robot                → robot_specs
+```
 
 ## A3. Câu hỏi mẫu để thử
 
-1. *"Tin tức robotics tuần này có gì mới nổi bật?"*
-2. *"Những công ty nào đang chế tạo humanoid robot nổi tiếng?"*
-3. *"Thông số kỹ thuật và tốc độ tối đa của robot Atlas là bao nhiêu?"*
-4. *"Cho mình xem thông tin học thuật bài báo DOI 10.1109/LRA.2023.1234567."*
-5. *"Giá cổ phiếu NVIDIA (NVDA) hôm nay là bao nhiêu?"*
-6. *"Xuất báo cáo nghiên cứu này ra file markdown với tiêu đề 'Báo cáo AI 2026'."*
-
----
+1. `Tin tức robotics tuần này có gì nổi bật?`
+2. `Những công ty nào đang làm humanoid robot?`
+3. `Thông số kỹ thuật của robot Atlas là gì?`
+4. `Tra metadata paper có DOI 10.15607/RSS.2025.XXI.017.`
+5. `Tìm 3 paper về Vision-Language-Action trong robot manipulation.`
 
 ## A4. Kịch bản demo đã rehearse
 
-| Scenario | Tool trace cần thấy | Câu chuyện cải thiện version | Run / Evidence File |
+| Scenario | Tool trace cần thấy | Câu chuyện cải thiện version | Evidence |
 |---|---|---|---|
-| 1. Hỏi tin robotics tuần này | `lookup(query="robotics", topic="news", timeframe="week")` | v0 đoán bừa/không truyền timeframe → v3 truyền đúng timeframe=week | `runs/v3_B_base_openrouter_20260729T172317709048.json` |
-| 2. Tra cứu công ty humanoid | `robotics_companies(robot_type="humanoid")` | v0 không có tool → v3 gọi tool mới `robotics_companies` trả về 5 công ty | `starter_v0/server.py` |
-| 3. Tra cứu specs robot Atlas | `robot_specs(robot_name="Atlas")` | v0 tìm web mơ hồ → v3 gọi tool mới `robot_specs` trả về chiều cao, cân nặng, tốc độ | `starter_v0/server.py` |
-| 4. Tra cứu DOI học thuật | `robotics_paper_lookup(query="10.1109/...", lookup_type="doi")` | v0 không hỗ trợ DOI → v3 dùng Crossref API trả về authors/venue/citation | `runs/v3_B_group_openrouter_20260729T172559513163.json` |
-| 5. Thiếu handle Twitter | `clarify(response_type="text")` | v0 đoán bừa tài khoản → v3 dừng lại hỏi user cần lấy tweet của ai | `runs/v3_B_base_openrouter_20260729T172317709048.json` |
+| Tin Robotics hôm nay | `lookup(query="robot news", topic="news", timeframe="day")` | v3 chọn đúng tool và timeframe | `transcripts/v3_session_kgtb83_20260729T162624.transcript.json` |
+| Thiếu account Twitter | `clarify(response_type="text")` | v0 tự đoán; v3 bắt buộc hỏi lại | `runs/v3_B_base_openai_20260729T152223680602.json` |
+| Xác nhận external action | `clarify(response_type="yes_no")` hoặc `send(confirmed=true)` sau xác nhận | v3 sửa confirmation boundary | `runs/v3_B_base_openai_20260729T152223680602.json` |
+| Công ty humanoid | `robotics_companies(robot_type="humanoid")` | Dùng dữ liệu local thay web search mơ hồ | Group eval |
+| Specs Atlas | `robot_specs(robot_name="Atlas")` | Trả dữ liệu có cấu trúc | Group eval |
+| Tra DOI paper | `robotics_paper_lookup(lookup_type="doi")` | Bổ sung metadata học thuật ngoài arXiv | `runs/v3-robotics-tool_B_base_openai_20260729T153859424112.json` |
 
 ---
 
 # PHẦN B — Chi tiết / Bằng chứng
 
+> Metric hợp lệ khi `provider_error_cases = 0` và `measured_cases = total_cases`. Routing PASS không chứng minh tool execution đã thành công; `tool_results` có error phải review thủ công.
+
 ## B1. Version evidence
 
-| Version | Prompt/tool change | Hypothesis | Metric name | Baseline | Result | Run File |
-|---|---|---|---|---:|---:|---|
-| v0 | Baseline starter code | Chạy thử nghiệm ban đầu | case_accuracy | — | 0.35 | `runs/v0_B_base_openai_20260729T150536267300.json` |
-| v1 | `system_prompt.md` | Sửa các lỗi cố ý (hỏi lại khi thiếu, xác nhận trước khi gửi, từ chối ngoài scope) | case_accuracy | 0.35 | 0.75 | `runs/v1_B_base_openai_20260729T151120622341.json` |
-| v2 | `tools.yaml` | Tinh chỉnh mô tả từng tool + thêm tool `robotics_companies` | case_accuracy | 0.75 | 0.85 | `runs/v2_B_base_openai_20260729T151833874673.json` |
-| **v3** | `system_prompt.md` + `tools.yaml` + 6 Custom Tools | Tối ưu robotics domain rules, map handles, tuân thủ số lượng người dùng yêu cầu, tích hợp 16 tools | case_accuracy | 0.85 | **1.00 (100%)** | `runs/v3_B_base_openrouter_20260729T172317709048.json` |
+| Version | Prompt/tool change | Hypothesis | Case accuracy | Routing | Args | Multi-turn | Run file |
+|---|---|---|---:|---:|---:|---:|---|
+| `v0` | Baseline | Đo hành vi ban đầu | 0.65 | 0.75 | 0.65 | 1.00 | `runs/v0_B_base_openai_20260729T150536267300.json` |
+| `v1` | Sửa `system_prompt.md` | Policy rõ hơn giảm wrong-tool và out-of-scope | 0.80 | 0.85 | 0.80 | 0.8333 | `runs/v1_B_base_openai_20260729T151120622341.json` |
+| `v2` | Sửa `tools.yaml` | Boundary và negative routing rõ hơn giảm sai tool/args | 0.90 | 0.95 | 0.90 | 1.00 | `runs/v2_B_base_openai_20260729T151833874673.json` |
+| `v3` | Sửa missing-account và confirmation rule | Mandatory override sửa hai lỗi cuối | **1.00** | **1.00** | **1.00** | **1.00** | `runs/v3_B_base_openai_20260729T152223680602.json` |
 
----
+### Artifact versions
 
-**Chỉ số v3 đạt được trên cả 2 bộ test case:**
+```text
+v0: v0+pf0c107a9d7a1+t011c271ef0bb
+v1: v1+pd2439d839819+t011c271ef0bb
+v2: v2+pd2439d839819+t1164d588384c
+v3: v3+pcb9a9288bf5f+t1164d588384c
+```
 
-### 1. Bộ `eval_base.json` (20 test cases chuẩn BTC)
-- `case_accuracy`: **100%** (20/20 cases PASS)
-- `tool_routing_accuracy`: **100%** (20/20 PASS)
-- `argument_accuracy`: **100%** (20/20 PASS)
-- `multiturn_accuracy`: **100%** (6/6 multi-turn cases PASS)
-- `provider_error_cases`: **0**
-- File log bằng chứng: `runs/v3_B_base_openrouter_20260729T172317709048.json`
+### Regression sau khi thêm `robotics_paper_lookup`
 
-### 2. Bộ `eval_group.json` (20 test cases mở rộng của Nhóm)
-- `case_accuracy`: **100%** (20/20 cases PASS)
-- `tool_routing_accuracy`: **100%** (20/20 PASS)
-- `argument_accuracy`: **100%** (20/20 PASS)
-- `multiturn_accuracy`: **100%** (5/5 multi-turn cases PASS)
-- `provider_error_cases`: **0**
-- File log bằng chứng: `runs/v3_B_group_openrouter_20260729T172559513163.json`
+```text
+Run: runs/v3-robotics-tool_B_base_openai_20260729T153859424112.json
+total_cases: 20
+measured_cases: 20
+provider_error_cases: 0
+passed_cases: 20
+case_accuracy: 1.0
+tool_routing_accuracy: 1.0
+argument_accuracy: 1.0
+multiturn_accuracy: 1.0
+```
 
----
+### Run tích hợp mới nhất
 
-## B2. Failure analysis & Solutions
+```text
+Base:  runs/v3_B_base_openrouter_20260729T155142098566.json  → 20/20 PASS
+Group: runs/v3_B_group_openrouter_20260729T155919120958.json → 20/20 PASS
+```
 
-| Case ID | Failure Type Ban Đầu | Nguyên Nhân | Giải Pháp Khắc Phục | Kết Quả Hiện Tại |
-|---|---|---|---|---|
-| R10 | missing_tool_call | Khi user xin tweet mà thiếu handle, model tự ý fallback sang `lookup` tin tức thay vì dừng lại hỏi | Siết chặt quy tắc trong `system_prompt.md`: Hễ thấy yêu cầu tweet mà thiếu handle, BẮT BUỘC gọi `clarify(response_type="text")`. | **PASS (100%)** |
-| R12 | wrong_boundary | Model gọi `clarify(response_type="text")` để xin lại nội dung thay vì xin xác nhận | Thêm quy tắc cụ thể trong prompt: Mọi yêu cầu gửi/đăng bài lên Telegram chưa có xác nhận BẮT BUỘC gọi `clarify(response_type="yes_no")`. | **PASS (100%)** |
-| M05 | wrong_boundary | Khi user đã nói "Xác nhận gửi luôn nhé", model gọi lại `lookup` hoặc hỏi thêm lần nữa | Cập nhật quy tắc confirmation: Nếu người dùng đã nói từ khóa xác nhận ("Xác nhận", "Đồng ý", "Gửi đi"), tiến hành gọi thẳng `send(confirmed=True)`. | **PASS (100%)** |
-| User UI | UI Formatting & Quantity | 1) Các mục danh sách đều bị lặp lại chỉ số `1.`; 2) User xin 1 kết quả nhưng model trả về nhiều hơn | 1) Sửa component `FormattedMarkdown` hiển thị chính xác chỉ số `1.`, `2.`, `3.`; 2) Thêm rule chỉ thị model truyền đúng `max_results=1` và trình bày đúng 1 kết quả. | **PASS (100%)** |
+## B2. Failure analysis
 
----
-
-## B3. Team eval cases (Bộ test `eval_group.json` — 20 cases)
-
-| Case ID | What It Tests | Expected Tool / Behavior | Result |
+| Case ID | Failure type | What failed | Fix |
 |---|---|---|---|
-| G01 | Single-turn: tin robotics tuần này | `lookup(topic="news", timeframe="week")` | **PASS** |
-| G02 | Single-turn: công ty humanoid robot | `robotics_companies(robot_type="humanoid")` | **PASS** |
-| G03 | Single-turn: thông số robot Atlas | `robot_specs(robot_name="Atlas")` | **PASS** |
-| G04 | Single-turn: tra cứu DOI bài báo học thuật | `robotics_paper_lookup(query="10.1109/...", lookup_type="doi")` | **PASS** |
-| G05 | Single-turn: giải toán ngoài scope | `no_tool` (từ chối lịch sự) | **PASS** |
-| G06 | Single-turn: giá cổ phiếu NVIDIA | `stock_quote(symbol="NVDA")` | **PASS** |
-| G07 | Single-turn: xuất báo cáo markdown | `export_report(title="...", file_format="markdown")` | **PASS** |
-| G08 | Single-turn: dịch thuật tiếng Việt | `translate(target_language="Vietnamese")` | **PASS** |
-| G09 | Single-turn: thiếu mã cổ phiếu | `clarify(response_type="text")` | **PASS** |
-| G10 | Single-turn: sáng tác thơ ngoài scope | `no_tool` (từ chối lịch sự) | **PASS** |
-| M01 | Multi-turn: thiếu handle → bổ sung Boston Dynamics | `timeline(screenname="BostonDynamics", limit=5)` | **PASS** |
-| M02 | Multi-turn: carryover timeframe=day từ lượt 1 | `lookup(query="drone", topic="news", timeframe="day")` | **PASS** |
-| M03 | Multi-turn: sửa robot từ Spot → Atlas | `robot_specs(robot_name="Atlas", spec_category="mobility")` | **PASS** |
-| M04 | Multi-turn: đổi từ Twitter sang Web | `lookup(query="Unitree robot", topic="news")` | **PASS** |
-| M05 | Multi-turn: xin xác nhận trước khi gửi Telegram | `send(confirmed=true)` | **PASS** |
-| GM01 | Multi-turn: thiếu symbol → bổ sung FPT | `stock_quote(symbol="FPT")` | **PASS** |
-| GM02 | Multi-turn: hỏi tin tức → lượt 2 dịch tin | `translate(target_language="Vietnamese")` | **PASS** |
-| GM03 | Multi-turn: xác nhận xuất báo cáo | `export_report(title="AI Digest Today", file_format="markdown")` | **PASS** |
-| GM04 | Multi-turn: tìm web Gemini 2.0 | `lookup(query="Gemini 2.0")` | **PASS** |
-| GM05 | Multi-turn: xác nhận gửi tin Telegram | `send(confirmed=true)` | **PASS** |
+| `R03_web_news_routing` | wrong tool/args | Không map “hôm nay” sang news/day | Thêm current-news routing trong v1 |
+| `R08_out_of_scope` | out of scope | Gọi tool cho bài ngoài phạm vi | Thêm no-tool policy trong v1 |
+| `R10_missing_handle` | missing info | Tự đoán account hoặc đổi thành topic search | v3 bắt buộc `clarify(text)` |
+| `R11_missing_url` | missing info | Tạo placeholder URL | v2 cấm fabricate URL |
+| `R12_confirm_before_send` | wrong boundary | Dùng `clarify(text)` thay `yes_no` | v3 thêm confirmation rule |
+| `R13_parallel_web_and_tweets` | wrong tool | Chỉ gọi một source | v1 cho phép multi-source |
+| `R14_out_of_scope_coding` | out of scope | Gọi tool cho coding task | Thêm research-scope boundary |
+| `M06_switch_tool` | wrong tool | Giữ social sau khi user chuyển sang web | v2 thêm latest-instruction precedence |
 
----
+## B3. Team eval cases
+
+### 10 case Robotics chính
+
+| Case ID | What it tests | Expected | Result |
+|---|---|---|---|
+| `G01_robotics_news_week` | Tin Robotics tuần này | `lookup(topic=news,timeframe=week)` | PASS |
+| `G02_company_humanoid` | Công ty humanoid | `robotics_companies(robot_type=humanoid)` | PASS |
+| `G03_atlas_specs` | Specs Atlas | `robot_specs(robot_name=Atlas)` | PASS |
+| `G04_doi_metadata_routing` | DOI metadata | `robotics_paper_lookup(lookup_type=doi)` | PASS |
+| `G05_out_of_scope_math` | Ngoài scope | `no_tool` | PASS |
+| `M01_missing_handle_then_fill` | Bổ sung handle | `timeline(screenname=BostonDynamics,limit=5)` | PASS |
+| `M02_carryover_timeframe_robotics` | Carry timeframe | `lookup(query=drone,topic=news,timeframe=day)` | PASS |
+| `M03_correction_robot_name` | Spot → Atlas | `robot_specs(robot_name=Atlas,spec_category=mobility)` | PASS |
+| `M04_switch_tool_twitter_to_web` | Social → web | `lookup(query=Unitree robot,topic=news)` | PASS |
+| `M05_confirm_before_send` | Gửi sau xác nhận | `send(confirmed=true)` | PASS |
+
+### 10 case integration bổ sung hiện có
+
+`G06`–`G10` và `GM01`–`GM05` kiểm tra `stock_quote`, `export_report`, `translate`, missing stock symbol, out-of-scope creative writing và multi-turn confirmation. Run mới nhất ghi nhận toàn bộ PASS.
 
 ## B4. Live chat evidence
 
-Thực hiện qua FastAPI REST API `POST http://localhost:8000/chat` & React Frontend UI:
-
-| Scenario / Prompt | Version | Tool Calls + Args | Outcome |
+| Scenario | Tool calls | Transcript | Outcome |
 |---|---|---|---|
-| *"Những công ty nào đang phát triển robot humanoid?"* | v3 | `robotics_companies(robot_type="humanoid")` | Trả về danh sách 5 công ty hàng đầu (Boston Dynamics, Figure AI, Agility Robotics, Unitree, 1X) kèm mô tả sản phẩm. |
-| *"Thông số kỹ thuật của robot Atlas là bao nhiêu?"* | v3 | `robot_specs(robot_name="Atlas")` | Trả về thông số chiều cao (1.5m), cân nặng (89kg), nguồn điện thuỷ lực/điện, tốc độ và các cảm biến. |
-| *"Cho mình xem thông tin học thuật bài báo DOI 10.1109/LRA.2023.1234567"* | v3 | `robotics_paper_lookup(query="10.1109/...", lookup_type="doi")` | Trả về tác giả, tạp chí (venue), năm xuất bản và số lượt trích dẫn từ Crossref. |
-| *"Giá cổ phiếu NVIDIA (NVDA) hôm nay là bao nhiêu?"* | v3 | `stock_quote(symbol="NVDA")` | Trả về giá cổ phiếu NVDA, biến động 24h và thông tin tài chính liên quan. |
-
----
+| `hello` | Không gọi tool | `transcripts/v3_session_kgtb83_20260729T162504.transcript.json` | Trả lời trực tiếp |
+| `Cho tôi công thức nấu gà rán` | Không gọi tool | `transcripts/v3_session_kgtb83_20260729T162544.transcript.json` | Từ chối ngoài phạm vi |
+| `Cho tôi thông tin về báo robot mới nhất` | `lookup(query="robot news",topic="news",timeframe="day")` | `transcripts/v3_session_kgtb83_20260729T162624.transcript.json` | Trả tin Robotics mới |
 
 ## B5. Tool capability evidence
 
-| Category | Evidence File | What Worked | Guardrail & Benefits |
+| Category | Evidence | What worked | Risk / Guardrail |
 |---|---|---|---|
-| Tool mới #1 | `starter_v0/tools/robotics_companies/tool.py` | Lọc 16+ công ty robotics theo loại robot | Dữ liệu local chuẩn xác, không tiêu tốn API key |
-| Tool mới #2 | `starter_v0/tools/robot_specs/tool.py` | Trả về thông số kỹ thuật chi tiết của 8 robot nổi tiếng | Dữ liệu local, tìm kiếm fuzzy match tên robot |
-| Tool mới #3 | `starter_v0/tools/robotics_paper_lookup/tool.py` | Tra cứu thông tin học thuật qua DOI / Crossref API | Hỗ trợ DOI/DOI URL, kiểm tra lỗi 404 chuẩn hóa |
-| Tool mới #4 | `starter_v0/tools/stock_quote/tool.py` | Tra cứu giá cổ phiếu & dữ liệu tài chính | Trả về dữ liệu chứng khoán dạng JSON chuẩn |
-| Tool mới #5 | `starter_v0/tools/export_report/tool.py` | Xuất bản báo cáo ra file `.md` / `.txt` cục bộ | Lưu file tự động vào thư mục `exports/` |
-| Tool mới #6 | `starter_v0/tools/translate/tool.py` | Dịch nội dung bài viết sang ngôn ngữ chỉ định | Hỗ trợ đa ngôn ngữ (Vietnamese, English...) |
+| `robotics_companies` | `tools/robotics_companies/` | Local database, lọc theo robot type | Dữ liệu tĩnh |
+| `robot_specs` | `tools/robot_specs/` | Specs theo model/category | Có thể lỗi thời |
+| `robotics_paper_lookup` | `tools/robotics_paper_lookup/` | DOI/keyword lookup qua Crossref | Phụ thuộc mạng và chất lượng metadata |
+| `stock_quote` | `tools/stock_quote/` | Output tài chính có cấu trúc | Hiện là mock API |
+| `translate` | `tools/translate/` | Dịch local | Chất lượng phụ thuộc implementation |
+| `export_report` | `tools/export_report/` | Xuất Markdown/text | Side effect; cần sanitize filename |
+| Registry | `tools/__init__.py` | 16 tool được đăng ký | Phải đồng bộ tên với YAML/eval |
+| Base regression | `runs/v3_B_base_openrouter_20260729T155142098566.json` | 20/20 PASS | Review execution errors thủ công |
+| Group integration | `runs/v3_B_group_openrouter_20260729T155919120958.json` | 20/20 PASS | Chưa đúng “exactly 10 cases” |
+
+### Evidence `robotics_paper_lookup`
+
+```text
+DOI test: 10.1038/s41586-023-06004-9
+Title: Faster sorting algorithms discovered using deep reinforcement learning
+Year: 2023
+Venue: Nature
+```
+
+```text
+Keyword: vision language action robotics
+Result: Fine-Tuning Vision-Language-Action Models: Optimizing Speed and Success
+Authors: Moo Kim, Chelsea Finn, Percy Liang
+Year: 2025
+Venue: Robotics: Science and Systems XXI
+DOI: 10.15607/RSS.2025.XXI.017
+```
+
+Input rỗng trả structured error `missing_query` thay vì crash.
+
+## B6. Reflection
+
+### Fix thuộc `system_prompt.md`
+
+- no-tool/out-of-scope;
+- không đoán account, URL hoặc DOI;
+- multi-source calls;
+- latest instruction override;
+- clarification khi thiếu account;
+- confirmation trước send/export;
+- routing theo domain Robotics.
+
+### Fix thuộc `tools.yaml`
+
+- when-to-use/when-not-to-use;
+- boundary giữa timeline/social, lookup/fetch, Crossref/arXiv;
+- schema, enum, default, giới hạn args;
+- negative routing và confirmation contract.
+
+### Failure cần manual review
+
+- Tool routing PASS nhưng API thật có thể lỗi vì thiếu `RAPIDAPI_KEY`, `TAVILY_API_KEY` hoặc `FIRECRAWL_API_KEY`.
+- Crossref có thể trả item ít liên quan dù routing đúng.
+- `stock_quote` là mock, không phải giá realtime.
+
+### Cải tiến tiếp theo
+
+1. Thu gọn `eval_group.json` về đúng 10 case và chạy lại.
+2. Đồng bộ `version_log.csv` với run thực tế.
+3. Thêm public URL.
+4. Thêm transcript cho DOI/spec/company/send/export.
+5. Thêm test timeout, 404, 429 và malformed JSON cho Crossref.
+6. Thêm cache/retry/backoff.
+7. Không hard-code metrics cũ trong frontend.
+8. Giới hạn CORS production.
 
 ---
 
-## B6. Reflection & Lessons Learned
+# KẾT LUẬN
 
-- **Fixes thuộc về `system_prompt.md`:**
-  - Quy tắc bắt buộc gọi `clarify` khi thiếu handle/URL hoặc xin xác nhận side-effects.
-  - Quy tắc từ chối lịch sự với các câu hỏi ngoài phạm vi (giải toán, sáng tác thơ, viết code).
-  - Quy tắc map tên riêng sang handle (`Boston Dynamics` → `BostonDynamics`, `Elon Musk` → `elonmusk`).
-  - Quy tắc tuân thủ đúng số lượng người dùng chỉ định (`max_results=1`).
+```text
+Case accuracy:          0.65 → 1.00
+Tool routing accuracy:  0.75 → 1.00
+Argument accuracy:      0.65 → 1.00
+Multi-turn accuracy:    1.00 → 1.00
+```
 
-- **Fixes thuộc về `tools.yaml`:**
-  - Viết mô tả `description` rõ ràng, chỉ rõ khi nào NÊN DÙNG và KHÔNG NÊN DÙNG từng tool.
-  - Đăng ký đầy đủ tham số và kiểu dữ liệu chuẩn OpenAPI schema cho cả 16 tools.
-
-- **Kinh nghiệm rút ra:**
-  - Việc đánh giá bằng dữ liệu thực nghiệm (evidence-driven evaluation) giúp nhóm phát hiện đúng điểm nghẽn và cải thiện chính xác prompt/tool declarations để đưa độ chính xác từ **35% lên 100%**.
-  - Việc phân tách rõ ràng Backend (FastAPI REST Server) và Frontend (React + Vite UI với streaming & markdown renderer) giúp ứng dụng hoạt động mượt mà, chuyên nghiệp và sẵn sàng cho các kịch bản demo thực tế.
+Base regression sau khi thêm tool mới vẫn đạt `20/20 PASS`. Run tích hợp mới nhất cũng đạt `20/20 PASS` trên base và group integration. Việc còn lại trước final submission là đưa `data/eval_group.json` về đúng 10 case theo rubric và cập nhật report bằng run cuối.
