@@ -3,33 +3,31 @@ tools:
 
   - name: clarify
     description: >
-      Ask the user a clarifying question when required information is missing,
-      OR to get yes/no confirmation before performing a sensitive write action
-      (send, post, publish).
-      Use response_type='text' when asking for missing info (handle, URL, topic).
-      Use response_type='yes_no' when requesting confirmation before sending/publishing.
-      DO NOT use this tool to search for information or to stall.
-      DO NOT use this tool if the user's intent is already clear.
+      Ask the user one precise follow-up question when required information is
+      missing or when an external action requires confirmation.
+      Use response_type="text" when asking for missing info (account handle, URL, topic).
+      Use response_type="yes_no" when asking for explicit confirmation before sending,
+      posting, publishing, or changing external state.
     parameters:
       type: object
       properties:
         question:
           type: string
           default: ""
-          description: "The clarifying question to ask the user."
+          description: "One concise question asking only for the missing information or confirmation."
         response_type:
           type: string
           enum: [text, yes_no, choice]
           default: "text"
           description: >
-            'text' = free-form answer needed (e.g., missing URL or handle).
-            'yes_no' = confirmation before write action.
-            'choice' = user must pick from options list.
+            Use text for missing information. Use yes_no for explicit confirmation.
+            Use choice only when user must select from options.
         options:
           type: array
           default: []
-          items: {type: string}
-          description: "Only provide when response_type='choice'."
+          items:
+            type: string
+          description: "Choices shown only when response_type is choice."
       required: [question]
 
   - name: timeline
@@ -38,7 +36,7 @@ tools:
       Use when the user asks about posts BY a specific person or organization.
       ALWAYS map full names to handles: Boston Dynamics→BostonDynamics,
       Elon Musk→elonmusk, Andrej Karpathy→karpathy, Figure AI→figure_ai,
-      Agility Robotics→AgilityRobotics, Yann LeCun→ylecun.
+      Agility Robotics→AgilityRobotics, Yann LeCun→ylecun, Sam Altman→sama.
       DO NOT use for searching by topic — use social_search instead.
       If handle is unknown, call clarify first.
     parameters:
@@ -51,7 +49,7 @@ tools:
         limit:
           type: integer
           default: 5
-          description: "Number of tweets to return. Extract from user request (e.g. '10 tweets' → 10)."
+          description: "Number of tweets to return."
       required: [screenname]
 
   - name: social_search
@@ -59,8 +57,7 @@ tools:
       Search Twitter/X for posts about a TOPIC or KEYWORD.
       Use when the user asks 'what are people saying about X', 'tweets about Y',
       or wants to find public discussion on a robotics topic.
-      search_type='Top' when user says 'popular', 'viral', 'top', 'most liked'.
-      search_type='Latest' (default) for most recent tweets.
+      search_type='Top' for popular/viral tweets; 'Latest' (default) for newest.
       DO NOT use when user asks about tweets FROM a specific account — use timeline instead.
     parameters:
       type: object
@@ -68,12 +65,12 @@ tools:
         query:
           type: string
           default: ""
-          description: "Search keyword or phrase. Be specific for robotics: 'humanoid robot 2025', 'Boston Dynamics Atlas'."
+          description: "Search keyword or phrase. Example: 'humanoid robot 2025', 'Boston Dynamics Atlas'."
         search_type:
           type: string
           enum: [Latest, Top]
           default: "Latest"
-          description: "'Top' for popular/viral tweets; 'Latest' for newest."
+          description: "Top for popular posts; Latest for recent posts."
         limit:
           type: integer
           default: 5
@@ -85,18 +82,16 @@ tools:
       Search the web for robotics news, articles, and general information via Tavily.
       Use topic='news' for current events and recent developments in robotics.
       Use topic='general' for background knowledge, company info, or technical topics.
-      Extract timeframe from user's words:
-        'hôm nay'/'today' → day | 'tuần này'/'this week' → week |
-        'tháng này'/'this month' → month | 'năm nay'/'year' → year.
+      Extract timeframe: 'hôm nay'/'today' → day | 'tuần này'/'this week' → week |
+      'tháng này'/'this month' → month | 'năm nay'/'year' → year.
       DO NOT use when user provides a specific URL — use fetch instead.
-      DO NOT use for Twitter content — use timeline or social_search instead.
     parameters:
       type: object
       properties:
         query:
           type: string
           default: ""
-          description: "Search query. Be specific: 'humanoid robot news', 'Boston Dynamics Atlas 2025'."
+          description: "Search query. Example: 'humanoid robot news', 'Boston Dynamics Atlas 2025'."
         topic:
           type: string
           enum: [general, news]
@@ -106,7 +101,7 @@ tools:
           type: string
           enum: [day, week, month, year]
           default: "week"
-          description: "Time range filter. Match to user's stated timeframe."
+          description: "Time range filter."
         max_results:
           type: integer
           default: 5
@@ -133,8 +128,6 @@ tools:
       Format a list of collected items into a structured markdown digest or newsletter.
       Use ONLY after you have already collected items from lookup/fetch/social_search/papers.
       DO NOT use to search for more information.
-      Templates: 'brief'=short bullets, 'sections'=grouped by topic, 'bullets'=plain list,
-      'thread'=numbered thread, 'daily_ai_vn'=Vietnamese daily digest format.
     parameters:
       type: object
       properties:
@@ -168,7 +161,6 @@ tools:
       Send a text message to a Telegram channel.
       ALWAYS call clarify(response_type='yes_no') BEFORE calling this tool.
       NEVER call send with confirmed=true on the first request — always confirm first.
-      Only set confirmed=true after the user explicitly says yes.
     parameters:
       type: object
       properties:
@@ -209,7 +201,6 @@ tools:
       Search arXiv for academic research papers on robotics topics.
       Use when user asks for research papers, preprints, academic studies on
       robotics, SLAM, motion planning, manipulation, drone navigation, etc.
-      sort_by='submittedDate' for newest papers; 'relevance' for most relevant.
       No API key required — arXiv is free.
     parameters:
       type: object
@@ -233,7 +224,6 @@ tools:
     description: >
       Download a specific arXiv paper PDF and extract its text content.
       Use when the user provides an arXiv ID (e.g. 1706.03762) and wants to read it.
-      Requires pypdf installed.
     parameters:
       type: object
       properties:
@@ -266,7 +256,7 @@ tools:
         query:
           type: string
           default: ""
-          description: "Company name or robot type to search. Example: 'humanoid', 'Boston Dynamics', 'drone'."
+          description: "Company name or robot type to search. Example: 'humanoid', 'Boston Dynamics'."
         robot_type:
           type: string
           enum: [all, humanoid, quadruped, arm, drone, logistics, mobile]
@@ -298,30 +288,26 @@ tools:
           description: "Category of specs to return."
       required: []
 
-  - name: export_report
-    description: "Xuất bản báo cáo nghiên cứu hoặc bản tin digest ra file báo cáo cục bộ (.md hoặc .txt)."
+  - name: robotics_paper_lookup
+    description: >
+      Retrieve structured academic publication metadata from Crossref using
+      either an exact DOI or a bibliographic keyword query. Use this tool when
+      the user provides a DOI, DOI URL, paper title, author, or Robotics research
+      topic and requests metadata such as title, authors, year, venue, publisher,
+      citation count, or DOI URL.
     parameters:
       type: object
       properties:
-        title: {type: string, default: "", description: "Tiêu đề báo cáo"}
-        content: {type: string, default: "", description: "Nội dung báo cáo dạng markdown hoặc text"}
-        file_format: {type: string, enum: [markdown, txt], default: "markdown", description: "Định dạng file xuất ra"}
-      required: [title, content]
-
-  - name: stock_quote
-    description: "Tra cứu giá cổ phiếu, thông tin tài chính và biến động giá theo mã chứng khoán (như AAPL, NVDA, TSLA, FPT, VNM)."
-    parameters:
-      type: object
-      properties:
-        symbol: {type: string, default: "", description: "Mã chứng khoán / mã cổ phiếu"}
-        currency: {type: string, enum: [USD, VND], default: "USD", description: "Đơn vị tiền tệ"}
-      required: [symbol]
-
-  - name: translate
-    description: "Dịch nội dung hoặc bài viết digest sang ngôn ngữ chỉ định (như Vietnamese, English, French)."
-    parameters:
-      type: object
-      properties:
-        text: {type: string, default: "", description: "Văn bản cần dịch"}
-        target_language: {type: string, default: "Vietnamese", description: "Ngôn ngữ đích"}
-      required: [text]
+        query:
+          type: string
+          description: "Exact DOI, DOI URL, paper title, author name, or Robotics research keyword."
+        lookup_type:
+          type: string
+          enum: [auto, doi, keyword]
+          default: "auto"
+          description: "Use doi for exact DOI, keyword for title/author search, or auto to detect automatically."
+        max_results:
+          type: integer
+          default: 5
+          description: "Maximum number of records returned for keyword search."
+      required: [query]

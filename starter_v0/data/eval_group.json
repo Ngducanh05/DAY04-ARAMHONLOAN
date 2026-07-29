@@ -13,7 +13,7 @@
         "tool_calls": [{"name": "lookup", "args": {"topic": "news", "timeframe": "week"}}]
       },
       "metadata": {
-        "what_it_tests": "Single-turn: 'tuần này' → timeframe=week, topic=news. Không được dùng timeframe=day hay general."
+        "what_it_tests": "Single-turn: 'tuần này' → timeframe=week, topic=news."
       }
     },
     {
@@ -25,7 +25,7 @@
         "tool_calls": [{"name": "robotics_companies", "args": {"robot_type": "humanoid"}}]
       },
       "metadata": {
-        "what_it_tests": "Single-turn: Câu hỏi về danh sách công ty robotics → robotics_companies, KHÔNG dùng lookup hay social_search."
+        "what_it_tests": "Single-turn: Câu hỏi về danh sách công ty robotics → robotics_companies."
       }
     },
     {
@@ -37,7 +37,7 @@
         "tool_calls": [{"name": "robot_specs", "args": {"robot_name": "Atlas"}}]
       },
       "metadata": {
-        "what_it_tests": "Single-turn: Hỏi specs cụ thể của một robot → robot_specs, KHÔNG dùng lookup."
+        "what_it_tests": "Single-turn: Hỏi specs cụ thể của một robot → robot_specs."
       }
     },
     {
@@ -65,7 +65,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Single-turn: Yêu cầu 2 nguồn cùng lúc (web + arXiv) → gọi lookup VÀ papers song song. Eval không phụ thuộc thứ tự."
+        "what_it_tests": "Single-turn: Yêu cầu 2 nguồn cùng lúc (web + arXiv) → gọi lookup VÀ papers song song."
       }
     },
     {
@@ -121,7 +121,7 @@
         "tool_calls": [{"name": "timeline", "args": {"screenname": "BostonDynamics", "limit": 5}}]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Lượt 1 thiếu handle → hỏi lại. Lượt 2 bổ sung Boston Dynamics → map thành BostonDynamics. Lượt 3 xác nhận limit=5."
+        "what_it_tests": "Multi-turn: Lượt 1 thiếu handle → hỏi lại. Lượt 2 bổ sung Boston Dynamics → map thành BostonDynamics."
       }
     },
     {
@@ -137,7 +137,7 @@
         "tool_calls": [{"name": "lookup", "args": {"query": "drone", "topic": "news", "timeframe": "day"}}]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Carry timeframe=day và topic=news từ lượt 1. Lượt 3 chỉ đổi query=drone."
+        "what_it_tests": "Multi-turn: Carry timeframe=day và topic=news từ lượt 1."
       }
     },
     {
@@ -169,7 +169,7 @@
         "tool_calls": [{"name": "lookup", "args": {"query": "Unitree robot", "topic": "news"}}]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Lượt 2 explicit chuyển từ social_search sang lookup. Lượt 3 giữ query Unitree."
+        "what_it_tests": "Multi-turn: Lượt 2 explicit chuyển từ social_search sang lookup."
       }
     },
     {
@@ -185,7 +185,7 @@
         "tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Dù lượt 2-3 user yêu cầu gửi, Agent PHẢI hỏi clarify(yes_no) trước. KHÔNG tự gọi send() mà không xác nhận lần đầu."
+        "what_it_tests": "Multi-turn: Agent PHẢI hỏi clarify(yes_no) trước khi gọi send()."
       }
     },
     {
