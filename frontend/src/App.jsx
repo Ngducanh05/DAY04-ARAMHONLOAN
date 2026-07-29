@@ -1,4 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
+import {
+  API_BASE_URL,
+  getHealth,
+  getTools,
+  getTranscript,
+  listTranscripts,
+  sendChat,
+} from './api/researchAgentApi'
 
 const scenarios = [
   {
@@ -128,12 +136,6 @@ const boundaryTurn = {
   }],
 }
 
-const providerModels = {
-  openrouter: 'openai/gpt-4o-mini',
-  openai: 'configured-model',
-  mock: 'local-fixture',
-}
-
 const versionRows = [
   { version: 'v0', label: 'Baseline', accuracy: 0.6, routing: 0.7, args: 0.6, delta: '—' },
   { version: 'v1', label: 'Routing hints', accuracy: 0.7, routing: 0.8, args: 0.7, delta: '+10%' },
@@ -154,23 +156,44 @@ function JsonBlock({ value }) {
 }
 
 function ToolTrace({ turns }) {
-  const rounds = turns.flatMap((turn) => turn.rounds || [])
+  const events = turns.flatMap((turn) => (turn.rounds || []).flatMap((round) => {
+    const results = round.tool_results || []
+    if (results.length) {
+      return results.map((event, index) => ({
+        ...event,
+        round: round.round,
+        args: event.args || round.tool_calls?.[index]?.args || {},
+        tool: event.tool || round.tool_calls?.[index]?.name || 'unknown',
+      }))
+    }
+    return (round.tool_calls || []).map((call) => ({
+      round: round.round,
+      tool: call.name,
+      args: call.args || {},
+      result: { status: 'No tool result returned' },
+      status: 'error',
+    }))
+  }))
+
+  if (!events.length) {
+    return <p className="empty-state">Không có tool call trong lượt này.</p>
+  }
+
   return (
     <div className="trace-list">
-      {rounds.map((round) => {
-        const event = round.tool_results?.[0]
-        const hasError = event?.result?.error || event?.status === 'error'
+      {events.map((event, index) => {
+        const hasError = event?.error || event?.result?.error || event?.status === 'error'
         const tone = hasError ? 'danger' : event?.status === 'fallback' ? 'warning' : 'success'
         return (
-          <article className="trace-card" key={`${round.round}-${event?.tool}`}>
+          <article className="trace-card" key={`${event.round}-${event.tool}-${index}`}>
             <div className="trace-heading">
-              <span className="round-number">ROUND {String(round.round).padStart(2, '0')}</span>
+              <span className="round-number">ROUND {String(event.round).padStart(2, '0')}</span>
               <StatusBadge tone={tone}>{hasError ? 'error' : event?.status === 'fallback' ? 'fallback' : 'success'}</StatusBadge>
             </div>
-            <div className="trace-tool"><span className="tool-dot" />{event?.tool || round.tool_calls?.[0]?.name}</div>
+            <div className="trace-tool"><span className="tool-dot" />{event.tool}</div>
             <div className="trace-columns">
-              <div><small>ARGS</small><JsonBlock value={event?.args || round.tool_calls?.[0]?.args || {}} /></div>
-              <div><small>{hasError ? 'ERROR' : 'RESULT'}</small><JsonBlock value={event?.result || event?.error || {}} /></div>
+              <div><small>ARGS</small><JsonBlock value={event.args || {}} /></div>
+              <div><small>{hasError ? 'ERROR' : 'RESULT'}</small><JsonBlock value={event.error || event.result || {}} /></div>
             </div>
           </article>
         )
@@ -185,70 +208,294 @@ function getInitialTheme() {
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
+function parseArtifactVersion(artifactVersion = '') {
+  const match = artifactVersion.match(/^[^+]+\+p([^+]+)\+t(.+)$/)
+  return {
+    promptHash: match?.[1] || 'not-exposed',
+    toolsHash: match?.[2] || 'not-exposed',
+  }
+}
+
+function normalizeTurn({ message, response, turnIndex = 1 }) {
+  return {
+    turn_index: turnIndex,
+    user: message,
+    assistant_text: response.assistant_text || response.error || 'Không có nội dung trả về.',
+    status: response.status || (response.error ? 'error' : 'answered'),
+    rounds: response.rounds || [],
+  }
+}
+
+function storedTranscriptToTurn(transcript) {
+  if (!transcript) return null
+  if (Array.isArray(transcript.turns) && transcript.turns.length) {
+    return transcript.turns.at(-1)
+  }
+  if (!transcript.user_message) return null
+  return {
+    turn_index: transcript.history_turns + 1 || 1,
+    user: transcript.user_message,
+    assistant_text: transcript.assistant_text || transcript.error || '',
+    status: transcript.status || 'answered',
+    rounds: transcript.rounds || [],
+  }
+}
+
 function App() {
   const [theme, setTheme] = useState(getInitialTheme)
   const [mode, setMode] = useState('live')
   const [scenarioId, setScenarioId] = useState('main-news')
   const [version, setVersion] = useState('v3')
-  const [provider, setProvider] = useState('openrouter')
   const [running, setRunning] = useState(false)
   const [notice, setNotice] = useState('')
   const [draft, setDraft] = useState('')
+  const [apiState, setApiState] = useState({ status: 'checking', health: null, error: null })
+  const [toolCatalog, setToolCatalog] = useState([])
+  const [apiResponse, setApiResponse] = useState(null)
+  const [apiTurn, setApiTurn] = useState(null)
+  const [sessionId, setSessionId] = useState('')
+  const [history, setHistory] = useState([])
+  const [latestTranscriptName, setLatestTranscriptName] = useState('')
+  const [storedTranscript, setStoredTranscript] = useState(null)
+  const [lastRequestAt, setLastRequestAt] = useState('')
+
   const evidence = mode === 'fallback' ? fallbackEvidence : liveEvidence
   const scenario = scenarios.find((item) => item.id === scenarioId) || scenarios[0]
-  const baseTurn = scenarioId === 'missing-info' ? boundaryTurn : evidence.transcript.turns[0]
+  const scenarioTurn = scenarioId === 'missing-info' ? boundaryTurn : liveEvidence.transcript.turns[0]
+  const storedTurn = useMemo(() => storedTranscriptToTurn(storedTranscript), [storedTranscript])
   const turn = useMemo(() => {
-    if (mode !== 'fallback' || scenarioId === 'main-news') return baseTurn
+    if (mode === 'live') return apiTurn || scenarioTurn
+    const fallbackBase = storedTurn || (
+      scenarioId === 'missing-info'
+        ? boundaryTurn
+        : fallbackEvidence.transcript.turns[0]
+    )
     return {
-      ...baseTurn,
+      ...fallbackBase,
       status: 'fallback',
-      assistant_text: 'Đang dùng transcript dự phòng. Bạn muốn lấy 5 bài đăng gần nhất từ tài khoản nào?',
-      rounds: baseTurn.rounds.map((round) => ({
+      rounds: (fallbackBase.rounds || []).map((round) => ({
         ...round,
-        tool_results: round.tool_results.map((event) => ({ ...event, status: 'fallback' })),
+        tool_results: (round.tool_results || []).map((event) => ({ ...event, status: 'fallback' })),
       })),
     }
-  }, [baseTurn, mode, scenarioId])
+  }, [apiTurn, mode, scenarioId, scenarioTurn, storedTurn])
+
   const selectedMetrics = versionRows.find((item) => item.version === version) || versionRows.at(-1)
-  const displayRun = useMemo(() => ({
-    ...evidence.run,
+  const resolvedArtifactVersion = apiResponse?.artifact_version
+    || storedTranscript?.artifact_version
+    || (mode === 'fallback' ? fallbackEvidence.run.artifact_version : liveEvidence.run.artifact_version)
+  const artifactHashes = parseArtifactVersion(resolvedArtifactVersion)
+  const displayRun = useMemo(() => {
+    const responseError = apiResponse?.error
+    const connectionError = apiState.status === 'offline'
+      ? apiState.error
+      : null
+    return {
+      ...evidence.run,
+      run_id: apiResponse?.session_id ? `chat_${apiResponse.session_id}` : evidence.run.run_id,
+      version,
+      artifact_version: resolvedArtifactVersion,
+      prompt_hash: artifactHashes.promptHash,
+      tools_hash: artifactHashes.toolsHash,
+      provider: apiState.health?.provider_ready ? 'server-configured' : 'unavailable',
+      model: 'not-exposed-by-api',
+      generated_at: lastRequestAt || storedTranscript?.created_at || apiState.health?.timestamp || evidence.run.generated_at,
+      status: mode === 'fallback' ? 'fallback' : turn.status,
+      error: responseError || connectionError
+        ? {
+            code: responseError ? 'CHAT_ERROR' : 'API_UNREACHABLE',
+            message: responseError || connectionError,
+          }
+        : undefined,
+      files: {
+        run: 'API missing: GET /runs',
+        transcript: latestTranscriptName
+          ? `transcripts/${latestTranscriptName}`
+          : apiResponse ? 'Saved; filename not returned by POST /chat' : 'No transcript selected',
+        versionLog: 'API missing: GET /versions',
+      },
+    }
+  }, [
+    apiResponse,
+    apiState,
+    artifactHashes.promptHash,
+    artifactHashes.toolsHash,
+    evidence.run,
+    lastRequestAt,
+    latestTranscriptName,
+    mode,
+    resolvedArtifactVersion,
+    storedTranscript,
+    turn.status,
     version,
-    artifact_version: mode === 'fallback'
-      ? `${version}+fallback-prompt+fallback-tools`
-      : `${version}+p${evidence.run.prompt_hash}+t${evidence.run.tools_hash}`,
-    provider,
-    model: providerModels[provider],
-    status: mode === 'fallback' ? 'fallback' : turn.status,
-  }), [evidence.run, mode, provider, turn.status, version])
+  ])
   const displayTranscript = useMemo(() => ({
     ...evidence.transcript,
-    transcript_id: `${mode === 'fallback' ? 'fallback' : 'mock'}_${version}_${provider}_${scenarioId}`,
+    transcript_id: latestTranscriptName || apiResponse?.session_id || `${mode}_${version}_${scenarioId}`,
     status: displayRun.status,
     turns: [turn],
-  }), [displayRun.status, evidence.transcript, mode, provider, scenarioId, turn, version])
+  }), [apiResponse, displayRun.status, evidence.transcript, latestTranscriptName, mode, scenarioId, turn, version])
   const toolCount = turn.rounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
+  const toolErrorCount = turn.rounds.reduce(
+    (count, round) => count + (round.tool_results || []).filter(
+      (event) => event.error || event.result?.error || event.status === 'error',
+    ).length,
+    0,
+  )
   const payloadPreview = useMemo(() => ({ run: displayRun, transcript: displayTranscript }), [displayRun, displayTranscript])
-  const statusTone = mode === 'fallback' || turn.status !== 'answered' ? 'warning' : 'success'
+  const statusTone = turn.status === 'error'
+    ? 'danger'
+    : mode === 'fallback' || turn.status !== 'answered' ? 'warning' : 'success'
+  const connectionLabel = mode === 'fallback'
+    ? 'Offline snapshot'
+    : apiState.status === 'checking'
+      ? 'Checking API'
+      : apiState.status === 'online'
+        ? apiState.health?.provider_ready ? 'API ready' : 'API · provider missing'
+        : 'API offline'
+  const connectionTone = mode === 'fallback' || apiState.status === 'checking'
+    ? 'warning'
+    : apiState.status === 'online' && apiState.health?.provider_ready ? 'success' : 'danger'
+  const sourceLabel = mode === 'fallback'
+    ? storedTurn ? 'saved-transcript' : 'fallback'
+    : apiResponse ? 'api-live' : apiState.status === 'online' ? 'api-ready' : 'mock-preview'
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     window.localStorage.setItem('research-agent-theme', theme)
   }, [theme])
 
-  function runScenario() {
+  useEffect(() => {
+    let active = true
+
+    async function bootstrapApi() {
+      const [healthResult, toolsResult, transcriptsResult] = await Promise.allSettled([
+        getHealth(),
+        getTools(),
+        listTranscripts(),
+      ])
+      if (!active) return
+
+      if (healthResult.status === 'fulfilled') {
+        setApiState({ status: 'online', health: healthResult.value, error: null })
+      } else {
+        setApiState({
+          status: 'offline',
+          health: null,
+          error: healthResult.reason?.message || 'Unable to reach API',
+        })
+      }
+
+      if (toolsResult.status === 'fulfilled') {
+        setToolCatalog(toolsResult.value.tools || [])
+      }
+
+      if (transcriptsResult.status === 'fulfilled') {
+        const filename = transcriptsResult.value.transcripts?.[0]
+        if (filename) {
+          setLatestTranscriptName(filename)
+          try {
+            const transcript = await getTranscript(filename)
+            if (active) setStoredTranscript(transcript)
+          } catch {
+            // The transcript index is still useful even when this file was rotated.
+          }
+        }
+      }
+    }
+
+    bootstrapApi()
+    return () => {
+      active = false
+    }
+  }, [])
+
+  async function refreshLatestTranscript() {
+    try {
+      const payload = await listTranscripts()
+      const filename = payload.transcripts?.[0] || ''
+      setLatestTranscriptName(filename)
+      if (filename) {
+        const transcript = await getTranscript(filename)
+        setStoredTranscript(transcript)
+      }
+    } catch {
+      // POST /chat succeeded; transcript discovery is best-effort until the API
+      // returns transcript_filename directly.
+    }
+  }
+
+  async function executeChat(message) {
+    if (mode === 'fallback') {
+      setNotice('Đang ở fallback mode. Chuyển sang Live API để gửi request mới.')
+      return
+    }
+
     setRunning(true)
     setNotice('')
-    window.setTimeout(() => {
+    try {
+      const response = await sendChat({
+        message,
+        sessionId,
+        version,
+        history,
+      })
+      const nextTurn = normalizeTurn({
+        message,
+        response,
+        turnIndex: Math.floor(history.length / 2) + 1,
+      })
+      const nextHistory = [
+        ...history,
+        { role: 'user', content: message },
+        { role: 'assistant', content: response.assistant_text || response.error || '' },
+      ].slice(-10)
+
+      setApiResponse(response)
+      setApiTurn(nextTurn)
+      setSessionId(response.session_id || sessionId)
+      setHistory(nextHistory)
+      setLastRequestAt(new Date().toISOString())
+      setApiState((current) => ({
+        ...current,
+        status: 'online',
+        health: current.health || { provider_ready: true },
+        error: null,
+      }))
+      setNotice(response.error
+        ? `API trả về lỗi: ${response.error}`
+        : 'Scenario đã chạy qua FastAPI và tool trace đã được cập nhật.')
+      await refreshLatestTranscript()
+    } catch (error) {
+      setApiState((current) => ({
+        ...current,
+        status: 'offline',
+        error: error.message,
+      }))
+      setMode('fallback')
+      setNotice(`Không gọi được API: ${error.message}. Đã chuyển sang fallback transcript.`)
+    } finally {
       setRunning(false)
-      setNotice(mode === 'fallback' ? 'Đã mở lại fallback run/transcript.' : 'Scenario đã chạy xong và evidence đã được ghi nhận.')
-    }, 650)
+    }
+  }
+
+  function selectScenario(nextScenarioId) {
+    setScenarioId(nextScenarioId)
+    setApiResponse(null)
+    setApiTurn(null)
+    setNotice('')
+  }
+
+  function runScenario() {
+    executeChat(scenario.prompt)
   }
 
   function submitPrompt(event) {
     event.preventDefault()
     if (!draft.trim()) return
-    setNotice('Prompt đã được thêm vào demo queue. Backend adapter sẽ nhận input này khi ghép API.')
+    const message = draft.trim()
     setDraft('')
+    executeChat(message)
   }
 
   return (
@@ -259,7 +506,7 @@ function App() {
           <div><p className="eyebrow">DAY 04 / TOOL EVAL</p><h1>Research Agent Console</h1></div>
         </div>
         <div className="topbar-actions">
-          <StatusBadge tone={mode === 'fallback' ? 'warning' : 'success'}>{evidence.connection}</StatusBadge>
+          <StatusBadge tone={connectionTone}>{connectionLabel}</StatusBadge>
           <span className="version-pill">{displayRun.version} <b>{version === 'v3' ? 'current' : 'preview'}</b></span>
           <button
             className="theme-toggle"
@@ -276,40 +523,40 @@ function App() {
       </header>
 
       <section className="control-bar panel">
-        <div className="control-group"><label htmlFor="scenario">Scenario</label><select id="scenario" value={scenarioId} onChange={(event) => setScenarioId(event.target.value)}>{scenarios.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.title}</option>)}</select></div>
+        <div className="control-group"><label htmlFor="scenario">Scenario</label><select id="scenario" value={scenarioId} onChange={(event) => selectScenario(event.target.value)}>{scenarios.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.title}</option>)}</select></div>
         <div className="control-group"><label htmlFor="version">Artifact version</label><select id="version" value={version} onChange={(event) => setVersion(event.target.value)}><option value="v3">v3 · current</option><option value="v2">v2 · argument rules</option><option value="v1">v1 · routing hints</option><option value="v0">v0 · baseline</option></select></div>
-        <div className="control-group"><label htmlFor="provider">Provider / model</label><select id="provider" value={provider} onChange={(event) => setProvider(event.target.value)}><option value="openrouter">OpenRouter · gpt-4o-mini</option><option value="openai">OpenAI · configured model</option><option value="mock">Mock provider · local</option></select></div>
-        <div className="mode-switch" role="group" aria-label="Evidence source"><button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live mock</button><button className={mode === 'fallback' ? 'active fallback' : ''} onClick={() => setMode('fallback')}>Fallback</button></div>
+        <div className="control-group"><label htmlFor="provider">Backend provider</label><select id="provider" value="server" disabled><option value="server">{apiState.health?.provider_ready ? `Server configured · ${toolCatalog.length} tools` : 'Configured by AGENT_PROVIDER'}</option></select></div>
+        <div className="mode-switch" role="group" aria-label="Evidence source"><button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live API</button><button className={mode === 'fallback' ? 'active fallback' : ''} onClick={() => setMode('fallback')}>Fallback</button></div>
       </section>
 
       <main className="dashboard-grid">
         <section className="panel conversation-panel">
           <div className="section-heading"><div><p className="eyebrow">LIVE SCENARIO</p><h2>{scenario.title}</h2></div><StatusBadge tone={statusTone}>{displayRun.status}</StatusBadge></div>
-          <div className="scenario-prompt"><span>REQUEST</span><p>{scenario.prompt}</p></div>
+          <div className="scenario-prompt"><span>REQUEST</span><p>{turn.user}</p></div>
           <div className="conversation">
-            <div className="message user-message"><div className="avatar user-avatar">U</div><div><div className="message-meta">USER <time>09:15</time></div><p>{turn.user}</p></div></div>
-            <div className="message assistant-message"><div className="avatar assistant-avatar">✦</div><div><div className="message-meta">AGENT <time>{mode === 'fallback' ? 'snapshot' : '09:15'}</time></div><p>{turn.assistant_text}</p><div className="answer-chip"><span>✓</span>{toolCount} tool calls · {turn.rounds.length} rounds · transcript saved</div></div></div>
+            <div className="message user-message"><div className="avatar user-avatar">U</div><div><div className="message-meta">USER <time>{lastRequestAt ? 'latest' : 'preview'}</time></div><p>{turn.user}</p></div></div>
+            <div className="message assistant-message"><div className="avatar assistant-avatar">✦</div><div><div className="message-meta">AGENT <time>{mode === 'fallback' ? 'snapshot' : apiResponse ? 'live API' : 'preview'}</time></div><p>{turn.assistant_text}</p><div className="answer-chip"><span>✓</span>{toolCount} tool calls · {turn.rounds.length} rounds · {latestTranscriptName ? 'transcript discovered' : 'transcript pending'}</div></div></div>
           </div>
-          <form className="composer" onSubmit={submitPrompt}><input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Thử một yêu cầu research khác..." aria-label="Research prompt" /><button type="submit">Queue prompt <span>↗</span></button></form>
+          <form className="composer" onSubmit={submitPrompt}><input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder={mode === 'fallback' ? 'Chuyển sang Live API để gửi yêu cầu…' : 'Thử một yêu cầu research khác...'} aria-label="Research prompt" disabled={running || mode === 'fallback'} /><button type="submit" disabled={running || mode === 'fallback'}>{running ? 'Running…' : 'Send to API'} <span>↗</span></button></form>
           {notice && <p className="notice">{notice}</p>}
-          <div className="scenario-actions"><button className="primary-button" onClick={runScenario} disabled={running}>{running ? 'Running scenario…' : '▶  Run main scenario'}</button><span>{mode === 'fallback' ? fallbackEvidence.fallbackReason : 'Evidence preview · no external request from this UI'}</span></div>
+          <div className="scenario-actions"><button className="primary-button" onClick={runScenario} disabled={running}>{running ? 'Running scenario…' : '▶  Run selected scenario'}</button><span>{mode === 'fallback' ? fallbackEvidence.fallbackReason : `FastAPI: ${API_BASE_URL} · session: ${sessionId || 'new'}`}</span></div>
         </section>
 
         <aside className="evidence-column">
-          <section className="panel summary-panel"><div className="section-heading"><div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div><span className="source-label">{evidence.source}</span></div><div className="metric-grid"><Metric label="Case accuracy" value={`${Math.round(selectedMetrics.accuracy * 100)}%`} tone="blue" /><Metric label="Tool routing" value={`${Math.round(selectedMetrics.routing * 100)}%`} tone="purple" /><Metric label="Argument accuracy" value={`${Math.round(selectedMetrics.args * 100)}%`} tone="green" /><Metric label="Tool events" value={toolCount} tone="orange" /></div></section>
+          <section className="panel summary-panel"><div className="section-heading"><div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div><span className="source-label">{sourceLabel}</span></div><div className="metric-grid"><Metric label="Case accuracy · mock" value={`${Math.round(selectedMetrics.accuracy * 100)}%`} tone="blue" /><Metric label="Tool routing · mock" value={`${Math.round(selectedMetrics.routing * 100)}%`} tone="purple" /><Metric label="Loaded tools · API" value={toolCatalog.length || '—'} tone="green" /><Metric label="Tool events · API" value={toolCount} tone="orange" /></div></section>
           <section className="panel artifact-panel"><div className="section-heading"><div><p className="eyebrow">ARTIFACT IDENTITY</p><h2>Version is visible</h2></div><span className="hash-icon">#</span></div><div className="artifact-version">{displayRun.artifact_version}</div>{displayRun.error && <div className="error-strip"><strong>{displayRun.error.code}</strong><span>{displayRun.error.message}</span></div>}<div className="hash-list"><div><span>prompt hash</span><code>{displayRun.prompt_hash}</code></div><div><span>tools hash</span><code>{displayRun.tools_hash}</code></div><div><span>provider</span><code>{displayRun.provider}</code></div><div><span>generated</span><code>{displayRun.generated_at}</code></div></div></section>
-          <section className="panel files-panel"><div className="section-heading"><div><p className="eyebrow">SAVED EVIDENCE</p><h2>Files to hand off</h2></div></div><div className="file-list"><div className="file-row"><span className="file-icon">{'{ }'}</span><div><strong>Run JSON</strong><small>{displayRun.files.run}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">≡</span><div><strong>Transcript JSON</strong><small>{displayRun.files.transcript}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">▤</span><div><strong>Version log</strong><small>{displayRun.files.versionLog}</small></div><span className="file-status">ready</span></div></div></section>
+          <section className="panel files-panel"><div className="section-heading"><div><p className="eyebrow">SAVED EVIDENCE</p><h2>Files to hand off</h2></div></div><div className="file-list"><div className="file-row"><span className="file-icon">{'{ }'}</span><div><strong>Run JSON</strong><small>{displayRun.files.run}</small></div><span className="file-status missing">missing</span></div><div className="file-row"><span className="file-icon">≡</span><div><strong>Transcript JSON</strong><small>{displayRun.files.transcript}</small></div><span className={`file-status ${latestTranscriptName ? '' : 'pending'}`}>{latestTranscriptName ? 'ready' : 'pending'}</span></div><div className="file-row"><span className="file-icon">▤</span><div><strong>Version metrics</strong><small>{displayRun.files.versionLog}</small></div><span className="file-status missing">missing</span></div></div></section>
         </aside>
       </main>
 
-      <section className="panel trace-panel"><div className="section-heading trace-section-heading"><div><p className="eyebrow">OBSERVABILITY</p><h2>Tool trace / result / error</h2></div><div className="trace-summary"><span><i className="legend-dot success-dot" />{toolCount} successful calls</span><span><i className="legend-dot warning-dot" />fallback is selectable</span></div></div><ToolTrace turns={evidence.transcript.turns} /></section>
+      <section className="panel trace-panel"><div className="section-heading trace-section-heading"><div><p className="eyebrow">OBSERVABILITY</p><h2>Tool trace / result / error</h2></div><div className="trace-summary"><span><i className="legend-dot success-dot" />{Math.max(0, toolCount - toolErrorCount)} successful calls</span><span><i className="legend-dot warning-dot" />{toolErrorCount} errors</span></div></div><ToolTrace turns={displayTranscript.turns} /></section>
 
       <section className="bottom-grid">
         <section className="panel comparison-panel"><div className="section-heading"><div><p className="eyebrow">VERSION COMPARISON</p><h2>Same scenario, visible progress</h2></div></div><div className="comparison-table"><div className="table-row table-head"><span>VERSION</span><span>CASE ACC.</span><span>ROUTING</span><span>ARGS</span><span>CHANGE</span></div>{versionRows.map((row) => <div className={`table-row ${row.version === version ? 'current-row' : ''}`} key={row.version}><span><b>{row.version}</b> {row.label}</span><span>{Math.round(row.accuracy * 100)}%</span><span>{Math.round(row.routing * 100)}%</span><span>{Math.round(row.args * 100)}%</span><span className="delta">{row.delta}</span></div>)}</div></section>
         <section className="panel raw-panel"><div className="section-heading"><div><p className="eyebrow">DEBUG PAYLOAD</p><h2>Contract preview</h2></div></div><details><summary>Open run + transcript JSON</summary><JsonBlock value={payloadPreview} /></details></section>
       </section>
 
-      <footer><span>Research Agent Lab · frontend evidence console</span><span>Mock data is replaceable with the team backend contract.</span></footer>
+      <footer><span>Research Agent Lab · FastAPI evidence console</span><span>Live chat/transcripts connected · run metrics remain mock until APIs are added.</span></footer>
     </div>
   )
 }
