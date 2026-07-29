@@ -330,3 +330,26 @@ tools:
         text: {type: string, default: "", description: "Văn bản cần dịch"}
         target_language: {type: string, default: "Vietnamese", description: "Ngôn ngữ đích"}
       required: [text]
+
+  - name: robotics_paper_lookup
+    description: >
+      Look up academic publication metadata from Crossref by DOI, DOI URL, title, author, or keyword.
+      Use when the user provides a DOI, a DOI URL, asks for metadata of a paper title, or wants publication info (authors, venue, citation count).
+      Do NOT use for arXiv IDs (use paper_text or papers instead).
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "DOI (e.g. 10.1109/LRA.2023.1234567), DOI URL, paper title, author, or keyword."
+        lookup_type:
+          type: string
+          enum: [auto, doi, keyword]
+          default: "auto"
+          description: "'doi' for exact DOI search; 'keyword' for bibliographic search; 'auto' to auto-detect."
+        max_results:
+          type: integer
+          default: 5
+          description: "Maximum number of search results (1-10)."
+      required: [query]

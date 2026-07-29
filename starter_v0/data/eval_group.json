@@ -1,7 +1,7 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Bộ test case tự thiết kế kết hợp từ cả 2 nhánh (Robotics Agent + General Research Custom Tools).",
+  "description": "Bộ test case tự thiết kế kết hợp từ các nhánh.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
   "cases": [
     {
@@ -41,7 +41,21 @@
       }
     },
     {
-      "id": "G04_out_of_scope_math",
+      "id": "G04_doi_metadata_routing",
+      "phase": "B",
+      "query": "Cho mình xem thông tin học thuật (tác giả, venue, số lượt trích dẫn) của bài báo có DOI là 10.1109/LRA.2023.1234567 được không?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "robotics_paper_lookup", "args": { "query": "10.1109/LRA.2023.1234567", "lookup_type": "doi" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Tool mới (HaiYen): user cung cấp DOI cụ thể và hỏi metadata học thuật → route sang robotics_paper_lookup(lookup_type=doi)."
+      }
+    },
+    {
+      "id": "G05_out_of_scope_math",
       "phase": "B",
       "query": "Giúp mình giải bài toán này: tính nghiệm của phương trình bậc 2 x^2 - 5x + 6 = 0",
       "failure_type": "out_of_scope",
@@ -51,21 +65,6 @@
       },
       "metadata": {
         "what_it_tests": "Single-turn: Câu hỏi toán học ngoài phạm vi → từ chối lịch sự, KHÔNG gọi tool."
-      }
-    },
-    {
-      "id": "G05_parallel_web_and_paper",
-      "phase": "B",
-      "query": "Tìm tin tức mới nhất về robot humanoid trên web và tìm thêm research paper về humanoid locomotion.",
-      "failure_type": "wrong_tool",
-      "expect": {
-        "tool_calls": [
-          {"name": "lookup", "args": {"query": "humanoid robot", "topic": "news"}},
-          {"name": "papers", "args": {"query": "humanoid locomotion"}}
-        ]
-      },
-      "metadata": {
-        "what_it_tests": "Single-turn: Yêu cầu 2 nguồn cùng lúc (web + arXiv) → gọi lookup VÀ papers song song. Eval không phụ thuộc thứ tự."
       }
     },
     {

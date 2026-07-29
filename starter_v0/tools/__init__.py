@@ -19,6 +19,7 @@ from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .robotics_companies.tool import get_robotics_companies
 from .robot_specs.tool import get_robot_specs
+from .robotics_paper_lookup.tool import robotics_paper_lookup
 from .export_report.tool import export_report
 from .stock_quote.tool import stock_quote
 from .translate.tool import translate
@@ -42,6 +43,7 @@ TOOL_FUNCTIONS = {
     "paper_text": get_arxiv_paper_text,
     "robotics_companies": get_robotics_companies,
     "robot_specs": get_robot_specs,
+    "robotics_paper_lookup": robotics_paper_lookup,
     "export_report": export_report,
     "stock_quote": stock_quote,
     "translate": translate,

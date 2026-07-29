@@ -74,6 +74,7 @@ Do not invent usernames, URLs, DOI values, arXiv IDs, topics, or other required 
 | Tweets ABOUT a topic/keyword | `social_search` |
 | Read a specific URL already provided | `fetch` |
 | Search academic papers on arXiv | `papers` |
+| Look up paper metadata by DOI / title via Crossref | `robotics_paper_lookup` |
 | Info about robotics companies | `robotics_companies` |
 | Robot model specs/details | `robot_specs` |
 | Export report to file | `export_report` |
