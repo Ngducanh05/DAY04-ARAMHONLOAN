@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 
-const API_BASE_URL = 'http://localhost:8000'
-
 const scenarios = [
   {
     id: 'robotics-companies',
@@ -64,10 +62,9 @@ const fallbackEvidence = {
 }
 
 const providerModels = {
-  openrouter: 'openrouter/auto',
-  openai: 'gpt-4o-mini',
-  gemini: 'gemini-2.0-flash',
-  anthropic: 'claude-3-5-sonnet',
+  openrouter: 'openai/gpt-4o-mini',
+  openai: 'configured-model',
+  mock: 'local-fixture',
 }
 
 const versionRows = [
@@ -89,34 +86,27 @@ function JsonBlock({ value }) {
   return <pre className="json-block">{JSON.stringify(value, null, 2)}</pre>
 }
 
-function ToolTrace({ rounds = [] }) {
-  if (!rounds || rounds.length === 0) {
-    return <div className="notice">Chưa có tool call nào trong turn này.</div>
-  }
-
+function ToolTrace({ turns }) {
+  const rounds = turns.flatMap((turn) => turn.rounds || [])
   return (
     <div className="trace-list">
-      {rounds.map((round, rIdx) => {
-        const toolCalls = round.tool_calls || []
-        const toolResults = round.tool_results || []
-        return toolCalls.map((call, cIdx) => {
-          const res = toolResults[cIdx] || toolResults.find((r) => r.tool === call.name) || {}
-          const hasError = res?.result?.error || res?.error || false
-          const tone = hasError ? 'danger' : 'success'
-          return (
-            <article className="trace-card" key={`round-${round.round || rIdx}-${call.name}-${cIdx}`}>
-              <div className="trace-heading">
-                <span className="round-number">ROUND {String(round.round || rIdx + 1).padStart(2, '0')}</span>
-                <StatusBadge tone={tone}>{hasError ? 'ERROR' : 'SUCCESS'}</StatusBadge>
-              </div>
-              <div className="trace-tool"><span className="tool-dot" />{call.name}</div>
-              <div className="trace-columns">
-                <div><small>ARGUMENTS</small><JsonBlock value={call.args || {}} /></div>
-                <div><small>{hasError ? 'ERROR' : 'RESULT'}</small><JsonBlock value={res?.result || res || {}} /></div>
-              </div>
-            </article>
-          )
-        })
+      {rounds.map((round) => {
+        const event = round.tool_results?.[0]
+        const hasError = event?.result?.error || event?.status === 'error'
+        const tone = hasError ? 'danger' : event?.status === 'fallback' ? 'warning' : 'success'
+        return (
+          <article className="trace-card" key={`${round.round}-${event?.tool}`}>
+            <div className="trace-heading">
+              <span className="round-number">ROUND {String(round.round).padStart(2, '0')}</span>
+              <StatusBadge tone={tone}>{hasError ? 'error' : event?.status === 'fallback' ? 'fallback' : 'success'}</StatusBadge>
+            </div>
+            <div className="trace-tool"><span className="tool-dot" />{event?.tool || round.tool_calls?.[0]?.name}</div>
+            <div className="trace-columns">
+              <div><small>ARGS</small><JsonBlock value={event?.args || round.tool_calls?.[0]?.args || {}} /></div>
+              <div><small>{hasError ? 'ERROR' : 'RESULT'}</small><JsonBlock value={event?.result || event?.error || {}} /></div>
+            </div>
+          </article>
+        )
       })}
     </div>
   )
@@ -128,125 +118,107 @@ function getInitialTheme() {
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
+function parseArtifactVersion(artifactVersion = '') {
+  const match = artifactVersion.match(/^[^+]+\+p([^+]+)\+t(.+)$/)
+  return {
+    promptHash: match?.[1] || 'not-exposed',
+    toolsHash: match?.[2] || 'not-exposed',
+  }
+}
+
+function normalizeTurn({ message, response, turnIndex = 1 }) {
+  return {
+    turn_index: turnIndex,
+    user: message,
+    assistant_text: response.assistant_text || response.error || 'Không có nội dung trả về.',
+    status: response.status || (response.error ? 'error' : 'answered'),
+    rounds: response.rounds || [],
+  }
+}
+
+function storedTranscriptToTurn(transcript) {
+  if (!transcript) return null
+  if (Array.isArray(transcript.turns) && transcript.turns.length) {
+    return transcript.turns.at(-1)
+  }
+  if (!transcript.user_message) return null
+  return {
+    turn_index: transcript.history_turns + 1 || 1,
+    user: transcript.user_message,
+    assistant_text: transcript.assistant_text || transcript.error || '',
+    status: transcript.status || 'answered',
+    rounds: transcript.rounds || [],
+  }
+}
+
+function percent(value) {
+  return typeof value === 'number' ? `${Math.round(value * 100)}%` : '—'
+}
+
 function App() {
   const [theme, setTheme] = useState(getInitialTheme)
   const [mode, setMode] = useState('live')
   const [scenarioId, setScenarioId] = useState('robotics-companies')
   const [version, setVersion] = useState('v3')
-  const [provider, setProvider] = useState('openrouter')
   const [running, setRunning] = useState(false)
   const [notice, setNotice] = useState('')
   const [draft, setDraft] = useState('')
-  const [serverHealth, setServerHealth] = useState(null)
-
-  // Turns history
-  const [turns, setTurns] = useState([])
-  const [activeSessionId, setActiveSessionId] = useState(() => `session_${Math.random().toString(36).substring(2, 8)}`)
-
+  const evidence = mode === 'fallback' ? fallbackEvidence : liveEvidence
   const scenario = scenarios.find((item) => item.id === scenarioId) || scenarios[0]
-
-  // Check health of FastAPI server
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/health`)
-      .then((res) => res.json())
-      .then((data) => {
-        setServerHealth(data)
-        if (mode !== 'live') setMode('live')
-      })
-      .catch(() => {
-        setServerHealth(null)
-      })
-  }, [mode])
+  const baseTurn = scenarioId === 'missing-info' ? boundaryTurn : evidence.transcript.turns[0]
+  const turn = useMemo(() => {
+    if (mode !== 'fallback' || scenarioId === 'main-news') return baseTurn
+    return {
+      ...baseTurn,
+      status: 'fallback',
+      assistant_text: 'Đang dùng transcript dự phòng. Bạn muốn lấy 5 bài đăng gần nhất từ tài khoản nào?',
+      rounds: baseTurn.rounds.map((round) => ({
+        ...round,
+        tool_results: round.tool_results.map((event) => ({ ...event, status: 'fallback' })),
+      })),
+    }
+  }, [baseTurn, mode, scenarioId])
+  const selectedMetrics = versionRows.find((item) => item.version === version) || versionRows.at(-1)
+  const displayRun = useMemo(() => ({
+    ...evidence.run,
+    version,
+    artifact_version: mode === 'fallback'
+      ? `${version}+fallback-prompt+fallback-tools`
+      : `${version}+p${evidence.run.prompt_hash}+t${evidence.run.tools_hash}`,
+    provider,
+    model: providerModels[provider],
+    status: mode === 'fallback' ? 'fallback' : turn.status,
+  }), [evidence.run, mode, provider, turn.status, version])
+  const displayTranscript = useMemo(() => ({
+    ...evidence.transcript,
+    transcript_id: `${mode === 'fallback' ? 'fallback' : 'mock'}_${version}_${provider}_${scenarioId}`,
+    status: displayRun.status,
+    turns: [turn],
+  }), [displayRun.status, evidence.transcript, mode, provider, scenarioId, turn, version])
+  const toolCount = turn.rounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
+  const payloadPreview = useMemo(() => ({ run: displayRun, transcript: displayTranscript }), [displayRun, displayTranscript])
+  const statusTone = mode === 'fallback' || turn.status !== 'answered' ? 'warning' : 'success'
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     window.localStorage.setItem('research-agent-theme', theme)
   }, [theme])
 
-  // Execute request to FastAPI backend
-  async function sendPromptToBackend(promptText) {
-    if (!promptText.trim()) return
-
+  function runScenario() {
     setRunning(true)
     setNotice('')
-
-    const userTurn = {
-      turn_index: turns.length + 1,
-      user: promptText,
-      assistant_text: 'Agent đang suy nghĩ và gọi tools...',
-      status: 'running',
-      rounds: [],
-    }
-
-    setTurns((prev) => [...prev, userTurn])
-
-    // Build chat history
-    const history = turns.flatMap((t) => [
-      { role: 'user', content: t.user },
-      { role: 'assistant', content: t.assistant_text || '' },
-    ])
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: promptText,
-          session_id: activeSessionId,
-          version: version,
-          history: history,
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-
-      const data = await response.json()
-
-      setTurns((prev) => {
-        const next = [...prev]
-        next[next.length - 1] = {
-          turn_index: next.length,
-          user: promptText,
-          assistant_text: data.assistant_text || (data.status === 'waiting_for_user' ? data.assistant_text : 'Hoàn tất'),
-          status: data.status,
-          rounds: data.rounds || [],
-          tool_events: data.tool_events || [],
-          artifact_version: data.artifact_version || version,
-        }
-        return next
-      })
-
-      setNotice(`✅ Phản hồi từ Agent (${data.status}) — Artifact version: ${data.artifact_version || version}`)
-    } catch (err) {
-      console.error('API Error:', err)
-      setTurns((prev) => {
-        const next = [...prev]
-        next[next.length - 1] = {
-          turn_index: next.length,
-          user: promptText,
-          assistant_text: `Lỗi kết nối Backend API: ${err.message}. Đảm bảo uvicorn đang chạy tại http://localhost:8000.`,
-          status: 'error',
-          rounds: [],
-        }
-        return next
-      })
-      setNotice(`⚠️ Không thể kết nối với FastAPI Server (http://localhost:8000).`)
-    } finally {
+    window.setTimeout(() => {
       setRunning(false)
-    }
-  }
-
-  function runScenario() {
-    sendPromptToBackend(scenario.prompt)
+      setNotice(mode === 'fallback' ? 'Đã mở lại fallback run/transcript.' : 'Scenario đã chạy xong và evidence đã được ghi nhận.')
+    }, 650)
   }
 
   function submitPrompt(event) {
     event.preventDefault()
     if (!draft.trim()) return
-    sendPromptToBackend(draft)
+    setNotice('Prompt đã được thêm vào demo queue. Backend adapter sẽ nhận input này khi ghép API.')
     setDraft('')
+    executeChat(message)
   }
 
   function clearChat() {
@@ -275,8 +247,8 @@ function App() {
           <div><p className="eyebrow">DAY 04 / RESEARCH AGENT</p><h1>Research Agent Console</h1></div>
         </div>
         <div className="topbar-actions">
-          <StatusBadge tone={isConnected ? 'success' : 'warning'}>{connectionLabel}</StatusBadge>
-          <span className="version-pill">{version} <b>{version === 'v3' ? 'current' : 'preview'}</b></span>
+          <StatusBadge tone={mode === 'fallback' ? 'warning' : 'success'}>{evidence.connection}</StatusBadge>
+          <span className="version-pill">{displayRun.version} <b>{version === 'v3' ? 'current' : 'preview'}</b></span>
           <button
             className="theme-toggle"
             type="button"
@@ -290,206 +262,40 @@ function App() {
       </header>
 
       <section className="control-bar panel">
-        <div className="control-group">
-          <label htmlFor="scenario">Scenario mẫu</label>
-          <select id="scenario" value={scenarioId} onChange={(e) => setScenarioId(e.target.value)}>
-            {scenarios.map((item) => (
-              <option key={item.id} value={item.id}>{item.label} · {item.title}</option>
-            ))}
-          </select>
-        </div>
-        <div className="control-group">
-          <label htmlFor="version">Artifact version</label>
-          <select id="version" value={version} onChange={(e) => setVersion(e.target.value)}>
-            <option value="v3">v3 · custom tools & fine-tune</option>
-            <option value="v2">v2 · argument rules</option>
-            <option value="v1">v1 · routing hints</option>
-            <option value="v0">v0 · baseline</option>
-          </select>
-        </div>
-        <div className="control-group">
-          <label htmlFor="provider">Provider / model</label>
-          <select id="provider" value={provider} onChange={(e) => setProvider(e.target.value)}>
-            <option value="openrouter">OpenRouter · gpt-4o-mini</option>
-            <option value="openai">OpenAI · gpt-4o-mini</option>
-            <option value="gemini">Google Gemini · gemini-2.0-flash</option>
-            <option value="anthropic">Anthropic · claude-3-5-sonnet</option>
-          </select>
-        </div>
-        <div className="mode-switch">
-          <button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live API</button>
-          <button className={mode === 'fallback' ? 'active fallback' : ''} onClick={() => setMode('fallback')}>Fallback</button>
-          <button onClick={clearChat} title="Xoá hội thoại">🗑️ Clear</button>
-        </div>
+        <div className="control-group"><label htmlFor="scenario">Scenario</label><select id="scenario" value={scenarioId} onChange={(event) => setScenarioId(event.target.value)}>{scenarios.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.title}</option>)}</select></div>
+        <div className="control-group"><label htmlFor="version">Artifact version</label><select id="version" value={version} onChange={(event) => setVersion(event.target.value)}><option value="v3">v3 · current</option><option value="v2">v2 · argument rules</option><option value="v1">v1 · routing hints</option><option value="v0">v0 · baseline</option></select></div>
+        <div className="control-group"><label htmlFor="provider">Provider / model</label><select id="provider" value={provider} onChange={(event) => setProvider(event.target.value)}><option value="openrouter">OpenRouter · gpt-4o-mini</option><option value="openai">OpenAI · configured model</option><option value="mock">Mock provider · local</option></select></div>
+        <div className="mode-switch" role="group" aria-label="Evidence source"><button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live mock</button><button className={mode === 'fallback' ? 'active fallback' : ''} onClick={() => setMode('fallback')}>Fallback</button></div>
       </section>
 
       <main className="dashboard-grid">
         <section className="panel conversation-panel">
-          <div className="section-heading">
-            <div><p className="eyebrow">CHAT CONVERSATION</p><h2>{scenario.title}</h2></div>
-            <StatusBadge tone={running ? 'warning' : isConnected ? 'success' : 'warning'}>
-              {running ? 'Thinking...' : latestTurn?.status || 'Ready'}
-            </StatusBadge>
-          </div>
-          <div className="scenario-prompt">
-            <span>SCENARIO PROMPT</span>
-            <p>{scenario.prompt}</p>
-          </div>
-
+          <div className="section-heading"><div><p className="eyebrow">LIVE SCENARIO</p><h2>{scenario.title}</h2></div><StatusBadge tone={statusTone}>{displayRun.status}</StatusBadge></div>
+          <div className="scenario-prompt"><span>REQUEST</span><p>{scenario.prompt}</p></div>
           <div className="conversation">
-            {turns.length === 0 ? (
-              <div className="notice" style={{ textAlign: 'center', padding: '30px' }}>
-                👋 Chưa có tin nhắn nào. Chọn scenario mẫu và bấm <b>▶ Run scenario</b> hoặc nhập prompt bên dưới để gửi tin đến Agent.
-              </div>
-            ) : (
-              turns.map((t, idx) => (
-                <div key={idx} style={{ marginBottom: '20px' }}>
-                  <div className="message user-message">
-                    <div className="avatar user-avatar">U</div>
-                    <div>
-                      <div className="message-meta">USER <time>Turn #{t.turn_index}</time></div>
-                      <p>{t.user}</p>
-                    </div>
-                  </div>
-                  <div className="message assistant-message" style={{ marginTop: '10px' }}>
-                    <div className="avatar assistant-avatar">✦</div>
-                    <div>
-                      <div className="message-meta">ROBOTICS AGENT <time>{t.status}</time></div>
-                      <p style={{ whitespace: 'pre-wrap' }}>{t.assistant_text}</p>
-                      {t.rounds && t.rounds.length > 0 && (
-                        <div className="answer-chip">
-                          <span>✓</span>{t.rounds.reduce((acc, r) => acc + (r.tool_calls?.length || 0), 0)} tool calls · {t.rounds.length} rounds · {t.artifact_version || version}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
+            <div className="message user-message"><div className="avatar user-avatar">U</div><div><div className="message-meta">USER <time>09:15</time></div><p>{turn.user}</p></div></div>
+            <div className="message assistant-message"><div className="avatar assistant-avatar">✦</div><div><div className="message-meta">AGENT <time>{mode === 'fallback' ? 'snapshot' : '09:15'}</time></div><p>{turn.assistant_text}</p><div className="answer-chip"><span>✓</span>{toolCount} tool calls · {turn.rounds.length} rounds · transcript saved</div></div></div>
           </div>
-
-          <form className="composer" onSubmit={submitPrompt}>
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              placeholder="Nhập yêu cầu nghiên cứu robotics, giá cổ phiếu, hoặc dịch thuật..."
-              aria-label="Research prompt"
-              disabled={running}
-            />
-            <button type="submit" disabled={running || !draft.trim()}>
-              {running ? 'Sending...' : 'Send Prompt ↗'}
-            </button>
-          </form>
-
+          <form className="composer" onSubmit={submitPrompt}><input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Thử một yêu cầu research khác..." aria-label="Research prompt" /><button type="submit">Queue prompt <span>↗</span></button></form>
           {notice && <p className="notice">{notice}</p>}
-
-          <div className="scenario-actions">
-            <button className="primary-button" onClick={runScenario} disabled={running}>
-              {running ? 'Running scenario…' : '▶  Run selected scenario'}
-            </button>
-            <span>{isConnected ? `Connected to FastAPI Server (${API_BASE_URL})` : 'Start backend: uvicorn starter_v0.server:app --reload'}</span>
-          </div>
+          <div className="scenario-actions"><button className="primary-button" onClick={runScenario} disabled={running}>{running ? 'Running scenario…' : '▶  Run main scenario'}</button><span>{mode === 'fallback' ? fallbackEvidence.fallbackReason : 'Evidence preview · no external request from this UI'}</span></div>
         </section>
 
         <aside className="evidence-column">
-          <section className="panel summary-panel">
-            <div className="section-heading">
-              <div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div>
-              <span className="source-label">{isConnected ? 'live-api' : 'offline'}</span>
-            </div>
-            <div className="metric-grid">
-              <Metric label="Case accuracy" value={`${Math.round(selectedMetrics.accuracy * 100)}%`} tone="blue" />
-              <Metric label="Tool routing" value={`${Math.round(selectedMetrics.routing * 100)}%`} tone="purple" />
-              <Metric label="Argument accuracy" value={`${Math.round(selectedMetrics.args * 100)}%`} tone="green" />
-              <Metric label="Tool calls" value={toolCount} tone="orange" />
-            </div>
-          </section>
-
-          <section className="panel artifact-panel">
-            <div className="section-heading">
-              <div><p className="eyebrow">ARTIFACT IDENTITY</p><h2>Version metadata</h2></div>
-              <span className="hash-icon">#</span>
-            </div>
-            <div className="artifact-version">
-              {latestTurn?.artifact_version || `${version}+live-agent`}
-            </div>
-            <div className="hash-list">
-              <div><span>version</span><code>{version}</code></div>
-              <div><span>provider</span><code>{provider}</code></div>
-              <div><span>model</span><code>{providerModels[provider]}</code></div>
-              <div><span>session_id</span><code>{activeSessionId}</code></div>
-            </div>
-          </section>
-
-          <section className="panel files-panel">
-            <div className="section-heading">
-              <div><p className="eyebrow">ACTIVE TOOLS</p><h2>Available in Backend</h2></div>
-            </div>
-            <div className="file-list">
-              {serverHealth?.tools_loaded ? (
-                <div className="file-row">
-                  <span className="file-icon">🛠️</span>
-                  <div><strong>15 Tools Loaded</strong><small>robotics_companies, robot_specs, export_report, etc.</small></div>
-                  <span className="file-status">ready</span>
-                </div>
-              ) : (
-                <div className="file-row">
-                  <span className="file-icon">⚠️</span>
-                  <div><strong>Server Offline</strong><small>Run uvicorn starter_v0.server:app</small></div>
-                  <span className="file-status">waiting</span>
-                </div>
-              )}
-            </div>
-          </section>
+          <section className="panel summary-panel"><div className="section-heading"><div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div><span className="source-label">{evidence.source}</span></div><div className="metric-grid"><Metric label="Case accuracy" value={`${Math.round(selectedMetrics.accuracy * 100)}%`} tone="blue" /><Metric label="Tool routing" value={`${Math.round(selectedMetrics.routing * 100)}%`} tone="purple" /><Metric label="Argument accuracy" value={`${Math.round(selectedMetrics.args * 100)}%`} tone="green" /><Metric label="Tool events" value={toolCount} tone="orange" /></div></section>
+          <section className="panel artifact-panel"><div className="section-heading"><div><p className="eyebrow">ARTIFACT IDENTITY</p><h2>Version is visible</h2></div><span className="hash-icon">#</span></div><div className="artifact-version">{displayRun.artifact_version}</div>{displayRun.error && <div className="error-strip"><strong>{displayRun.error.code}</strong><span>{displayRun.error.message}</span></div>}<div className="hash-list"><div><span>prompt hash</span><code>{displayRun.prompt_hash}</code></div><div><span>tools hash</span><code>{displayRun.tools_hash}</code></div><div><span>provider</span><code>{displayRun.provider}</code></div><div><span>generated</span><code>{displayRun.generated_at}</code></div></div></section>
+          <section className="panel files-panel"><div className="section-heading"><div><p className="eyebrow">SAVED EVIDENCE</p><h2>Files to hand off</h2></div></div><div className="file-list"><div className="file-row"><span className="file-icon">{'{ }'}</span><div><strong>Run JSON</strong><small>{displayRun.files.run}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">≡</span><div><strong>Transcript JSON</strong><small>{displayRun.files.transcript}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">▤</span><div><strong>Version log</strong><small>{displayRun.files.versionLog}</small></div><span className="file-status">ready</span></div></div></section>
         </aside>
       </main>
 
-      <section className="panel trace-panel">
-        <div className="section-heading trace-section-heading">
-          <div><p className="eyebrow">OBSERVABILITY</p><h2>Tool Execution Trace (Rounds & Arguments)</h2></div>
-          <div className="trace-summary">
-            <span><i className="legend-dot success-dot" />{toolCount} tool calls</span>
-          </div>
-        </div>
-        <ToolTrace rounds={allRounds} />
-      </section>
+      <section className="panel trace-panel"><div className="section-heading trace-section-heading"><div><p className="eyebrow">OBSERVABILITY</p><h2>Tool trace / result / error</h2></div><div className="trace-summary"><span><i className="legend-dot success-dot" />{toolCount} successful calls</span><span><i className="legend-dot warning-dot" />fallback is selectable</span></div></div><ToolTrace turns={evidence.transcript.turns} /></section>
 
       <section className="bottom-grid">
-        <section className="panel comparison-panel">
-          <div className="section-heading">
-            <div><p className="eyebrow">VERSION COMPARISON</p><h2>Benchmark Progress</h2></div>
-          </div>
-          <div className="comparison-table">
-            <div className="table-row table-head">
-              <span>VERSION</span><span>CASE ACC.</span><span>ROUTING</span><span>ARGS</span><span>CHANGE</span>
-            </div>
-            {versionRows.map((row) => (
-              <div className={`table-row ${row.version === version ? 'current-row' : ''}`} key={row.version}>
-                <span><b>{row.version}</b> {row.label}</span>
-                <span>{Math.round(row.accuracy * 100)}%</span>
-                <span>{Math.round(row.routing * 100)}%</span>
-                <span>{Math.round(row.args * 100)}%</span>
-                <span className="delta">{row.delta}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="panel raw-panel">
-          <div className="section-heading">
-            <div><p className="eyebrow">DEBUG PAYLOAD</p><h2>Latest Turn JSON</h2></div>
-          </div>
-          <details>
-            <summary>Open latest turn payload</summary>
-            <JsonBlock value={latestTurn || { info: 'No turns yet' }} />
-          </details>
-        </section>
+        <section className="panel comparison-panel"><div className="section-heading"><div><p className="eyebrow">VERSION COMPARISON</p><h2>Same scenario, visible progress</h2></div></div><div className="comparison-table"><div className="table-row table-head"><span>VERSION</span><span>CASE ACC.</span><span>ROUTING</span><span>ARGS</span><span>CHANGE</span></div>{versionRows.map((row) => <div className={`table-row ${row.version === version ? 'current-row' : ''}`} key={row.version}><span><b>{row.version}</b> {row.label}</span><span>{Math.round(row.accuracy * 100)}%</span><span>{Math.round(row.routing * 100)}%</span><span>{Math.round(row.args * 100)}%</span><span className="delta">{row.delta}</span></div>)}</div></section>
+        <section className="panel raw-panel"><div className="section-heading"><div><p className="eyebrow">DEBUG PAYLOAD</p><h2>Contract preview</h2></div></div><details><summary>Open run + transcript JSON</summary><JsonBlock value={payloadPreview} /></details></section>
       </section>
 
-      <footer>
-        <span>Research Agent Lab · React Frontend Console</span>
-        <span>Connected to FastAPI Server ({API_BASE_URL})</span>
-      </footer>
+      <footer><span>Research Agent Lab · frontend evidence console</span><span>Mock data is replaceable with the team backend contract.</span></footer>
     </div>
   )
 }

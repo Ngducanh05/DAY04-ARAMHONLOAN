@@ -13,6 +13,14 @@ Mục tiêu chính:
 ## Chạy local
 
 ```bash
+cd starter_v0
+uvicorn app:app --reload --port 8000
+```
+
+Mở terminal khác:
+
+```bash
+cd frontend
 npm install
 npm run dev
 ```
@@ -44,3 +52,7 @@ Thay `liveEvidence` và `fallbackEvidence` trong `src/App.jsx` bằng adapter fe
 - `rounds[].tool_results[]`: `tool`, `status`, `result` hoặc `error`.
 
 Frontend không tự dựng agent loop. Khi backend xong, chỉ cần map output từ `runs/*.json` và `transcripts/*.transcript.json` vào contract trên; giữ fallback snapshot để UI vẫn mở được khi provider timeout.
+
+FastAPI hiện đã được nối cho health, tools, chat, transcript, runs, artifacts,
+versions và config. Xem
+`API_CONTRACT.md` để biết schema hiện có và danh sách endpoint còn thiếu.
