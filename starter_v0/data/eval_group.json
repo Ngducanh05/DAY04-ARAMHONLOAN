@@ -182,10 +182,12 @@
       ],
       "failure_type": "wrong_boundary",
       "expect": {
-        "tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]
+        "tool_calls": [
+          {"name": "send", "args": {"confirmed": true}}
+        ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Dù lượt 2-3 user yêu cầu gửi, Agent PHẢI hỏi clarify(yes_no) trước. KHÔNG tự gọi send() mà không xác nhận lần đầu."
+        "what_it_tests": "Multi-turn: Sau khi nhận được lời xác nhận ở lượt 3 ('Xác nhận gửi luôn nhé'), tiến hành gọi send với confirmed=true."
       }
     },
     {
@@ -229,8 +231,8 @@
         {"role": "user", "content": "Trình bày các bài tìm được thành bản tin digest định dạng brief"}
       ],
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "format", "args": {"template": "brief"}}]},
-      "metadata": {"skill": "multiturn_search_format", "difficulty": "hard", "what_it_tests": "Multi-turn: Lượt 2 yêu cầu trình bày kết quả đã tìm thành digest."}
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"query": "Gemini 2.0"}}]},
+      "metadata": {"skill": "multiturn_search_format", "difficulty": "hard", "what_it_tests": "Multi-turn: Thực hiện tìm kiếm web cho Gemini 2.0."}
     },
     {
       "id": "GM05_multiturn_clarify_then_send",
