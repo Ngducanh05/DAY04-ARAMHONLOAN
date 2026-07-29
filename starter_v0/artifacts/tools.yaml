@@ -3,33 +3,36 @@ tools:
 
   - name: clarify
     description: >
-      Ask the user a clarifying question when required information is missing,
-      OR to get yes/no confirmation before performing a sensitive write action
-      (send, post, publish).
-      Use response_type='text' when asking for missing info (handle, URL, topic).
-      Use response_type='yes_no' when requesting confirmation before sending/publishing.
-      DO NOT use this tool to search for information or to stall.
-      DO NOT use this tool if the user's intent is already clear.
+      Ask the user one precise follow-up question when required information is
+      missing or when an external action requires confirmation. This tool must
+      be called instead of guessing, inventing, or silently filling missing
+      values. Use response_type="text" when requesting missing information such
+      as an account handle, URL, DOI, identifier, topic, or other required
+      argument. Use response_type="yes_no" when asking for explicit confirmation
+      before sending, posting, publishing, deleting, booking, or changing
+      external state. Do not merely write a question in normal assistant text
+      when a structured clarification tool call is required.
     parameters:
       type: object
       properties:
         question:
           type: string
           default: ""
-          description: "The clarifying question to ask the user."
+          description: "One concise question asking only for the missing information or confirmation."
         response_type:
           type: string
           enum: [text, yes_no, choice]
           default: "text"
           description: >
-            'text' = free-form answer needed (e.g., missing URL or handle).
-            'yes_no' = confirmation before write action.
-            'choice' = user must pick from options list.
+            Use text for missing information. Use yes_no for explicit
+            confirmation before an external side effect. Use choice only when
+            the user must select from provided options.
         options:
           type: array
           default: []
-          items: {type: string}
-          description: "Only provide when response_type='choice'."
+          items:
+            type: string
+          description: "Choices shown only when response_type is choice."
       required: [question]
 
   - name: timeline
@@ -56,76 +59,78 @@ tools:
 
   - name: social_search
     description: >
-      Search Twitter/X for posts about a TOPIC or KEYWORD.
-      Use when the user asks 'what are people saying about X', 'tweets about Y',
-      or wants to find public discussion on a robotics topic.
-      search_type='Top' when user says 'popular', 'viral', 'top', 'most liked'.
-      search_type='Latest' (default) for most recent tweets.
-      DO NOT use when user asks about tweets FROM a specific account — use timeline instead.
+      Search social-media posts by topic or keyword. Use for requests asking
+      what people are saying, discussing, or posting about a subject. Use
+      search_type="Top" for popular or top posts and "Latest" for recent posts.
+      Do not use for posts from one specific account. In multi-turn
+      conversations, do not call this tool if the latest user instruction says
+      to stop, remove, ignore, or switch away from Twitter or social media.
+      A newer source instruction overrides an older social-search request.
     parameters:
       type: object
       properties:
         query:
           type: string
           default: ""
-          description: "Search keyword or phrase. Be specific for robotics: 'humanoid robot 2025', 'Boston Dynamics Atlas'."
+          description: "Topic or keyword from the latest active user request."
         search_type:
           type: string
           enum: [Latest, Top]
           default: "Latest"
-          description: "'Top' for popular/viral tweets; 'Latest' for newest."
+          description: "Top for popular posts; Latest for recent posts."
         limit:
           type: integer
           default: 5
-          description: "Number of results."
+          description: "Number of posts requested."
       required: [query]
 
   - name: lookup
     description: >
-      Search the web for robotics news, articles, and general information via Tavily.
-      Use topic='news' for current events and recent developments in robotics.
-      Use topic='general' for background knowledge, company info, or technical topics.
-      Extract timeframe from user's words:
-        'hôm nay'/'today' → day | 'tuần này'/'this week' → week |
-        'tháng này'/'this month' → month | 'năm nay'/'year' → year.
-      DO NOT use when user provides a specific URL — use fetch instead.
-      DO NOT use for Twitter content — use timeline or social_search instead.
+      Search the public web for research information or current news. Use
+      topic="news" for news requests. Map "today" to timeframe="day", "this
+      week" to "week", "this month" to "month", and "this year" to "year".
+      Use this tool when the latest user instruction switches from Twitter or
+      social media to web search. If the user says to drop, remove, or stop
+      Twitter, call lookup only and do not retain the older social_search call.
+      Do not use when the user already provides an exact URL; use fetch instead.
     parameters:
       type: object
       properties:
         query:
           type: string
           default: ""
-          description: "Search query. Be specific: 'humanoid robot news', 'Boston Dynamics Atlas 2025'."
+          description: "The current research topic from the latest active request."
         topic:
           type: string
           enum: [general, news]
           default: "general"
-          description: "'news' for current events; 'general' for background/reference info."
+          description: "Use news for current events and general for broader web research."
         timeframe:
           type: string
           enum: [day, week, month, year]
           default: "week"
-          description: "Time range filter. Match to user's stated timeframe."
+          description: "Time range explicitly requested or implied by today/week/month/year."
         max_results:
           type: integer
           default: 5
-          description: "Number of results (max 10)."
+          description: "Maximum number of search results."
       required: [query]
 
   - name: fetch
     description: >
-      Scrape and read the full content of a specific URL.
-      Use ONLY when the user provides an explicit URL to read or summarize.
-      DO NOT use to search — only to read a known URL.
-      DO NOT guess a URL — if user says 'this article' without a URL, call clarify first.
+      Read or scrape one exact URL explicitly provided by the user. Use when the
+      user asks to read, inspect, summarize, or analyze a specific link. Never
+      invent, infer, substitute, or fabricate a URL. In particular, never use
+      placeholder URLs such as example.com. If the user refers to "this
+      article", "this page", or "this link" without providing a URL, call
+      clarify with response_type="text" instead.
     parameters:
       type: object
       properties:
         url:
           type: string
           default: ""
-          description: "Full URL to read. Must be explicitly provided by the user."
+          description: "The exact URL explicitly provided by the user."
       required: [url]
 
   - name: format

@@ -1,0 +1,189 @@
+# starter_v0 — tool declarations (intentionally vague).
+# Names and descriptions here are a rough first draft. Routing rules, name->handle
+# mapping, arg conventions (news/timeframe/Top), and the send-confirmation boundary
+# are NOT spelled out anywhere yet. Your job is to make these declarations + the
+# system prompt good enough that the agent routes correctly on the eval.
+#
+# If you rename a tool, keep the name in sync across:
+#   this file  ->  tools/__init__.py (TOOL_FUNCTIONS)  ->  data/eval_base.json + data/eval_research_extension.json
+tools:
+  # ---------------- Core tools ----------------
+  - name: clarify
+    description: >
+      Ask the user one precise follow-up question when required information is
+      missing or when an external action requires confirmation. This tool must
+      be called instead of guessing, inventing, or silently filling missing
+      values. Use response_type="text" when requesting missing information such
+      as an account handle, URL, DOI, identifier, topic, or other required
+      argument. Use response_type="yes_no" when asking for explicit confirmation
+      before sending, posting, publishing, deleting, booking, or changing
+      external state. Do not merely write a question in normal assistant text
+      when a structured clarification tool call is required.
+    parameters:
+      type: object
+      properties:
+        question:
+          type: string
+          default: ""
+          description: "One concise question asking only for the missing information or confirmation."
+        response_type:
+          type: string
+          enum: [text, yes_no, choice]
+          default: "text"
+          description: >
+            Use text for missing information. Use yes_no for explicit
+            confirmation before an external side effect. Use choice only when
+            the user must select from provided options.
+        options:
+          type: array
+          default: []
+          items:
+            type: string
+          description: "Choices shown only when response_type is choice."
+      required: [question]
+
+  - name: timeline
+    description: "Lấy các bài đăng gần đây."
+    parameters:
+      type: object
+      properties:
+        screenname: {type: string, default: "", description: "Tên tài khoản"}
+        limit: {type: integer, default: 5, description: "Số lượng"}
+      required: [screenname]
+
+  - name: social_search
+    description: >
+      Search social-media posts by topic or keyword. Use for requests asking
+      what people are saying, discussing, or posting about a subject. Use
+      search_type="Top" for popular or top posts and "Latest" for recent posts.
+      Do not use for posts from one specific account. In multi-turn
+      conversations, do not call this tool if the latest user instruction says
+      to stop, remove, ignore, or switch away from Twitter or social media.
+      A newer source instruction overrides an older social-search request.
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "Topic or keyword from the latest active user request."
+        search_type:
+          type: string
+          enum: [Latest, Top]
+          default: "Latest"
+          description: "Top for popular posts; Latest for recent posts."
+        limit:
+          type: integer
+          default: 5
+          description: "Number of posts requested."
+      required: [query]
+
+  - name: lookup
+    description: >
+      Search the public web for research information or current news. Use
+      topic="news" for news requests. Map "today" to timeframe="day", "this
+      week" to "week", "this month" to "month", and "this year" to "year".
+      Use this tool when the latest user instruction switches from Twitter or
+      social media to web search. If the user says to drop, remove, or stop
+      Twitter, call lookup only and do not retain the older social_search call.
+      Do not use when the user already provides an exact URL; use fetch instead.
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "The current research topic from the latest active request."
+        topic:
+          type: string
+          enum: [general, news]
+          default: "general"
+          description: "Use news for current events and general for broader web research."
+        timeframe:
+          type: string
+          enum: [day, week, month, year]
+          default: "week"
+          description: "Time range explicitly requested or implied by today/week/month/year."
+        max_results:
+          type: integer
+          default: 5
+          description: "Maximum number of search results."
+      required: [query]
+
+  - name: fetch
+    description: >
+      Read or scrape one exact URL explicitly provided by the user. Use when the
+      user asks to read, inspect, summarize, or analyze a specific link. Never
+      invent, infer, substitute, or fabricate a URL. In particular, never use
+      placeholder URLs such as example.com. If the user refers to "this
+      article", "this page", or "this link" without providing a URL, call
+      clarify with response_type="text" instead.
+    parameters:
+      type: object
+      properties:
+        url:
+          type: string
+          default: ""
+          description: "The exact URL explicitly provided by the user."
+      required: [url]
+
+  - name: format
+    description: "Trình bày dữ liệu đã có thành văn bản."
+    parameters:
+      type: object
+      properties:
+        items:
+          type: array
+          default: []
+          description: "Danh sách item"
+          items:
+            type: object
+            properties:
+              title: {type: string}
+              url: {type: string}
+              source: {type: string}
+              summary: {type: string}
+              section: {type: string}
+        template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Khuôn"}
+        headline: {type: string, default: "", description: "Tiêu đề"}
+      required: [items, template]
+
+  # ---------------- Bonus tools ----------------
+  - name: send
+    description: "Gửi một đoạn văn bản đi."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Nội dung"}
+        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
+      required: [text]
+
+  - name: policy
+    description: "Tìm trong tài liệu nội bộ."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "Truy vấn"}
+        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm"}
+        top_k: {type: integer, default: 3, description: "Số mục"}
+      required: [query]
+
+  - name: papers
+    description: "Tìm bài báo khoa học."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "Từ khóa"}
+        max_results: {type: integer, default: 5, description: "Số lượng"}
+        sort_by: {type: string, enum: [relevance, lastUpdatedDate, submittedDate], default: "relevance", description: "Sắp xếp"}
+      required: [query]
+
+  - name: paper_text
+    description: "Lấy nội dung text của một bài báo."
+    parameters:
+      type: object
+      properties:
+        arxiv_url: {type: string, default: "", description: "ID hoặc địa chỉ"}
+        max_pages: {type: integer, default: 5, description: "Số trang"}
+        max_chars: {type: integer, default: 8000, description: "Số ký tự"}
+      required: [arxiv_url]
