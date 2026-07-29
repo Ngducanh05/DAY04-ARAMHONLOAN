@@ -32,6 +32,8 @@ Trang đang có sẵn scenario chính `AI news briefing`, gồm 2 round:
 
 Nút `Live mock / Fallback` cho phép trình diễn cả hai trạng thái. Fallback hiển thị `PROVIDER_TIMEOUT`, fallback run/transcript path và vẫn giữ nguyên tool trace để demo không phụ thuộc mạng.
 
+Nút `Light / Dark` ở top bar đổi theme cho toàn bộ dashboard. Lựa chọn được lưu trong `localStorage`; lần truy cập đầu tiên sẽ dùng theme của hệ điều hành.
+
 ## Contract để ghép backend sau này
 
 Thay `liveEvidence` và `fallbackEvidence` trong `src/App.jsx` bằng adapter fetch/API, giữ các field sau:

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const scenarios = [
   {
@@ -153,7 +153,14 @@ function ToolTrace({ turns }) {
   )
 }
 
+function getInitialTheme() {
+  const savedTheme = window.localStorage.getItem('research-agent-theme')
+  if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
 function App() {
+  const [theme, setTheme] = useState(getInitialTheme)
   const [mode, setMode] = useState('live')
   const [scenarioId, setScenarioId] = useState('main-news')
   const [running, setRunning] = useState(false)
@@ -164,6 +171,11 @@ function App() {
   const turn = evidence.transcript.turns[0]
   const toolCount = turn.rounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
   const payloadPreview = useMemo(() => ({ run: evidence.run, transcript: evidence.transcript }), [evidence])
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    window.localStorage.setItem('research-agent-theme', theme)
+  }, [theme])
 
   function runScenario() {
     setRunning(true)
@@ -191,6 +203,17 @@ function App() {
         <div className="topbar-actions">
           <StatusBadge tone={mode === 'fallback' ? 'warning' : 'success'}>{evidence.connection}</StatusBadge>
           <span className="version-pill">{evidence.run.version} <b>current</b></span>
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label={theme === 'dark' ? 'Chuyển sang theme sáng' : 'Chuyển sang theme tối'}
+            aria-pressed={theme === 'light'}
+            title={theme === 'dark' ? 'Light theme' : 'Dark theme'}
+            onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}
+          >
+            <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
         </div>
       </header>
 
