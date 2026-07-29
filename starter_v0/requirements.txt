@@ -10,3 +10,6 @@ pypdf>=4.0.0
 # FastAPI backend:
 fastapi>=0.110.0
 uvicorn>=0.29.0
+
+# UI:
+streamlit>=1.30.0

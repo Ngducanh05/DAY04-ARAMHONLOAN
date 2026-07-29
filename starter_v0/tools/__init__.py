@@ -19,6 +19,9 @@ from .send.tool import send_telegram
 from .lookup.tool import web_search
 from .robotics_companies.tool import get_robotics_companies
 from .robot_specs.tool import get_robot_specs
+from .export_report.tool import export_report
+from .stock_quote.tool import stock_quote
+from .translate.tool import translate
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
@@ -39,6 +42,9 @@ TOOL_FUNCTIONS = {
     "paper_text": get_arxiv_paper_text,
     "robotics_companies": get_robotics_companies,
     "robot_specs": get_robot_specs,
+    "export_report": export_report,
+    "stock_quote": stock_quote,
+    "translate": translate,
 }
 
 
