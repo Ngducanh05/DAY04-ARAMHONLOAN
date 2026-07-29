@@ -303,7 +303,6 @@ tools:
           description: "Category of specs to return."
       required: []
 
-<<<<<<< HEAD
   - name: export_report
     description: "Xuất bản báo cáo nghiên cứu hoặc bản tin digest ra file báo cáo cục bộ (.md hoặc .txt)."
     parameters:
@@ -331,9 +330,6 @@ tools:
         text: {type: string, default: "", description: "Văn bản cần dịch"}
         target_language: {type: string, default: "Vietnamese", description: "Ngôn ngữ đích"}
       required: [text]
-
-=======
->>>>>>> 0d5c9d23ec68f3b3ad011d82f16dcdfec0e9f652
   - name: robotics_paper_lookup
     description: >
       Look up academic publication metadata from Crossref by DOI, DOI URL, title, author, or keyword.
