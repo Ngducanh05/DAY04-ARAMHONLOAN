@@ -1,0 +1,19 @@
+{
+  "session_id": "session_kgtb83",
+  "version": "v3",
+  "user_message": "hello",
+  "history_turns": 0,
+  "created_at": "2026-07-29T16:25:04",
+  "status": "answered",
+  "assistant_text": "Hello! How can I assist you today?",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": "Hello! How can I assist you today?",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [],
+  "artifact_version": "v3+pc06cf6721ddd+tb03d0f1e13f7"
+}
