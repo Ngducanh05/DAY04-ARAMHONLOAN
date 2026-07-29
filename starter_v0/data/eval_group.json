@@ -1,7 +1,7 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "10 eval case do nhóm tự thiết kế cho Robotics Research Agent (starter_v0/feat-be): 5 single-turn + 5 multi-turn, phủ đủ 6 failure_type. Kết hợp với eval_base.json + eval_research_extension.json, bộ 3 file này phủ đủ toàn bộ 12 tool trong tools.yaml (bao gồm cả `format`, vốn không được test ở base/extension).",
+  "description": "10 eval case do nhóm tự thiết kế cho Robotics Research Agent (starter_v0/feat-be): 5 single-turn + 5 multi-turn, phủ đủ 6 failure_type. Kết hợp eval_base.json + eval_research_extension.json (fixed), bộ 3 file phủ đủ toàn bộ 13 tool trong tools.yaml, bao gồm cả format và robotics_paper_lookup (tool mới).",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
   "cases": [
     {
@@ -43,33 +43,33 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "User đã cung cấp sẵn items trong câu và yêu cầu rõ 'đừng chia theo section' → phải chọn template='bullets', không rơi về default 'sections'. Đây là case duy nhất trong toàn bộ 3 dataset (base+extension+group) test tool `format`."
+        "what_it_tests": "User đã cung cấp sẵn items trong câu và yêu cầu rõ 'đừng chia theo section' → phải chọn template='bullets', không rơi về default 'sections'."
       }
     },
     {
-      "id": "G04_out_of_scope_translation",
+      "id": "G04_doi_metadata_routing",
       "phase": "B",
-      "query": "Dịch giúp mình câu này sang tiếng Nhật: 'Tôi rất thích robot'",
+      "query": "Cho mình xem thông tin học thuật (tác giả, venue, số lượt trích dẫn) của bài báo có DOI là 10.1109/LRA.2023.1234567 được không?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          { "name": "robotics_paper_lookup", "args": { "query": "10.1109/LRA.2023.1234567", "lookup_type": "doi" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Tool mới: user cung cấp DOI cụ thể và hỏi metadata học thuật (authors/venue/citation) → phải route sang robotics_paper_lookup(lookup_type=doi), KHÔNG dùng papers (arXiv-only, không hỗ trợ DOI) hay lookup (web search chung)."
+      }
+    },
+    {
+      "id": "G05_out_of_scope_math",
+      "phase": "B",
+      "query": "Giúp mình giải bài toán này: tính nghiệm của phương trình bậc 2 x^2 - 5x + 6 = 0",
       "failure_type": "out_of_scope",
       "expect": {
         "no_tool": true
       },
       "metadata": {
-        "what_it_tests": "Yêu cầu dịch thuật không thuộc phạm vi bất kỳ tool robotics/research nào → trả lời trực tiếp (hoặc từ chối), không gọi tool."
-      }
-    },
-    {
-      "id": "G05_missing_robot_name",
-      "phase": "B",
-      "query": "Cho mình xem thông số kỹ thuật của con robot đó đi",
-      "failure_type": "missing_info",
-      "expect": {
-        "tool_calls": [
-          { "name": "clarify", "args": { "response_type": "text" } }
-        ]
-      },
-      "metadata": {
-        "what_it_tests": "Nói 'con robot đó' nhưng không nêu tên cụ thể → phải hỏi lại tên robot, không được tự đoán đại (vd mặc định Atlas)."
+        "what_it_tests": "Câu hỏi toán học ngoài phạm vi → từ chối lịch sự, KHÔNG gọi tool."
       }
     },
     {
@@ -112,17 +112,17 @@
       "phase": "B",
       "turns": [
         { "role": "user", "content": "Xem bài đăng gần đây của họ giúp mình" },
-        { "role": "user", "content": "Của Unitree Robotics nhé" },
-        { "role": "user", "content": "Lấy 3 bài gần nhất thôi" }
+        { "role": "user", "content": "Của Boston Dynamics nhé" },
+        { "role": "user", "content": "Lấy 5 bài gần nhất thôi" }
       ],
       "failure_type": "missing_info",
       "expect": {
         "tool_calls": [
-          { "name": "timeline", "args": { "limit": 3 } }
+          { "name": "timeline", "args": { "screenname": "BostonDynamics", "limit": 5 } }
         ]
       },
       "metadata": {
-        "what_it_tests": "Lượt 1 thiếu handle; lượt 2 bổ sung Unitree Robotics; lượt 3 chỉnh limit=3 phải được carry vào tool call cuối. CHỦ Ý: chỉ chấm 'limit', không chấm 'screenname' cứng thành UnitreeRobotics vì bảng mapping tên→handle trong system_prompt.md hiện KHÔNG liệt kê Unitree Robotics — nếu muốn chấm chặt cả handle, cần bổ sung 'Unitree Robotics → UnitreeRobotics' vào system_prompt.md trước khi chạy eval."
+        "what_it_tests": "Lượt 1 thiếu handle (họ = ai?); lượt 2 bổ sung Boston Dynamics → map đúng handle theo bảng mapping có sẵn trong system_prompt; lượt 3 chỉnh limit=5 phải được carry vào tool call cuối."
       }
     },
     {
