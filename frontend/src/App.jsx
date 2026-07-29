@@ -1,6 +1,124 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const API_BASE_URL = 'http://localhost:8000'
+
+function parseInlineMarkdown(text) {
+  if (!text) return null
+  const tokenRegex = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g
+  const parts = text.split(tokenRegex)
+
+  return parts.map((part, idx) => {
+    if (!part) return null
+
+    // Link: [Title](URL)
+    if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+      const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+      if (match) {
+        return (
+          <a
+            key={idx}
+            href={match[2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="md-link"
+          >
+            {match[1]} ↗
+          </a>
+        )
+      }
+    }
+
+    // Bold: **text**
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return <strong key={idx}>{part.slice(2, -2)}</strong>
+    }
+
+    // Code: `code`
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+      return <code key={idx}>{part.slice(1, -1)}</code>
+    }
+
+    return part
+  })
+}
+
+function FormattedMarkdown({ content, isStreaming = false }) {
+  if (!content) return null
+
+  const lines = content.split('\n')
+  const elements = []
+  let currentList = []
+  let currentListType = null
+
+  function flushList() {
+    if (currentList.length > 0) {
+      if (currentListType === 'ol') {
+        elements.push(
+          <ol key={`ol-${elements.length}`} className="md-ol">
+            {currentList.map((item, i) => (
+              <li key={i}>{parseInlineMarkdown(item)}</li>
+            ))}
+          </ol>
+        )
+      } else {
+        elements.push(
+          <ul key={`ul-${elements.length}`} className="md-ul">
+            {currentList.map((item, i) => (
+              <li key={i}>{parseInlineMarkdown(item)}</li>
+            ))}
+          </ul>
+        )
+      }
+      currentList = []
+      currentListType = null
+    }
+  }
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim()
+
+    const olMatch = trimmed.match(/^(\d+)\.\s+(.*)$/)
+    if (olMatch) {
+      if (currentListType && currentListType !== 'ol') flushList()
+      currentListType = 'ol'
+      currentList.push(olMatch[2])
+      return
+    }
+
+    const ulMatch = trimmed.match(/^[-*]\s+(.*)$/)
+    if (ulMatch) {
+      if (currentListType && currentListType !== 'ul') flushList()
+      currentListType = 'ul'
+      currentList.push(ulMatch[1])
+      return
+    }
+
+    flushList()
+
+    if (!trimmed) {
+      elements.push(<div key={`space-${index}`} className="md-spacing" />)
+    } else if (trimmed.startsWith('# ')) {
+      elements.push(<h3 key={`h3-${index}`} className="md-h3">{parseInlineMarkdown(trimmed.slice(2))}</h3>)
+    } else if (trimmed.startsWith('## ')) {
+      elements.push(<h4 key={`h4-${index}`} className="md-h4">{parseInlineMarkdown(trimmed.slice(3))}</h4>)
+    } else {
+      elements.push(
+        <p key={`p-${index}`} className="md-p">
+          {parseInlineMarkdown(line)}
+        </p>
+      )
+    }
+  })
+
+  flushList()
+
+  return (
+    <div className="md-content">
+      {elements}
+      {isStreaming && <span className="streaming-cursor">▊</span>}
+    </div>
+  )
+}
 
 const scenarios = [
   {
@@ -138,12 +256,22 @@ function App() {
   const [notice, setNotice] = useState('')
   const [draft, setDraft] = useState('')
   const [serverHealth, setServerHealth] = useState(null)
+  const [streamingTurnIndex, setStreamingTurnIndex] = useState(null)
+
+  const conversationRef = useRef(null)
 
   // Turns history
   const [turns, setTurns] = useState([])
   const [activeSessionId, setActiveSessionId] = useState(() => `session_${Math.random().toString(36).substring(2, 8)}`)
 
   const scenario = scenarios.find((item) => item.id === scenarioId) || scenarios[0]
+
+  // Auto scroll conversation to bottom
+  useEffect(() => {
+    if (conversationRef.current) {
+      conversationRef.current.scrollTop = conversationRef.current.scrollHeight
+    }
+  }, [turns, streamingTurnIndex, running])
 
   // Check health of FastAPI server
   useEffect(() => {
@@ -163,6 +291,56 @@ function App() {
     window.localStorage.setItem('research-agent-theme', theme)
   }, [theme])
 
+  // Typewriter streaming effect for smooth answer rendering
+  async function streamAssistantText(fullText, finalData) {
+    const textToStream = fullText || (finalData.status === 'waiting_for_user' ? finalData.assistant_text : 'Hoàn tất')
+    setStreamingTurnIndex(turns.length + 1)
+    let currentLen = 0
+    const chunkSize = Math.max(2, Math.floor(textToStream.length / 40))
+    const totalLen = textToStream.length
+
+    return new Promise((resolve) => {
+      const timer = setInterval(() => {
+        currentLen += chunkSize
+        if (currentLen >= totalLen) {
+          clearInterval(timer)
+          setTurns((prev) => {
+            const next = [...prev]
+            if (next.length > 0) {
+              next[next.length - 1] = {
+                ...next[next.length - 1],
+                assistant_text: textToStream,
+                status: finalData.status,
+                rounds: finalData.rounds || [],
+                tool_events: finalData.tool_events || [],
+                artifact_version: finalData.artifact_version || version,
+                isStreaming: false,
+              }
+            }
+            return next
+          })
+          setStreamingTurnIndex(null)
+          resolve()
+        } else {
+          const chunk = textToStream.slice(0, currentLen)
+          setTurns((prev) => {
+            const next = [...prev]
+            if (next.length > 0) {
+              next[next.length - 1] = {
+                ...next[next.length - 1],
+                assistant_text: chunk,
+                status: 'streaming',
+                rounds: finalData.rounds || [],
+                isStreaming: true,
+              }
+            }
+            return next
+          })
+        }
+      }, 16)
+    })
+  }
+
   // Execute request to FastAPI backend
   async function sendPromptToBackend(promptText) {
     if (!promptText.trim()) return
@@ -176,6 +354,7 @@ function App() {
       assistant_text: 'Agent đang suy nghĩ và gọi tools...',
       status: 'running',
       rounds: [],
+      isStreaming: true,
     }
 
     setTurns((prev) => [...prev, userTurn])
@@ -203,32 +382,21 @@ function App() {
       }
 
       const data = await response.json()
-
-      setTurns((prev) => {
-        const next = [...prev]
-        next[next.length - 1] = {
-          turn_index: next.length,
-          user: promptText,
-          assistant_text: data.assistant_text || (data.status === 'waiting_for_user' ? data.assistant_text : 'Hoàn tất'),
-          status: data.status,
-          rounds: data.rounds || [],
-          tool_events: data.tool_events || [],
-          artifact_version: data.artifact_version || version,
-        }
-        return next
-      })
-
+      await streamAssistantText(data.assistant_text, data)
       setNotice(`✅ Phản hồi từ Agent (${data.status}) — Artifact version: ${data.artifact_version || version}`)
     } catch (err) {
       console.error('API Error:', err)
       setTurns((prev) => {
         const next = [...prev]
-        next[next.length - 1] = {
-          turn_index: next.length,
-          user: promptText,
-          assistant_text: `Lỗi kết nối Backend API: ${err.message}. Đảm bảo uvicorn đang chạy tại http://localhost:8000.`,
-          status: 'error',
-          rounds: [],
+        if (next.length > 0) {
+          next[next.length - 1] = {
+            turn_index: next.length,
+            user: promptText,
+            assistant_text: `Lỗi kết nối Backend API: ${err.message}. Đảm bảo uvicorn đang chạy tại http://localhost:8000.`,
+            status: 'error',
+            rounds: [],
+            isStreaming: false,
+          }
         }
         return next
       })
@@ -336,7 +504,7 @@ function App() {
             <p>{scenario.prompt}</p>
           </div>
 
-          <div className="conversation">
+          <div className="conversation" ref={conversationRef}>
             {turns.length === 0 ? (
               <div className="notice" style={{ textAlign: 'center', padding: '30px' }}>
                 👋 Chưa có tin nhắn nào. Chọn scenario mẫu và bấm <b>▶ Run scenario</b> hoặc nhập prompt bên dưới để gửi tin đến Agent.
@@ -354,9 +522,9 @@ function App() {
                   <div className="message assistant-message" style={{ marginTop: '10px' }}>
                     <div className="avatar assistant-avatar">✦</div>
                     <div>
-                      <div className="message-meta">ROBOTICS AGENT <time>{t.status}</time></div>
-                      <p style={{ whitespace: 'pre-wrap' }}>{t.assistant_text}</p>
-                      {t.rounds && t.rounds.length > 0 && (
+                      <div className="message-meta">ROBOTICS AGENT <time>{t.isStreaming ? 'streaming...' : t.status}</time></div>
+                      <FormattedMarkdown content={t.assistant_text} isStreaming={t.isStreaming} />
+                      {t.rounds && t.rounds.length > 0 && !t.isStreaming && (
                         <div className="answer-chip">
                           <span>✓</span>{t.rounds.reduce((acc, r) => acc + (r.tool_calls?.length || 0), 0)} tool calls · {t.rounds.length} rounds · {t.artifact_version || version}
                         </div>
