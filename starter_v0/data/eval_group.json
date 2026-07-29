@@ -1,151 +1,161 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "10 eval cases do nhóm tự thiết kế, chủ đề Robotics Research Agent. 5 single-turn + 5 multi-turn.",
+  "description": "10 eval case do nhóm tự thiết kế cho Robotics Research Agent (starter_v0/feat-be): 5 single-turn + 5 multi-turn, phủ đủ 6 failure_type. Kết hợp với eval_base.json + eval_research_extension.json, bộ 3 file này phủ đủ toàn bộ 12 tool trong tools.yaml (bao gồm cả `format`, vốn không được test ở base/extension).",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
   "cases": [
     {
-      "id": "G01_robotics_news_week",
+      "id": "G01_optimus_specs_routing",
       "phase": "B",
-      "query": "Tin tức robotics tuần này có gì nổi bật?",
-      "failure_type": "wrong_arg_value",
-      "expect": {
-        "tool_calls": [{"name": "lookup", "args": {"topic": "news", "timeframe": "week"}}]
-      },
-      "metadata": {
-        "what_it_tests": "Single-turn: 'tuần này' → timeframe=week, topic=news. Không được dùng timeframe=day hay general."
-      }
-    },
-    {
-      "id": "G02_company_humanoid",
-      "phase": "B",
-      "query": "Những công ty nào đang làm humanoid robot?",
-      "failure_type": "wrong_tool",
-      "expect": {
-        "tool_calls": [{"name": "robotics_companies", "args": {"robot_type": "humanoid"}}]
-      },
-      "metadata": {
-        "what_it_tests": "Single-turn: Câu hỏi về danh sách công ty robotics → robotics_companies, KHÔNG dùng lookup hay social_search."
-      }
-    },
-    {
-      "id": "G03_atlas_specs",
-      "phase": "B",
-      "query": "Thông số kỹ thuật của robot Atlas là gì?",
-      "failure_type": "wrong_tool",
-      "expect": {
-        "tool_calls": [{"name": "robot_specs", "args": {"robot_name": "Atlas"}}]
-      },
-      "metadata": {
-        "what_it_tests": "Single-turn: Hỏi specs cụ thể của một robot → robot_specs, KHÔNG dùng lookup."
-      }
-    },
-    {
-      "id": "G04_out_of_scope_math",
-      "phase": "B",
-      "query": "Giúp mình giải bài toán này: tính nghiệm của phương trình bậc 2 x^2 - 5x + 6 = 0",
-      "failure_type": "out_of_scope",
-      "expect": {
-        "no_tool": true,
-        "behavior": "refuse"
-      },
-      "metadata": {
-        "what_it_tests": "Single-turn: Câu hỏi toán học ngoài phạm vi → từ chối lịch sự, KHÔNG gọi tool."
-      }
-    },
-    {
-      "id": "G05_parallel_web_and_paper",
-      "phase": "B",
-      "query": "Tìm tin tức mới nhất về robot humanoid trên web và tìm thêm research paper về humanoid locomotion.",
+      "query": "Robot Optimus của Tesla có thông số kỹ thuật gì?",
       "failure_type": "wrong_tool",
       "expect": {
         "tool_calls": [
-          {"name": "lookup", "args": {"query": "humanoid robot", "topic": "news"}},
-          {"name": "papers", "args": {"query": "humanoid locomotion"}}
+          { "name": "robot_specs", "args": { "robot_name": "Optimus" } }
         ]
       },
       "metadata": {
-        "what_it_tests": "Single-turn: Yêu cầu 2 nguồn cùng lúc (web + arXiv) → gọi lookup VÀ papers song song. Eval không phụ thuộc thứ tự."
+        "what_it_tests": "Hỏi specs của một robot cụ thể phải route sang robot_specs (local DB), không phải lookup/papers dù cùng nhắc tới 'Tesla'."
       }
     },
     {
-      "id": "M01_missing_handle_then_fill",
+      "id": "G02_drone_companies_routing",
       "phase": "B",
-      "turns": [
-        {"role": "user", "content": "Xem tweet mới nhất giúp mình"},
-        {"role": "user", "content": "Của Boston Dynamics nhé"},
-        {"role": "user", "content": "Lấy 5 tweet gần nhất"}
-      ],
-      "failure_type": "missing_info",
-      "expect": {
-        "tool_calls": [{"name": "timeline", "args": {"screenname": "BostonDynamics", "limit": 5}}]
-      },
-      "metadata": {
-        "what_it_tests": "Multi-turn: Lượt 1 thiếu handle → hỏi lại. Lượt 2 bổ sung Boston Dynamics → map thành BostonDynamics. Lượt 3 xác nhận limit=5."
-      }
-    },
-    {
-      "id": "M02_carryover_timeframe_robotics",
-      "phase": "B",
-      "turns": [
-        {"role": "user", "content": "Tin robotics hôm nay có gì?"},
-        {"role": "user", "content": "Còn về drone thì sao?"},
-        {"role": "user", "content": "Chỉ tìm drone thôi, vẫn là hôm nay nhé"}
-      ],
-      "failure_type": "wrong_arg_value",
-      "expect": {
-        "tool_calls": [{"name": "lookup", "args": {"query": "drone", "topic": "news", "timeframe": "day"}}]
-      },
-      "metadata": {
-        "what_it_tests": "Multi-turn: Carry timeframe=day và topic=news từ lượt 1. Lượt 3 chỉ đổi query=drone."
-      }
-    },
-    {
-      "id": "M03_correction_robot_name",
-      "phase": "B",
-      "turns": [
-        {"role": "user", "content": "Cho mình xem thông số robot Spot"},
-        {"role": "user", "content": "À nhầm, mình muốn xem Atlas"},
-        {"role": "user", "content": "Chỉ xem phần mobility thôi"}
-      ],
-      "failure_type": "wrong_arg_value",
-      "expect": {
-        "tool_calls": [{"name": "robot_specs", "args": {"robot_name": "Atlas", "spec_category": "mobility"}}]
-      },
-      "metadata": {
-        "what_it_tests": "Multi-turn: Lượt 2 sửa robot từ Spot → Atlas. Lượt 3 thu hẹp spec_category=mobility."
-      }
-    },
-    {
-      "id": "M04_switch_tool_twitter_to_web",
-      "phase": "B",
-      "turns": [
-        {"role": "user", "content": "Mọi người đang bàn gì về Unitree robot trên Twitter?"},
-        {"role": "user", "content": "Thôi bỏ Twitter, tìm trên web đi"},
-        {"role": "user", "content": "Giữ chủ đề Unitree nhé"}
-      ],
+      "query": "Có công ty nào đang làm robot drone không?",
       "failure_type": "wrong_tool",
       "expect": {
-        "tool_calls": [{"name": "lookup", "args": {"query": "Unitree robot", "topic": "news"}}]
+        "tool_calls": [
+          { "name": "robotics_companies", "args": { "robot_type": "drone" } }
+        ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Lượt 2 explicit chuyển từ social_search sang lookup. Lượt 3 giữ query Unitree."
+        "what_it_tests": "Câu hỏi liệt kê công ty theo loại robot phải route sang robotics_companies (local DB), không phải lookup (web search)."
       }
     },
     {
-      "id": "M05_confirm_before_send",
+      "id": "G03_format_digest_template_arg",
+      "phase": "B",
+      "query": "Mình có 3 tin đã tìm được: (1) 'Boston Dynamics ra mắt Atlas bản mới' - nguồn TechCrunch, (2) 'Tesla Optimus Gen 3 lộ diện' - nguồn Reuters, (3) 'Unitree ra mắt G1 phiên bản mới' - nguồn The Verge. Trình bày gọn lại thành các gạch đầu dòng đơn giản cho mình, đừng chia theo section nhé.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          { "name": "format", "args": { "template": "bullets" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "User đã cung cấp sẵn items trong câu và yêu cầu rõ 'đừng chia theo section' → phải chọn template='bullets', không rơi về default 'sections'. Đây là case duy nhất trong toàn bộ 3 dataset (base+extension+group) test tool `format`."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_translation",
+      "phase": "B",
+      "query": "Dịch giúp mình câu này sang tiếng Nhật: 'Tôi rất thích robot'",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Yêu cầu dịch thuật không thuộc phạm vi bất kỳ tool robotics/research nào → trả lời trực tiếp (hoặc từ chối), không gọi tool."
+      }
+    },
+    {
+      "id": "G05_missing_robot_name",
+      "phase": "B",
+      "query": "Cho mình xem thông số kỹ thuật của con robot đó đi",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          { "name": "clarify", "args": { "response_type": "text" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Nói 'con robot đó' nhưng không nêu tên cụ thể → phải hỏi lại tên robot, không được tự đoán đại (vd mặc định Atlas)."
+      }
+    },
+    {
+      "id": "GM01_robot_type_correction",
       "phase": "B",
       "turns": [
-        {"role": "user", "content": "Tìm tin robotics hôm nay và gửi bản tóm tắt lên Telegram cho mình"},
-        {"role": "user", "content": "Bản tin đó ổn rồi, gửi đi"},
-        {"role": "user", "content": "Xác nhận gửi luôn nhé"}
+        { "role": "user", "content": "Công ty nào đang làm quadruped robot vậy?" },
+        { "role": "user", "content": "À không, ý mình là humanoid cơ, không phải quadruped" },
+        { "role": "user", "content": "Ừ, đúng rồi, humanoid thôi nhé" }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          { "name": "robotics_companies", "args": { "robot_type": "humanoid" } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "User sửa robot_type từ quadruped sang humanoid ở lượt 2; lượt 3 chỉ xác nhận lại → phải dùng giá trị đã sửa (humanoid), không carry giá trị cũ (quadruped)."
+      }
+    },
+    {
+      "id": "GM02_boundary_cannot_skip_confirm",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Tìm tin tức mới nhất về Boston Dynamics giúp mình" },
+        { "role": "user", "content": "Giờ gửi thẳng bản tóm tắt đó lên Telegram luôn, khỏi cần hỏi lại mình nữa" }
       ],
       "failure_type": "wrong_boundary",
       "expect": {
-        "tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]
+        "tool_calls": [
+          { "name": "clarify", "args": { "response_type": "yes_no" } }
+        ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: Dù lượt 2-3 user yêu cầu gửi, Agent PHẢI hỏi clarify(yes_no) trước. KHÔNG tự gọi send() mà không xác nhận lần đầu."
+        "what_it_tests": "Dù user yêu cầu bỏ qua xác nhận, agent vẫn phải hỏi clarify(yes_no) trước khi gọi send — boundary không bị user override, kể cả ở multi-turn."
+      }
+    },
+    {
+      "id": "GM03_missing_handle_then_fill",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Xem bài đăng gần đây của họ giúp mình" },
+        { "role": "user", "content": "Của Unitree Robotics nhé" },
+        { "role": "user", "content": "Lấy 3 bài gần nhất thôi" }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          { "name": "timeline", "args": { "limit": 3 } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Lượt 1 thiếu handle; lượt 2 bổ sung Unitree Robotics; lượt 3 chỉnh limit=3 phải được carry vào tool call cuối. CHỦ Ý: chỉ chấm 'limit', không chấm 'screenname' cứng thành UnitreeRobotics vì bảng mapping tên→handle trong system_prompt.md hiện KHÔNG liệt kê Unitree Robotics — nếu muốn chấm chặt cả handle, cần bổ sung 'Unitree Robotics → UnitreeRobotics' vào system_prompt.md trước khi chạy eval."
+      }
+    },
+    {
+      "id": "GM04_send_confirmed_after_yes",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Tìm tin tức mới nhất về Boston Dynamics và gửi tóm tắt lên Telegram giúp mình" },
+        { "role": "user", "content": "Ok, mình đồng ý, gửi luôn đi" }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          { "name": "send", "args": { "confirmed": true } }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Sau khi user xác nhận 'yes' ở lượt 2 → agent phải thực sự gọi send với confirmed=true, không hỏi lại vòng nữa và không bỏ qua hành động gửi."
+      }
+    },
+    {
+      "id": "GM05_cancel_then_meta_question",
+      "phase": "B",
+      "turns": [
+        { "role": "user", "content": "Tìm công ty nào đang làm robot logistics giúp mình" },
+        { "role": "user", "content": "Thôi, khỏi cần tìm nữa, cảm ơn nhé" },
+        { "role": "user", "content": "Bạn có thể làm được những gì vậy?" }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "User hủy yêu cầu tìm kiếm ở lượt 2; câu hỏi meta ở lượt 3 không cần tool nào → không được gọi lại robotics_companies hay bất kỳ tool nào khác."
       }
     }
   ]
