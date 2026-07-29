@@ -1,70 +1,147 @@
-# starter_v0 — tool declarations (intentionally vague).
-# Names and descriptions here are a rough first draft. Routing rules, name->handle
-# mapping, arg conventions (news/timeframe/Top), and the send-confirmation boundary
-# are NOT spelled out anywhere yet. Your job is to make these declarations + the
-# system prompt good enough that the agent routes correctly on the eval.
-#
-# If you rename a tool, keep the name in sync across:
-#   this file  ->  tools/__init__.py (TOOL_FUNCTIONS)  ->  data/eval_base.json + data/eval_research_extension.json
 tools:
-  # ---------------- Core tools ----------------
+  # ─────────────────────────── Core tools ───────────────────────────
+
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: >
+      Ask the user a clarifying question when required information is missing,
+      OR to get yes/no confirmation before performing a sensitive write action
+      (send, post, publish).
+      Use response_type='text' when asking for missing info (handle, URL, topic).
+      Use response_type='yes_no' when requesting confirmation before sending/publishing.
+      DO NOT use this tool to search for information or to stall.
+      DO NOT use this tool if the user's intent is already clear.
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
+        question:
+          type: string
+          default: ""
+          description: "The clarifying question to ask the user."
+        response_type:
+          type: string
+          enum: [text, yes_no, choice]
+          default: "text"
+          description: >
+            'text' = free-form answer needed (e.g., missing URL or handle).
+            'yes_no' = confirmation before write action.
+            'choice' = user must pick from options list.
+        options:
+          type: array
+          default: []
+          items: {type: string}
+          description: "Only provide when response_type='choice'."
       required: [question]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: >
+      Fetch recent posts/tweets FROM a specific Twitter/X account by handle.
+      Use when the user asks about posts BY a specific person or organization.
+      ALWAYS map full names to handles: Boston Dynamics→BostonDynamics,
+      Elon Musk→elonmusk, Andrej Karpathy→karpathy, Figure AI→figure_ai,
+      Agility Robotics→AgilityRobotics, Yann LeCun→ylecun.
+      DO NOT use for searching by topic — use social_search instead.
+      If handle is unknown, call clarify first.
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        screenname:
+          type: string
+          default: ""
+          description: "Twitter handle without @. Example: BostonDynamics, elonmusk."
+        limit:
+          type: integer
+          default: 5
+          description: "Number of tweets to return. Extract from user request (e.g. '10 tweets' → 10)."
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: >
+      Search Twitter/X for posts about a TOPIC or KEYWORD.
+      Use when the user asks 'what are people saying about X', 'tweets about Y',
+      or wants to find public discussion on a robotics topic.
+      search_type='Top' when user says 'popular', 'viral', 'top', 'most liked'.
+      search_type='Latest' (default) for most recent tweets.
+      DO NOT use when user asks about tweets FROM a specific account — use timeline instead.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        query:
+          type: string
+          default: ""
+          description: "Search keyword or phrase. Be specific for robotics: 'humanoid robot 2025', 'Boston Dynamics Atlas'."
+        search_type:
+          type: string
+          enum: [Latest, Top]
+          default: "Latest"
+          description: "'Top' for popular/viral tweets; 'Latest' for newest."
+        limit:
+          type: integer
+          default: 5
+          description: "Number of results."
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: >
+      Search the web for robotics news, articles, and general information via Tavily.
+      Use topic='news' for current events and recent developments in robotics.
+      Use topic='general' for background knowledge, company info, or technical topics.
+      Extract timeframe from user's words:
+        'hôm nay'/'today' → day | 'tuần này'/'this week' → week |
+        'tháng này'/'this month' → month | 'năm nay'/'year' → year.
+      DO NOT use when user provides a specific URL — use fetch instead.
+      DO NOT use for Twitter content — use timeline or social_search instead.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
-        max_results: {type: integer, default: 5, description: "Số kết quả"}
+        query:
+          type: string
+          default: ""
+          description: "Search query. Be specific: 'humanoid robot news', 'Boston Dynamics Atlas 2025'."
+        topic:
+          type: string
+          enum: [general, news]
+          default: "general"
+          description: "'news' for current events; 'general' for background/reference info."
+        timeframe:
+          type: string
+          enum: [day, week, month, year]
+          default: "week"
+          description: "Time range filter. Match to user's stated timeframe."
+        max_results:
+          type: integer
+          default: 5
+          description: "Number of results (max 10)."
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: >
+      Scrape and read the full content of a specific URL.
+      Use ONLY when the user provides an explicit URL to read or summarize.
+      DO NOT use to search — only to read a known URL.
+      DO NOT guess a URL — if user says 'this article' without a URL, call clarify first.
     parameters:
       type: object
       properties:
-        url: {type: string, default: "", description: "Địa chỉ"}
+        url:
+          type: string
+          default: ""
+          description: "Full URL to read. Must be explicitly provided by the user."
       required: [url]
 
   - name: format
-    description: "Trình bày dữ liệu đã có thành văn bản."
+    description: >
+      Format a list of collected items into a structured markdown digest or newsletter.
+      Use ONLY after you have already collected items from lookup/fetch/social_search/papers.
+      DO NOT use to search for more information.
+      Templates: 'brief'=short bullets, 'sections'=grouped by topic, 'bullets'=plain list,
+      'thread'=numbered thread, 'daily_ai_vn'=Vietnamese daily digest format.
     parameters:
       type: object
       properties:
         items:
           type: array
           default: []
-          description: "Danh sách item"
+          description: "List of items from previous tool calls."
           items:
             type: object
             properties:
@@ -73,46 +150,150 @@ tools:
               source: {type: string}
               summary: {type: string}
               section: {type: string}
-        template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Khuôn"}
-        headline: {type: string, default: "", description: "Tiêu đề"}
+        template:
+          type: string
+          enum: [brief, sections, bullets, thread, daily_ai_vn]
+          default: "sections"
+          description: "Output format template."
+        headline:
+          type: string
+          default: ""
+          description: "Optional headline for the digest."
       required: [items, template]
 
-  # ---------------- Bonus tools ----------------
+  # ─────────────────── Bonus / Optional tools ───────────────────────
+
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: >
+      Send a text message to a Telegram channel.
+      ALWAYS call clarify(response_type='yes_no') BEFORE calling this tool.
+      NEVER call send with confirmed=true on the first request — always confirm first.
+      Only set confirmed=true after the user explicitly says yes.
     parameters:
       type: object
       properties:
-        text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
+        text:
+          type: string
+          default: ""
+          description: "Message content to send."
+        confirmed:
+          type: boolean
+          default: false
+          description: "Must be true only after user has confirmed via clarify(yes_no)."
       required: [text]
 
   - name: policy
-    description: "Tìm trong tài liệu nội bộ."
+    description: >
+      Search the internal company policy documents.
+      Use when user explicitly asks about company rules, guidelines, or policies.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm"}
-        top_k: {type: integer, default: 3, description: "Số mục"}
+        query:
+          type: string
+          default: ""
+          description: "Policy query."
+        policy_area:
+          type: string
+          enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage]
+          default: "all"
+          description: "Policy category to narrow search."
+        top_k:
+          type: integer
+          default: 3
+          description: "Number of policy sections to return."
       required: [query]
 
   - name: papers
-    description: "Tìm bài báo khoa học."
+    description: >
+      Search arXiv for academic research papers on robotics topics.
+      Use when user asks for research papers, preprints, academic studies on
+      robotics, SLAM, motion planning, manipulation, drone navigation, etc.
+      sort_by='submittedDate' for newest papers; 'relevance' for most relevant.
+      No API key required — arXiv is free.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        max_results: {type: integer, default: 5, description: "Số lượng"}
-        sort_by: {type: string, enum: [relevance, lastUpdatedDate, submittedDate], default: "relevance", description: "Sắp xếp"}
+        query:
+          type: string
+          default: ""
+          description: "Search terms. Example: 'humanoid robot locomotion', 'SLAM outdoor environments'."
+        max_results:
+          type: integer
+          default: 5
+          description: "Number of papers to return."
+        sort_by:
+          type: string
+          enum: [relevance, lastUpdatedDate, submittedDate]
+          default: "relevance"
+          description: "'submittedDate' for newest; 'relevance' for best match."
       required: [query]
 
   - name: paper_text
-    description: "Lấy nội dung text của một bài báo."
+    description: >
+      Download a specific arXiv paper PDF and extract its text content.
+      Use when the user provides an arXiv ID (e.g. 1706.03762) and wants to read it.
+      Requires pypdf installed.
     parameters:
       type: object
       properties:
-        arxiv_url: {type: string, default: "", description: "ID hoặc địa chỉ"}
-        max_pages: {type: integer, default: 5, description: "Số trang"}
-        max_chars: {type: integer, default: 8000, description: "Số ký tự"}
+        arxiv_url:
+          type: string
+          default: ""
+          description: "arXiv paper ID (e.g. '2301.12345') or full arXiv URL."
+        max_pages:
+          type: integer
+          default: 5
+          description: "Number of pages to extract."
+        max_chars:
+          type: integer
+          default: 8000
+          description: "Maximum characters to return."
       required: [arxiv_url]
+
+  # ─────────────────── NEW tools (team-built) ───────────────────────
+
+  - name: robotics_companies
+    description: >
+      Look up information about well-known robotics companies from a local database.
+      Use when user asks 'what companies make humanoid robots', 'tell me about
+      Boston Dynamics', 'which companies are working on robot arms', etc.
+      Supports filtering by robot type: humanoid, quadruped, arm, drone, logistics.
+      No API key required — local data.
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "Company name or robot type to search. Example: 'humanoid', 'Boston Dynamics', 'drone'."
+        robot_type:
+          type: string
+          enum: [all, humanoid, quadruped, arm, drone, logistics, mobile]
+          default: "all"
+          description: "Filter by robot category."
+        limit:
+          type: integer
+          default: 5
+          description: "Number of companies to return."
+      required: []
+
+  - name: robot_specs
+    description: >
+      Look up technical specifications of well-known robot models from a local database.
+      Use when user asks about specs, capabilities, weight, speed, sensors of a specific robot.
+      Example: 'Atlas specs', 'how fast can Spot run', 'Optimus robot specs'.
+      No API key required — local data.
+    parameters:
+      type: object
+      properties:
+        robot_name:
+          type: string
+          default: ""
+          description: "Robot model name. Example: 'Atlas', 'Spot', 'Optimus', 'H1', 'Figure 01'."
+        spec_category:
+          type: string
+          enum: [all, physical, mobility, sensors, power, software]
+          default: "all"
+          description: "Category of specs to return."
+      required: []

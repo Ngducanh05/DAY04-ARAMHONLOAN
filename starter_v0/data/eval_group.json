@@ -1,7 +1,152 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "description": "10 eval cases do nhóm tự thiết kế, chủ đề Robotics Research Agent. 5 single-turn + 5 multi-turn.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_robotics_news_week",
+      "phase": "B",
+      "query": "Tin tức robotics tuần này có gì nổi bật?",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [{"name": "lookup", "args": {"topic": "news", "timeframe": "week"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn: 'tuần này' → timeframe=week, topic=news. Không được dùng timeframe=day hay general."
+      }
+    },
+    {
+      "id": "G02_company_humanoid",
+      "phase": "B",
+      "query": "Những công ty nào đang làm humanoid robot?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [{"name": "robotics_companies", "args": {"robot_type": "humanoid"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn: Câu hỏi về danh sách công ty robotics → robotics_companies, KHÔNG dùng lookup hay social_search."
+      }
+    },
+    {
+      "id": "G03_atlas_specs",
+      "phase": "B",
+      "query": "Thông số kỹ thuật của robot Atlas là gì?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [{"name": "robot_specs", "args": {"robot_name": "Atlas"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn: Hỏi specs cụ thể của một robot → robot_specs, KHÔNG dùng lookup."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_math",
+      "phase": "B",
+      "query": "Giúp mình giải bài toán này: tính nghiệm của phương trình bậc 2 x^2 - 5x + 6 = 0",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn: Câu hỏi toán học ngoài phạm vi → từ chối lịch sự, KHÔNG gọi tool."
+      }
+    },
+    {
+      "id": "G05_parallel_web_and_paper",
+      "phase": "B",
+      "query": "Tìm tin tức mới nhất về robot humanoid trên web và tìm thêm research paper về humanoid locomotion.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup", "args": {"query": "humanoid robot", "topic": "news"}},
+          {"name": "papers", "args": {"query": "humanoid locomotion"}}
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn: Yêu cầu 2 nguồn cùng lúc (web + arXiv) → gọi lookup VÀ papers song song. Eval không phụ thuộc thứ tự."
+      }
+    },
+    {
+      "id": "M01_missing_handle_then_fill",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Xem tweet mới nhất giúp mình"},
+        {"role": "user", "content": "Của Boston Dynamics nhé"},
+        {"role": "user", "content": "Lấy 5 tweet gần nhất"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [{"name": "timeline", "args": {"screenname": "BostonDynamics", "limit": 5}}]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 1 thiếu handle → hỏi lại. Lượt 2 bổ sung Boston Dynamics → map thành BostonDynamics. Lượt 3 xác nhận limit=5."
+      }
+    },
+    {
+      "id": "M02_carryover_timeframe_robotics",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tin robotics hôm nay có gì?"},
+        {"role": "user", "content": "Còn về drone thì sao?"},
+        {"role": "user", "content": "Chỉ tìm drone thôi, vẫn là hôm nay nhé"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [{"name": "lookup", "args": {"query": "drone", "topic": "news", "timeframe": "day"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: Carry timeframe=day và topic=news từ lượt 1. Lượt 3 chỉ đổi query=drone."
+      }
+    },
+    {
+      "id": "M03_correction_robot_name",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Cho mình xem thông số robot Spot"},
+        {"role": "user", "content": "À nhầm, mình muốn xem Atlas"},
+        {"role": "user", "content": "Chỉ xem phần mobility thôi"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [{"name": "robot_specs", "args": {"robot_name": "Atlas", "spec_category": "mobility"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 2 sửa robot từ Spot → Atlas. Lượt 3 thu hẹp spec_category=mobility."
+      }
+    },
+    {
+      "id": "M04_switch_tool_twitter_to_web",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Mọi người đang bàn gì về Unitree robot trên Twitter?"},
+        {"role": "user", "content": "Thôi bỏ Twitter, tìm trên web đi"},
+        {"role": "user", "content": "Giữ chủ đề Unitree nhé"}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [{"name": "lookup", "args": {"query": "Unitree robot", "topic": "news"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 2 explicit chuyển từ social_search sang lookup. Lượt 3 giữ query Unitree."
+      }
+    },
+    {
+      "id": "M05_confirm_before_send",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tìm tin robotics hôm nay và gửi bản tóm tắt lên Telegram cho mình"},
+        {"role": "user", "content": "Bản tin đó ổn rồi, gửi đi"},
+        {"role": "user", "content": "Xác nhận gửi luôn nhé"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: Dù lượt 2-3 user yêu cầu gửi, Agent PHẢI hỏi clarify(yes_no) trước. KHÔNG tự gọi send() mà không xác nhận lần đầu."
+      }
+    }
+  ]
 }

@@ -1,1 +1,5 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
+v0,team,baseline,v0+p000000+t000000,p000000,t000000,baseline,Đo hành vi chưa tối ưu của starter prompt,case_accuracy,,0.35,runs/v0_B_base_openrouter.json
+v1,team,system_prompt.md,v1+p111111+t000000,p111111,t000000,sửa system prompt,Sửa 4 lỗi cố ý trong prompt (hỏi lại khi thiếu, xin xác nhận trước khi gửi, từ chối ngoài scope),case_accuracy,0.35,0.75,runs/v1_B_base_openrouter.json
+v2,team,tools.yaml,v2+p111111+t222222,p111111,t222222,tối ưu tools.yaml,Mô tả chi tiết từng tool và thêm tool mới robotics_companies,case_accuracy,0.75,0.85,runs/v2_B_base_openrouter.json
+v3,team,system_prompt.md+tools.yaml,v3+p6b82da5395c3+t632ade23e052,6b82da5395c3,632ade23e052,fine-tune robotics,Bổ sung robotics domain knowledge + map handles + robot_specs tool,case_accuracy,0.85,0.90,runs/v3_B_base_openrouter_20260729T151625588143.json
