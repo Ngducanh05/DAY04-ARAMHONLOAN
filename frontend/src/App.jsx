@@ -48,47 +48,39 @@ function FormattedMarkdown({ content, isStreaming = false }) {
   const lines = content.split('\n')
   const elements = []
   let currentList = []
-  let currentListType = null
 
   function flushList() {
     if (currentList.length > 0) {
-      if (currentListType === 'ol') {
-        elements.push(
-          <ol key={`ol-${elements.length}`} className="md-ol">
-            {currentList.map((item, i) => (
-              <li key={i}>{parseInlineMarkdown(item)}</li>
-            ))}
-          </ol>
-        )
-      } else {
-        elements.push(
-          <ul key={`ul-${elements.length}`} className="md-ul">
-            {currentList.map((item, i) => (
-              <li key={i}>{parseInlineMarkdown(item)}</li>
-            ))}
-          </ul>
-        )
-      }
+      elements.push(
+        <ul key={`ul-${elements.length}`} className="md-ul">
+          {currentList.map((item, i) => (
+            <li key={i}>{parseInlineMarkdown(item)}</li>
+          ))}
+        </ul>
+      )
       currentList = []
-      currentListType = null
     }
   }
 
   lines.forEach((line, index) => {
     const trimmed = line.trim()
 
+    // Numbered item: "1. ", "2. ", "10. "
     const olMatch = trimmed.match(/^(\d+)\.\s+(.*)$/)
     if (olMatch) {
-      if (currentListType && currentListType !== 'ol') flushList()
-      currentListType = 'ol'
-      currentList.push(olMatch[2])
+      flushList()
+      elements.push(
+        <div key={`ol-item-${index}`} className="md-numbered-item">
+          <span className="md-item-num">{olMatch[1]}.</span>
+          <div className="md-item-text">{parseInlineMarkdown(olMatch[2])}</div>
+        </div>
+      )
       return
     }
 
+    // Bullet item: "- ", "* "
     const ulMatch = trimmed.match(/^[-*]\s+(.*)$/)
     if (ulMatch) {
-      if (currentListType && currentListType !== 'ul') flushList()
-      currentListType = 'ul'
       currentList.push(ulMatch[1])
       return
     }
