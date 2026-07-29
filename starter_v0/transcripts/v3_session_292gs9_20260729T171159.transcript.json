@@ -1,0 +1,138 @@
+{
+  "session_id": "session_292gs9",
+  "version": "v3",
+  "user_message": "Cho tôi 1 bài báo về Robot mưới nhất ngày hôm nay",
+  "history_turns": 2,
+  "created_at": "2026-07-29T17:11:59",
+  "status": "answered",
+  "assistant_text": "Dưới đây là một số bài báo mới nhất về robot trong ngày hôm nay:\n\n1. **[FCC bans humanoid robots from China, citing ‘unacceptable risks’](https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china)** - The Guardian\n   - FCC đã ban hành lệnh cấm đối với các robot humanoid từ Trung Quốc, cho rằng công nghệ này gây ra \"rủi ro không thể chấp nhận\" cho an ninh quốc gia của Mỹ. Lệnh cấm áp dụng cho các mô hình robot chưa được phát hành.\n\n2. **[Trump administration bans new Chinese humanoid robots](https://www.bbc.com/news/articles/cp9e2ex3ekyo)** - BBC\n   - Chính quyền Trump đã cấm nhập khẩu các robot humanoid và bốn chân mới từ Trung Quốc, nhấn mạnh rằng chúng có thể gây rủi ro cho nền kinh tế Mỹ.\n\n3. **[China’s humanoid robots have been taking over the global market. Now the US is banning them](https://www.cnn.com/2026/07/29/tech/us-china-robot-ban-intl-hnk)** - CNN\n   - Trung Quốc, quốc gia cung cấp phần lớn robot humanoid trên thế giới, đã bị cắt đứt khỏi thị trường xuất khẩu lớn nhất của mình khi Mỹ ban hành lệnh cấm.\n\n4. **[US bans foreign-made humanoid robots, targeting China over national security](https://apnews.com/article/china-us-humanoid-robots-ban-tech-c9f5e3c94d91d00eff3b61b141fab366)** - AP News\n   - Lệnh cấm của FCC bao gồm các robot humanoid và quadruped, nhấn mạnh rằng chúng có thể tạo ra các lỗ hổng trong chuỗi cung ứng và rủi ro an ninh mạng.\n\n5. **[US bans foreign-made humanoid robots, targeting China ...](https://abcnews.com/Business/wireStory/us-bans-foreign-made-humanoid-robots-targeting-china-135179676)** - ABC News\n   - Quyết định này có thể làm căng thẳng quan hệ song phương giữa Mỹ và Trung Quốc, khi Trung Quốc sản xuất nhiều robot humanoid hơn so với Mỹ.\n\nNếu bạn cần thêm thông tin chi tiết về một bài báo cụ thể, hãy cho tôi biết!",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "lookup",
+          "args": {
+            "query": "robot",
+            "topic": "news",
+            "timeframe": "day"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "robot",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "robot",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "FCC bans humanoid robots from China, citing ‘unacceptable risks’",
+                "url": "https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china",
+                "source": "theguardian.com",
+                "summary": "The FCC defines the banned robots as “advanced robotic devices”, which include humanoids and animal-like quadrupeds.\n\n“Advanced robotic devices collect data that could be leveraged by malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots,” FCC officials wrote in their determination of the threat posed by robots. [...] The restrictions apply only to robot and inverter models that have not yet been released. However, the FCC has the authority to ‌revoke authorizations for sales of models that have already been authorized for purchase in the US.\n\nHumanoid robots, topped with ‌AI-enabled “brains”, are forecast by some analysts for broad adoption in ‌consumer and industrial arenas, while explosive datacenter construction in the US will depend on reliable sources of inverters. [...] Move comes as the Trump administration has increasingly sought to keep Chinese technology out of the US\n\nThe Federal Communications Commission announced a ban on humanoid robots from China on Tuesday, saying that the technology poses “unacceptable risks” to the country’s national security. The move comes as the Trump administration has increasingly sought to keep Chinese technology out of the US.",
+                "score": 0.28622958
+              },
+              {
+                "title": "Trump administration bans new Chinese humanoid robots",
+                "url": "https://www.bbc.com/news/articles/cp9e2ex3ekyo",
+                "source": "bbc.com",
+                "summary": "The move applies to advanced robots - including humanoid and four-legged machines. Many of them are made in China, which is locked in a race with the US to develop robotics and artificial intelligence (AI).\n\nThe Federal Communications Commission (FCC) also banned the import of power inverters - a component used in data centres and solar panels - which it said could also pose a risk to the US economy. [...] FCC chairman Brendan Carr said the agency was doing its part \"to secure America's critical supply chains\".\n\nThe BBC has contacted the Chinese embassy in Washington for comment.\n\nChinese technology companies have rapidly developed humanoid robots to be used in settings including factories and homes.\n\nThe have also been quick to market their machines to businesses and the public ahead of US humanoid robot rivals like Elon Musk's Tesla and Boston Dynamics.",
+                "score": 0.23430191
+              },
+              {
+                "title": "China’s humanoid robots have been taking over the global market. Now the US is banning them",
+                "url": "https://www.cnn.com/2026/07/29/tech/us-china-robot-ban-intl-hnk",
+                "source": "cnn.com",
+                "summary": "China, which supplies the vast majority of the world’s humanoid robots, has suddenly been cut off from its largest export market as the US government moves to curb its reliance on foreign technology.\n\nOn Tuesday, the Trump Administration banned new humanoid and quadruped robot imports from foreign manufacturers, claiming they pose “unacceptable risks” to US national security. The ban also includes power converters used to connect renewable energy infrastructure and batteries to the power grid. [...] “These devices could create supply chain vulnerabilities that could disrupt US economic and national security and could create a cybersecurity risk that threatened American critical infrastructure,” the Federal Communications Commission said in a statement.\n\nCNN has reached out to China’s Ministry of Commerce as well as top Chinese humanoid robot makers, including Unitree, Agibot, UBTech and Galbot, for comment. [...] The new restrictions, which excludes models already in use, are the latest attempt by Washington to bolster and safeguard its domestic industries and supply chain, amid an intensifying rivalry with China to dominate advanced technology and artificial intelligence.\n\nrobot sport thumb.jpg\nrobot sport thumb.jpg\n\nWhile China has trailed the US in the development of cutting-edge AI models, the rollout of ever more powerful Chinese models in recent months has rattled Washington and Silicon Valley.",
+                "score": 0.23385547
+              },
+              {
+                "title": "US bans foreign-made humanoid robots, targeting China over national security",
+                "url": "https://apnews.com/article/china-us-humanoid-robots-ban-tech-c9f5e3c94d91d00eff3b61b141fab366",
+                "source": "apnews.com",
+                "summary": "Related Stories\n\nA Realbotix humanoid robot, center, speaks with attendees at a Realbotix booth during the CES tech show Jan. 8, 2025, in Las Vegas. (AP Photo/Abbie Parr, File)\n\nNew York school pauses plan to deploy humanlike AI robot teacher after backlash\n\n4 MIN READ\n\n 82\n\nThis image released by Neon shows Haruka Ayase, from left, Rimu Kuwaki, and Daigo Yamamoto in a scene from \n\nA child humanoid leads Japanese director Hirokazu Kore-eda’s latest film\n\n3 MIN READ [...] Of the around 15,000 humanoid robots shipped globally in 2025, Unitree and AGIBOT, two of China’s largest advanced robotics companies, each shipped more than 5,000, while their U.S. counterparts like Tesla and Figure AI each shipped a few hundred or less, according to the technology research and advisory group Omdia.\n\nSign up for Morning Wire: Our flagship newsletter breaks down the biggest headlines of the day. [...] The decision could strain bilateral relations as the technology race between the two world leaders advances. China makes substantially more humanoid robots than the U.S. and other competitors, and analysts estimate that Chinese humanoid robots’ global market share has reached roughly 85%.\n\nThe FCC’s ban includes new imports of humanoid robots, quadrupeds – often referred to as four-legged robot dogs – as well as foreign-made power inverters.",
+                "score": 0.20149915
+              },
+              {
+                "title": "US bans foreign-made humanoid robots, targeting China ...",
+                "url": "https://abcnews.com/Business/wireStory/us-bans-foreign-made-humanoid-robots-targeting-china-135179676",
+                "source": "abcnews.com",
+                "summary": "The decision could strain bilateral relations as the technology race between the two world leaders advances. China makes substantially more humanoid robots than the U.S. and other competitors, and analysts estimate that Chinese humanoid robots’ global market share has reached roughly 85%.\n\nThe FCC’s ban includes new imports of humanoid robots, quadrupeds – often referred to as four-legged robot dogs – as well as foreign-made power inverters. [...] Of the around 15,000 humanoid robots shipped globally in 2025, Unitree and AGIBOT, two of China’s largest advanced robotics companies, each shipped more than 5,000, while their U.S. counterparts like Tesla and Figure AI each shipped a few hundred or less, according to the technology research and advisory group Omdia.\n\nWhen it comes to global markets, China is also targeting Europe, for example, as a key market for its advanced robots including humanoids, Omdia said. [...] In making the decision, the FCC said these advanced robots produced in foreign countries pose supply chain vulnerabilities to the U.S. as well as cybersecurity and national security risks.\n\nFCC chairperson Brendan Carr said in a statement that the move was to “secure America’s critical supply chains.”",
+                "score": 0.1846208
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "assistant_text": "Dưới đây là một số bài báo mới nhất về robot trong ngày hôm nay:\n\n1. **[FCC bans humanoid robots from China, citing ‘unacceptable risks’](https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china)** - The Guardian\n   - FCC đã ban hành lệnh cấm đối với các robot humanoid từ Trung Quốc, cho rằng công nghệ này gây ra \"rủi ro không thể chấp nhận\" cho an ninh quốc gia của Mỹ. Lệnh cấm áp dụng cho các mô hình robot chưa được phát hành.\n\n2. **[Trump administration bans new Chinese humanoid robots](https://www.bbc.com/news/articles/cp9e2ex3ekyo)** - BBC\n   - Chính quyền Trump đã cấm nhập khẩu các robot humanoid và bốn chân mới từ Trung Quốc, nhấn mạnh rằng chúng có thể gây rủi ro cho nền kinh tế Mỹ.\n\n3. **[China’s humanoid robots have been taking over the global market. Now the US is banning them](https://www.cnn.com/2026/07/29/tech/us-china-robot-ban-intl-hnk)** - CNN\n   - Trung Quốc, quốc gia cung cấp phần lớn robot humanoid trên thế giới, đã bị cắt đứt khỏi thị trường xuất khẩu lớn nhất của mình khi Mỹ ban hành lệnh cấm.\n\n4. **[US bans foreign-made humanoid robots, targeting China over national security](https://apnews.com/article/china-us-humanoid-robots-ban-tech-c9f5e3c94d91d00eff3b61b141fab366)** - AP News\n   - Lệnh cấm của FCC bao gồm các robot humanoid và quadruped, nhấn mạnh rằng chúng có thể tạo ra các lỗ hổng trong chuỗi cung ứng và rủi ro an ninh mạng.\n\n5. **[US bans foreign-made humanoid robots, targeting China ...](https://abcnews.com/Business/wireStory/us-bans-foreign-made-humanoid-robots-targeting-china-135179676)** - ABC News\n   - Quyết định này có thể làm căng thẳng quan hệ song phương giữa Mỹ và Trung Quốc, khi Trung Quốc sản xuất nhiều robot humanoid hơn so với Mỹ.\n\nNếu bạn cần thêm thông tin chi tiết về một bài báo cụ thể, hãy cho tôi biết!",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "lookup",
+      "args": {
+        "query": "robot",
+        "topic": "news",
+        "timeframe": "day"
+      },
+      "result": {
+        "tool": "web_search",
+        "query": "robot",
+        "topic": "news",
+        "timeframe": "day",
+        "items": [
+          {
+            "title": "FCC bans humanoid robots from China, citing ‘unacceptable risks’",
+            "url": "https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china",
+            "source": "theguardian.com",
+            "summary": "The FCC defines the banned robots as “advanced robotic devices”, which include humanoids and animal-like quadrupeds.\n\n“Advanced robotic devices collect data that could be leveraged by malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots,” FCC officials wrote in their determination of the threat posed by robots. [...] The restrictions apply only to robot and inverter models that have not yet been released. However, the FCC has the authority to ‌revoke authorizations for sales of models that have already been authorized for purchase in the US.\n\nHumanoid robots, topped with ‌AI-enabled “brains”, are forecast by some analysts for broad adoption in ‌consumer and industrial arenas, while explosive datacenter construction in the US will depend on reliable sources of inverters. [...] Move comes as the Trump administration has increasingly sought to keep Chinese technology out of the US\n\nThe Federal Communications Commission announced a ban on humanoid robots from China on Tuesday, saying that the technology poses “unacceptable risks” to the country’s national security. The move comes as the Trump administration has increasingly sought to keep Chinese technology out of the US.",
+            "score": 0.28622958
+          },
+          {
+            "title": "Trump administration bans new Chinese humanoid robots",
+            "url": "https://www.bbc.com/news/articles/cp9e2ex3ekyo",
+            "source": "bbc.com",
+            "summary": "The move applies to advanced robots - including humanoid and four-legged machines. Many of them are made in China, which is locked in a race with the US to develop robotics and artificial intelligence (AI).\n\nThe Federal Communications Commission (FCC) also banned the import of power inverters - a component used in data centres and solar panels - which it said could also pose a risk to the US economy. [...] FCC chairman Brendan Carr said the agency was doing its part \"to secure America's critical supply chains\".\n\nThe BBC has contacted the Chinese embassy in Washington for comment.\n\nChinese technology companies have rapidly developed humanoid robots to be used in settings including factories and homes.\n\nThe have also been quick to market their machines to businesses and the public ahead of US humanoid robot rivals like Elon Musk's Tesla and Boston Dynamics.",
+            "score": 0.23430191
+          },
+          {
+            "title": "China’s humanoid robots have been taking over the global market. Now the US is banning them",
+            "url": "https://www.cnn.com/2026/07/29/tech/us-china-robot-ban-intl-hnk",
+            "source": "cnn.com",
+            "summary": "China, which supplies the vast majority of the world’s humanoid robots, has suddenly been cut off from its largest export market as the US government moves to curb its reliance on foreign technology.\n\nOn Tuesday, the Trump Administration banned new humanoid and quadruped robot imports from foreign manufacturers, claiming they pose “unacceptable risks” to US national security. The ban also includes power converters used to connect renewable energy infrastructure and batteries to the power grid. [...] “These devices could create supply chain vulnerabilities that could disrupt US economic and national security and could create a cybersecurity risk that threatened American critical infrastructure,” the Federal Communications Commission said in a statement.\n\nCNN has reached out to China’s Ministry of Commerce as well as top Chinese humanoid robot makers, including Unitree, Agibot, UBTech and Galbot, for comment. [...] The new restrictions, which excludes models already in use, are the latest attempt by Washington to bolster and safeguard its domestic industries and supply chain, amid an intensifying rivalry with China to dominate advanced technology and artificial intelligence.\n\nrobot sport thumb.jpg\nrobot sport thumb.jpg\n\nWhile China has trailed the US in the development of cutting-edge AI models, the rollout of ever more powerful Chinese models in recent months has rattled Washington and Silicon Valley.",
+            "score": 0.23385547
+          },
+          {
+            "title": "US bans foreign-made humanoid robots, targeting China over national security",
+            "url": "https://apnews.com/article/china-us-humanoid-robots-ban-tech-c9f5e3c94d91d00eff3b61b141fab366",
+            "source": "apnews.com",
+            "summary": "Related Stories\n\nA Realbotix humanoid robot, center, speaks with attendees at a Realbotix booth during the CES tech show Jan. 8, 2025, in Las Vegas. (AP Photo/Abbie Parr, File)\n\nNew York school pauses plan to deploy humanlike AI robot teacher after backlash\n\n4 MIN READ\n\n 82\n\nThis image released by Neon shows Haruka Ayase, from left, Rimu Kuwaki, and Daigo Yamamoto in a scene from \n\nA child humanoid leads Japanese director Hirokazu Kore-eda’s latest film\n\n3 MIN READ [...] Of the around 15,000 humanoid robots shipped globally in 2025, Unitree and AGIBOT, two of China’s largest advanced robotics companies, each shipped more than 5,000, while their U.S. counterparts like Tesla and Figure AI each shipped a few hundred or less, according to the technology research and advisory group Omdia.\n\nSign up for Morning Wire: Our flagship newsletter breaks down the biggest headlines of the day. [...] The decision could strain bilateral relations as the technology race between the two world leaders advances. China makes substantially more humanoid robots than the U.S. and other competitors, and analysts estimate that Chinese humanoid robots’ global market share has reached roughly 85%.\n\nThe FCC’s ban includes new imports of humanoid robots, quadrupeds – often referred to as four-legged robot dogs – as well as foreign-made power inverters.",
+            "score": 0.20149915
+          },
+          {
+            "title": "US bans foreign-made humanoid robots, targeting China ...",
+            "url": "https://abcnews.com/Business/wireStory/us-bans-foreign-made-humanoid-robots-targeting-china-135179676",
+            "source": "abcnews.com",
+            "summary": "The decision could strain bilateral relations as the technology race between the two world leaders advances. China makes substantially more humanoid robots than the U.S. and other competitors, and analysts estimate that Chinese humanoid robots’ global market share has reached roughly 85%.\n\nThe FCC’s ban includes new imports of humanoid robots, quadrupeds – often referred to as four-legged robot dogs – as well as foreign-made power inverters. [...] Of the around 15,000 humanoid robots shipped globally in 2025, Unitree and AGIBOT, two of China’s largest advanced robotics companies, each shipped more than 5,000, while their U.S. counterparts like Tesla and Figure AI each shipped a few hundred or less, according to the technology research and advisory group Omdia.\n\nWhen it comes to global markets, China is also targeting Europe, for example, as a key market for its advanced robots including humanoids, Omdia said. [...] In making the decision, the FCC said these advanced robots produced in foreign countries pose supply chain vulnerabilities to the U.S. as well as cybersecurity and national security risks.\n\nFCC chairperson Brendan Carr said in a statement that the move was to “secure America’s critical supply chains.”",
+            "score": 0.1846208
+          }
+        ]
+      }
+    }
+  ],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

@@ -1,0 +1,268 @@
+{
+  "session_id": "session_ozxcbp",
+  "version": "v3",
+  "user_message": "Cho tôi bài bái về RL trong Robot",
+  "history_turns": 4,
+  "created_at": "2026-07-29T16:52:57",
+  "status": "answered",
+  "assistant_text": "Dưới đây là một số bài báo mới nhất về Reinforcement Learning trong Robotics:\n\n1. **[Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics](http://arxiv.org/abs/2607.25985v1)**\n   - **Tác giả**: Ya-Chia Shen, Woei-Leong Chan\n   - **Tóm tắt**: Nghiên cứu này điều tra một phương pháp học sâu dựa trên vật lý cho việc điều khiển quadcopter, giải quyết các thách thức trong việc điều khiển tự động. Bài báo đánh giá bốn thuật toán DRL và nhấn mạnh tầm quan trọng của việc mô hình hóa độ trễ của bộ truyền động.\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.25985v1)\n\n2. **[Cooperative Multi-UAV Navigation in Complex Environments via Systematic Multi-Agent Deep Reinforcement Learning](http://arxiv.org/abs/2607.25754v1)**\n   - **Tác giả**: Yu Su, Nabil Aouf\n   - **Tóm tắt**: Bài báo đề xuất một khung học sâu đa tác nhân cho việc điều hướng UAV hợp tác trong môi trường phức tạp, giải quyết các vấn đề như bẫy tối ưu cục bộ và thiếu hụt tín hiệu hợp tác.\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.25754v1)\n\n3. **[Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning](http://arxiv.org/abs/2607.24996v1)**\n   - **Tác giả**: Luc McCutcheon, Evangelos Chatzaroulas, Saber Fallah\n   - **Tóm tắt**: Nghiên cứu này đề xuất phương pháp Calibrated Partial Resets để duy trì tính linh hoạt của mạng nơ-ron trong học liên tục mà không làm mất ổn định quá trình huấn luyện.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24996v1)\n\n4. **[Explainable Reinforcement Learning via Physics-Aware Policy Distillation](http://arxiv.org/abs/2607.24672v1)**\n   - **Tác giả**: Shaker Al-Tamari, Waled Kadour\n   - **Tóm tắt**: Bài báo trình bày một khung chính sách chưng cất nhằm làm cho các hệ thống DRL có thể giải thích được, giúp tăng cường độ tin cậy trong các lĩnh vực an toàn.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24672v1)\n\n5. **[Evaluating Fuzz Testing for Reinforcement Learning Agents](http://arxiv.org/abs/2607.24577v1)**\n   - **Tác giả**: Zhibin Kang, Hanmo You, Dong Wang, Haiming Zheng, Junjie Chen\n   - **Tóm tắt**: Nghiên cứu này đánh giá các phương pháp fuzz testing cho các tác nhân RL, cung cấp cái nhìn sâu sắc về hiệu quả và tính hữu ích của các phương pháp này trong các lĩnh vực an toàn.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24577v1)\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "papers",
+          "args": {
+            "query": "Reinforcement Learning robotics",
+            "max_results": 5,
+            "sort_by": "submittedDate"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "papers",
+          "args": {
+            "query": "Reinforcement Learning robotics",
+            "max_results": 5,
+            "sort_by": "submittedDate"
+          },
+          "result": {
+            "tool": "arxiv_search",
+            "query": "Reinforcement Learning robotics",
+            "api_query": "all:Reinforcement AND all:Learning AND all:robotics",
+            "total_results": 9092,
+            "items": [
+              {
+                "arxiv_id": "2607.25985v1",
+                "title": "Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics",
+                "summary": "Unmanned aerial vehicles (UAVs), particularly quadcopters, present unique challenges for autonomous control due to their underactuated dynamics: only four available control inputs must govern six degrees of freedom. This paper investigates a physics-aware, end-to-end deep reinforcement learning (DRL) approach that acts directly on low-level body inputs, total thrust and body torques $(T, τ_x, τ_y, τ_z)$, and closes the loop through a high-fidelity Simulink environment. Our simulator integrates a 12-state rigid-body model (MATLAB Level-2 S-Function) with (i) an Action2RPM allocation based on the Moore-Penrose pseudo-inverse of a coefficient matrix derived from thrust and drag terms, and (ii) first-order actuator dynamics for each motor (time constant $T_m = 0.076$ s), including rotor gyroscopic coupling. A shaped reward balances goal-reaching and stability using an exponential position well, attitude penalties, and quadratic velocity costs. Four DRL algorithms, DDPG, TD3, PPO, and SAC, are evaluated in two stages: (S1) thrust-only hover and (S2) hover with pitch torque and a translated goal. Results show that SAC and TD3 achieve superior stability and exploration efficiency, while PPO is less sample-efficient. The study highlights the significance of modeling actuator lags and aerodynamic moments for stable low-level control and provides a reproducible benchmark for quadcopter DRL.",
+                "authors": [
+                  "Ya-Chia Shen",
+                  "Woei-Leong Chan"
+                ],
+                "published": "2026-07-28T17:05:47Z",
+                "updated": "2026-07-28T17:05:47Z",
+                "url": "http://arxiv.org/abs/2607.25985v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25985v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.LG",
+                  "eess.SY"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25754v1",
+                "title": "Cooperative Multi-UAV Navigation in Complex Environments via Systematic Multi-Agent Deep Reinforcement Learning",
+                "summary": "Cooperative navigation of multi-agent UAVs in complex environments faces key challenges including local optima traps, sparse rewards, learning imbalance among agents, and insufficient cross-scenario generalisation. This paper proposes a multi-agent deep reinforcement learning framework that addresses these issues through coordinated exploration, demonstration exploitation, safe curriculum scheduling, and structure-aware generalisation. First, a perception mechanism combining memory of visited states, directional novelty estimates, and penalty backpropagation enables agents to proactively detect and escape local optima. Second, a hierarchical collaborative demonstration buffer with tiered behaviour cloning manages trajectories by degree of team collaboration and applies differential supervision to the actor network, improving demonstration utilisation under sparse collaborative signals. Third, a safety-aware dual-condition curriculum scheduling mechanism reviews mastered scenarios through back-testing and experience pre-filling during training, suppressing catastrophic forgetting while ensuring both task performance and flight safety. For generalisation, local geometric features computed from sensor readings are abstracted into a domain parameter, through which a structure-aware gating network and mixture-of-experts mechanism condition the policy on local structural patterns rather than scenario-specific coordinates, enabling cross-scenario transfer without exposure to the target environment. The framework is further validated under mixed static-dynamic obstacle settings, showing robust adaptability to dynamic disturbances. Simulation results confirm strong performance in collaboration success rate, navigation robustness, zero-shot cross-scenario generalisation, and dynamic environment adaptability.",
+                "authors": [
+                  "Yu Su",
+                  "Nabil Aouf"
+                ],
+                "published": "2026-07-28T14:16:11Z",
+                "updated": "2026-07-28T14:16:11Z",
+                "url": "http://arxiv.org/abs/2607.25754v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25754v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.24996v1",
+                "title": "Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning",
+                "summary": "Neural networks are hindered by accumulating dormant neurons and loss of expressivity throughout training, particularly in non-stationary data settings, such as continual supervised and reinforcement learning. Recently, neuron resets have been used to maintain gradient flow and restore plasticity. However, full unit reinitialization often sacrifices peak performance and can destabilize training, leading to policy collapse. To preserve plasticity without destabilizing training, we propose Calibrated Partial Resets (CPR), an optimizer that periodically pulls low-utility neurons toward their initialization, with pull strength scaled by each neuron's utility. Unlike binary reset methods, partial resets avoid brittleness; unlike uniform decay, calibrated utility-scaling concentrates adjustment on the units that need it most. Among compared methods, only CPR avoids policy collapse over 400M training steps in SlipperyAnt, and it outperforms prior decay and reset-based methods on Continual MetaWorld and Continual MinAtar benchmarks. Ablations reveal a tunable trade-off between plasticity and peak performance, highlighting utility-scaled reinitialization as a promising direction for continual learning.",
+                "authors": [
+                  "Luc McCutcheon",
+                  "Evangelos Chatzaroulas",
+                  "Saber Fallah"
+                ],
+                "published": "2026-07-27T18:53:00Z",
+                "updated": "2026-07-27T18:53:00Z",
+                "url": "http://arxiv.org/abs/2607.24996v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.24996v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.LG",
+                "categories": [
+                  "cs.LG",
+                  "cs.AI",
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.24672v1",
+                "title": "Explainable Reinforcement Learning via Physics-Aware Policy Distillation",
+                "summary": "In safety-critical sectors such as robotics and automotive engineering, the deployment of Deep Reinforcement Learning (DRL) is often hindered by the black-box nature of deep neural networks. This lack of transparency poses significant challenges for regulatory compliance and human-agent trust. This paper presents an experimental study aimed at making high-performance continuous control DRL systems interpretable. A policy distillation framework is implemented using the classic Inverted Pendulum benchmark. A high-performance Twin Delayed DDPG (TD3) agent serves as an opaque, continuous teacher model, whose policy is distilled into an interpretable student surrogate based on a shallow Decision Tree. By leveraging a custom physics-aware feature and \"Noisy Oracle Rollouts\" for dataset generation, the distillation process achieves performance equivalent to the expert teacher. Furthermore, comparative control theory analysis reveals a fundamental trade-off: transitioning from continuous to discrete rule-based control induces high-frequency Bang-Bang actuation and a stable bimodal limit cycle. Simulation results indicate that Bounded-Input Bounded-Output (BIBO) stability is maintained while providing both global and local interpretability for safe autonomous systems.",
+                "authors": [
+                  "Shaker Al-Tamari",
+                  "Waled Kadour"
+                ],
+                "published": "2026-07-27T17:14:42Z",
+                "updated": "2026-07-27T17:14:42Z",
+                "url": "http://arxiv.org/abs/2607.24672v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.24672v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.LG",
+                "categories": [
+                  "cs.LG"
+                ]
+              },
+              {
+                "arxiv_id": "2607.24577v1",
+                "title": "Evaluating Fuzz Testing for Reinforcement Learning Agents",
+                "summary": "Reinforcement Learning (RL) agents are increasingly deployed in safety-critical domains such as robotics, autonomous driving, and drone control, where unexpected behaviors may lead to severe real-world consequences. Fuzz testing has recently emerged as a promising method for exploring the vast state spaces of RL agents and exposing crashes. Although numerous RL fuzzing methods have been proposed, existing studies often differ in evaluation settings, baselines, and metrics, making it difficult to draw reliable conclusions about their relative effectiveness and practical usefulness. To address this gap, we present the first comprehensive empirical study that systematically evaluates RL fuzzing methods from four complementary perspectives: effectiveness, diversity, efficiency, and practical utility. We benchmark five state-of-the-art methods alongside random testing under unified configurations across three environments of increasing complexity (MountainCar, BipedalWalker, and CARLA), and further assess the downstream usefulness of detected crashes for agent robustness improvement and safety monitoring. Our results reveal several key insights. For instance,throughput-oriented methods like MDPFuzz demonstrate superior effectiveness and efficiency in crash discovery, while methods explicitly designed to encourage exploration like SeqDivFuzz excel at uncovering diverse crash behaviors. We also show that fuzzing-generated crashes can meaningfully improve agent robustness and enable accurate safety monitoring with strong cross-method generalization. Beyond these empirical findings, we distill actionable guidance for both researchers and practitioners, highlighting the benefits of combining complementary fuzzing strategies and adopting multi-level diversity analysis to achieve more comprehensive and practical RL testing.",
+                "authors": [
+                  "Zhibin Kang",
+                  "Hanmo You",
+                  "Dong Wang",
+                  "Haiming Zheng",
+                  "Junjie Chen"
+                ],
+                "published": "2026-07-27T15:46:57Z",
+                "updated": "2026-07-27T15:46:57Z",
+                "url": "http://arxiv.org/abs/2607.24577v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.24577v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.LG",
+                "categories": [
+                  "cs.LG",
+                  "cs.SE"
+                ]
+              }
+            ],
+            "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "assistant_text": "Dưới đây là một số bài báo mới nhất về Reinforcement Learning trong Robotics:\n\n1. **[Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics](http://arxiv.org/abs/2607.25985v1)**\n   - **Tác giả**: Ya-Chia Shen, Woei-Leong Chan\n   - **Tóm tắt**: Nghiên cứu này điều tra một phương pháp học sâu dựa trên vật lý cho việc điều khiển quadcopter, giải quyết các thách thức trong việc điều khiển tự động. Bài báo đánh giá bốn thuật toán DRL và nhấn mạnh tầm quan trọng của việc mô hình hóa độ trễ của bộ truyền động.\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.25985v1)\n\n2. **[Cooperative Multi-UAV Navigation in Complex Environments via Systematic Multi-Agent Deep Reinforcement Learning](http://arxiv.org/abs/2607.25754v1)**\n   - **Tác giả**: Yu Su, Nabil Aouf\n   - **Tóm tắt**: Bài báo đề xuất một khung học sâu đa tác nhân cho việc điều hướng UAV hợp tác trong môi trường phức tạp, giải quyết các vấn đề như bẫy tối ưu cục bộ và thiếu hụt tín hiệu hợp tác.\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.25754v1)\n\n3. **[Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning](http://arxiv.org/abs/2607.24996v1)**\n   - **Tác giả**: Luc McCutcheon, Evangelos Chatzaroulas, Saber Fallah\n   - **Tóm tắt**: Nghiên cứu này đề xuất phương pháp Calibrated Partial Resets để duy trì tính linh hoạt của mạng nơ-ron trong học liên tục mà không làm mất ổn định quá trình huấn luyện.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24996v1)\n\n4. **[Explainable Reinforcement Learning via Physics-Aware Policy Distillation](http://arxiv.org/abs/2607.24672v1)**\n   - **Tác giả**: Shaker Al-Tamari, Waled Kadour\n   - **Tóm tắt**: Bài báo trình bày một khung chính sách chưng cất nhằm làm cho các hệ thống DRL có thể giải thích được, giúp tăng cường độ tin cậy trong các lĩnh vực an toàn.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24672v1)\n\n5. **[Evaluating Fuzz Testing for Reinforcement Learning Agents](http://arxiv.org/abs/2607.24577v1)**\n   - **Tác giả**: Zhibin Kang, Hanmo You, Dong Wang, Haiming Zheng, Junjie Chen\n   - **Tóm tắt**: Nghiên cứu này đánh giá các phương pháp fuzz testing cho các tác nhân RL, cung cấp cái nhìn sâu sắc về hiệu quả và tính hữu ích của các phương pháp này trong các lĩnh vực an toàn.\n   - **Ngày xuất bản**: 27 tháng 7, 2026\n   - [Tải PDF](https://arxiv.org/pdf/2607.24577v1)\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "papers",
+      "args": {
+        "query": "Reinforcement Learning robotics",
+        "max_results": 5,
+        "sort_by": "submittedDate"
+      },
+      "result": {
+        "tool": "arxiv_search",
+        "query": "Reinforcement Learning robotics",
+        "api_query": "all:Reinforcement AND all:Learning AND all:robotics",
+        "total_results": 9092,
+        "items": [
+          {
+            "arxiv_id": "2607.25985v1",
+            "title": "Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics",
+            "summary": "Unmanned aerial vehicles (UAVs), particularly quadcopters, present unique challenges for autonomous control due to their underactuated dynamics: only four available control inputs must govern six degrees of freedom. This paper investigates a physics-aware, end-to-end deep reinforcement learning (DRL) approach that acts directly on low-level body inputs, total thrust and body torques $(T, τ_x, τ_y, τ_z)$, and closes the loop through a high-fidelity Simulink environment. Our simulator integrates a 12-state rigid-body model (MATLAB Level-2 S-Function) with (i) an Action2RPM allocation based on the Moore-Penrose pseudo-inverse of a coefficient matrix derived from thrust and drag terms, and (ii) first-order actuator dynamics for each motor (time constant $T_m = 0.076$ s), including rotor gyroscopic coupling. A shaped reward balances goal-reaching and stability using an exponential position well, attitude penalties, and quadratic velocity costs. Four DRL algorithms, DDPG, TD3, PPO, and SAC, are evaluated in two stages: (S1) thrust-only hover and (S2) hover with pitch torque and a translated goal. Results show that SAC and TD3 achieve superior stability and exploration efficiency, while PPO is less sample-efficient. The study highlights the significance of modeling actuator lags and aerodynamic moments for stable low-level control and provides a reproducible benchmark for quadcopter DRL.",
+            "authors": [
+              "Ya-Chia Shen",
+              "Woei-Leong Chan"
+            ],
+            "published": "2026-07-28T17:05:47Z",
+            "updated": "2026-07-28T17:05:47Z",
+            "url": "http://arxiv.org/abs/2607.25985v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25985v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO",
+              "cs.LG",
+              "eess.SY"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25754v1",
+            "title": "Cooperative Multi-UAV Navigation in Complex Environments via Systematic Multi-Agent Deep Reinforcement Learning",
+            "summary": "Cooperative navigation of multi-agent UAVs in complex environments faces key challenges including local optima traps, sparse rewards, learning imbalance among agents, and insufficient cross-scenario generalisation. This paper proposes a multi-agent deep reinforcement learning framework that addresses these issues through coordinated exploration, demonstration exploitation, safe curriculum scheduling, and structure-aware generalisation. First, a perception mechanism combining memory of visited states, directional novelty estimates, and penalty backpropagation enables agents to proactively detect and escape local optima. Second, a hierarchical collaborative demonstration buffer with tiered behaviour cloning manages trajectories by degree of team collaboration and applies differential supervision to the actor network, improving demonstration utilisation under sparse collaborative signals. Third, a safety-aware dual-condition curriculum scheduling mechanism reviews mastered scenarios through back-testing and experience pre-filling during training, suppressing catastrophic forgetting while ensuring both task performance and flight safety. For generalisation, local geometric features computed from sensor readings are abstracted into a domain parameter, through which a structure-aware gating network and mixture-of-experts mechanism condition the policy on local structural patterns rather than scenario-specific coordinates, enabling cross-scenario transfer without exposure to the target environment. The framework is further validated under mixed static-dynamic obstacle settings, showing robust adaptability to dynamic disturbances. Simulation results confirm strong performance in collaboration success rate, navigation robustness, zero-shot cross-scenario generalisation, and dynamic environment adaptability.",
+            "authors": [
+              "Yu Su",
+              "Nabil Aouf"
+            ],
+            "published": "2026-07-28T14:16:11Z",
+            "updated": "2026-07-28T14:16:11Z",
+            "url": "http://arxiv.org/abs/2607.25754v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25754v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.24996v1",
+            "title": "Calibrated Partial Resets: Preventing Policy Collapse in Continual Reinforcement Learning",
+            "summary": "Neural networks are hindered by accumulating dormant neurons and loss of expressivity throughout training, particularly in non-stationary data settings, such as continual supervised and reinforcement learning. Recently, neuron resets have been used to maintain gradient flow and restore plasticity. However, full unit reinitialization often sacrifices peak performance and can destabilize training, leading to policy collapse. To preserve plasticity without destabilizing training, we propose Calibrated Partial Resets (CPR), an optimizer that periodically pulls low-utility neurons toward their initialization, with pull strength scaled by each neuron's utility. Unlike binary reset methods, partial resets avoid brittleness; unlike uniform decay, calibrated utility-scaling concentrates adjustment on the units that need it most. Among compared methods, only CPR avoids policy collapse over 400M training steps in SlipperyAnt, and it outperforms prior decay and reset-based methods on Continual MetaWorld and Continual MinAtar benchmarks. Ablations reveal a tunable trade-off between plasticity and peak performance, highlighting utility-scaled reinitialization as a promising direction for continual learning.",
+            "authors": [
+              "Luc McCutcheon",
+              "Evangelos Chatzaroulas",
+              "Saber Fallah"
+            ],
+            "published": "2026-07-27T18:53:00Z",
+            "updated": "2026-07-27T18:53:00Z",
+            "url": "http://arxiv.org/abs/2607.24996v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.24996v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.LG",
+            "categories": [
+              "cs.LG",
+              "cs.AI",
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.24672v1",
+            "title": "Explainable Reinforcement Learning via Physics-Aware Policy Distillation",
+            "summary": "In safety-critical sectors such as robotics and automotive engineering, the deployment of Deep Reinforcement Learning (DRL) is often hindered by the black-box nature of deep neural networks. This lack of transparency poses significant challenges for regulatory compliance and human-agent trust. This paper presents an experimental study aimed at making high-performance continuous control DRL systems interpretable. A policy distillation framework is implemented using the classic Inverted Pendulum benchmark. A high-performance Twin Delayed DDPG (TD3) agent serves as an opaque, continuous teacher model, whose policy is distilled into an interpretable student surrogate based on a shallow Decision Tree. By leveraging a custom physics-aware feature and \"Noisy Oracle Rollouts\" for dataset generation, the distillation process achieves performance equivalent to the expert teacher. Furthermore, comparative control theory analysis reveals a fundamental trade-off: transitioning from continuous to discrete rule-based control induces high-frequency Bang-Bang actuation and a stable bimodal limit cycle. Simulation results indicate that Bounded-Input Bounded-Output (BIBO) stability is maintained while providing both global and local interpretability for safe autonomous systems.",
+            "authors": [
+              "Shaker Al-Tamari",
+              "Waled Kadour"
+            ],
+            "published": "2026-07-27T17:14:42Z",
+            "updated": "2026-07-27T17:14:42Z",
+            "url": "http://arxiv.org/abs/2607.24672v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.24672v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.LG",
+            "categories": [
+              "cs.LG"
+            ]
+          },
+          {
+            "arxiv_id": "2607.24577v1",
+            "title": "Evaluating Fuzz Testing for Reinforcement Learning Agents",
+            "summary": "Reinforcement Learning (RL) agents are increasingly deployed in safety-critical domains such as robotics, autonomous driving, and drone control, where unexpected behaviors may lead to severe real-world consequences. Fuzz testing has recently emerged as a promising method for exploring the vast state spaces of RL agents and exposing crashes. Although numerous RL fuzzing methods have been proposed, existing studies often differ in evaluation settings, baselines, and metrics, making it difficult to draw reliable conclusions about their relative effectiveness and practical usefulness. To address this gap, we present the first comprehensive empirical study that systematically evaluates RL fuzzing methods from four complementary perspectives: effectiveness, diversity, efficiency, and practical utility. We benchmark five state-of-the-art methods alongside random testing under unified configurations across three environments of increasing complexity (MountainCar, BipedalWalker, and CARLA), and further assess the downstream usefulness of detected crashes for agent robustness improvement and safety monitoring. Our results reveal several key insights. For instance,throughput-oriented methods like MDPFuzz demonstrate superior effectiveness and efficiency in crash discovery, while methods explicitly designed to encourage exploration like SeqDivFuzz excel at uncovering diverse crash behaviors. We also show that fuzzing-generated crashes can meaningfully improve agent robustness and enable accurate safety monitoring with strong cross-method generalization. Beyond these empirical findings, we distill actionable guidance for both researchers and practitioners, highlighting the benefits of combining complementary fuzzing strategies and adopting multi-level diversity analysis to achieve more comprehensive and practical RL testing.",
+            "authors": [
+              "Zhibin Kang",
+              "Hanmo You",
+              "Dong Wang",
+              "Haiming Zheng",
+              "Junjie Chen"
+            ],
+            "published": "2026-07-27T15:46:57Z",
+            "updated": "2026-07-27T15:46:57Z",
+            "url": "http://arxiv.org/abs/2607.24577v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.24577v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.LG",
+            "categories": [
+              "cs.LG",
+              "cs.SE"
+            ]
+          }
+        ],
+        "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+      }
+    }
+  ],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

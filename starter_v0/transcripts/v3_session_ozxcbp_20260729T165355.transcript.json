@@ -1,0 +1,19 @@
+{
+  "session_id": "session_ozxcbp",
+  "version": "v3",
+  "user_message": "hi",
+  "history_turns": 6,
+  "created_at": "2026-07-29T16:53:55",
+  "status": "answered",
+  "assistant_text": "Hello! How can I assist you today?",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": "Hello! How can I assist you today?",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

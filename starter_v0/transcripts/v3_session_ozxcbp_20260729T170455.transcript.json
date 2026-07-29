@@ -1,0 +1,246 @@
+{
+  "session_id": "session_ozxcbp",
+  "version": "v3",
+  "user_message": "Những công ty nào đang phát triển robot humanoid nổi tiếng hiện nay?",
+  "history_turns": 10,
+  "created_at": "2026-07-29T17:04:55",
+  "status": "answered",
+  "assistant_text": "Dưới đây là một số công ty nổi tiếng đang phát triển robot humanoid hiện nay:\n\n1. **[Boston Dynamics](https://bostondynamics.com)**\n   - **Robot**: Atlas (humanoid), Spot (quadruped), Stretch (logistics)\n   - **Tóm tắt**: Công ty tiên phong trong lĩnh vực robot động lực học và parkour. Atlas là robot humanoid nổi tiếng thế giới.\n   - **Năm thành lập**: 1992\n   - **Quốc gia**: USA\n   - **Twitter**: [@BostonDynamics](https://twitter.com/BostonDynamics)\n   - **Quỹ đầu tư**: Được Hyundai mua lại với giá 1.1 tỷ USD vào năm 2021.\n\n2. **[Figure AI](https://figure.ai)**\n   - **Robot**: Figure 01, Figure 02\n   - **Tóm tắt**: Robot humanoid đa năng cho triển khai thương mại, hợp tác với BMW cho việc triển khai trong nhà máy.\n   - **Năm thành lập**: 2022\n   - **Quốc gia**: USA\n   - **Twitter**: [@figure_ai](https://twitter.com/figure_ai)\n   - **Quỹ đầu tư**: 675 triệu USD Series B với định giá 2.6 tỷ USD (2024).\n\n3. **[Agility Robotics](https://agilityrobotics.com)**\n   - **Robot**: Digit\n   - **Tóm tắt**: Robot humanoid cho tự động hóa kho và logistics, được thiết kế cho logistics cuối cùng.\n   - **Năm thành lập**: 2015\n   - **Quốc gia**: USA\n   - **Twitter**: [@AgilityRobotics](https://twitter.com/AgilityRobotics)\n   - **Quỹ đầu tư**: Amazon đã mua lại vào năm 2024.\n\n4. **[Unitree Robotics](https://unitree.com)**\n   - **Robot**: H1 (humanoid), H1-2 (humanoid), Go2 (quadruped)\n   - **Tóm tắt**: Robot humanoid và quadruped hiệu suất cao với giá cả phải chăng. H1 có thể chạy với tốc độ 3.3 m/s.\n   - **Năm thành lập**: 2016\n   - **Quốc gia**: China\n   - **Twitter**: [@UnitreeRobotics](https://twitter.com/UnitreeRobotics)\n   - **Quỹ đầu tư**: Tư nhân, ước tính định giá trên 1 tỷ USD.\n\n5. **[1X Technologies (formerly Halodi Robotics)](https://1x.tech)**\n   - **Robot**: EVE (wheeled humanoid), NEO (bipedal humanoid)\n   - **Tóm tắt**: Robot hình người cho môi trường gia đình và chăm sóc, được thiết kế để làm việc cùng con người tại nhà.\n   - **Năm thành lập**: 2014\n   - **Quốc gia**: Norway\n   - **Twitter**: [@1x_technologies](https://twitter.com/1x_technologies)\n   - **Quỹ đầu tư**: 100 triệu USD Series B (2024).\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ công ty nào, hãy cho tôi biết!",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "robotics_companies",
+          "args": {
+            "robot_type": "humanoid"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "robotics_companies",
+          "args": {
+            "robot_type": "humanoid"
+          },
+          "result": {
+            "tool": "robotics_companies",
+            "query": "",
+            "robot_type": "humanoid",
+            "total": 9,
+            "items": [
+              {
+                "title": "Boston Dynamics",
+                "summary": "Advanced dynamic robots for industrial and research use | Robots: Atlas (humanoid), Spot (quadruped), Stretch (logistics) | HQ: Waltham, Massachusetts | Pionner in dynamic locomotion and parkour robots. Atlas is world-famous humanoid.",
+                "url": "https://bostondynamics.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Atlas (humanoid)",
+                  "Spot (quadruped)",
+                  "Stretch (logistics)"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "quadruped",
+                  "logistics"
+                ],
+                "founded": 1992,
+                "country": "USA",
+                "twitter": "@BostonDynamics",
+                "funding": "Acquired by Hyundai for $1.1B in 2021"
+              },
+              {
+                "title": "Figure AI",
+                "summary": "General-purpose humanoid robots for commercial deployment | Robots: Figure 01, Figure 02 | HQ: Sunnyvale, California | Partnership with BMW for factory deployment. Figure 02 integrated with OpenAI.",
+                "url": "https://figure.ai",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Figure 01",
+                  "Figure 02"
+                ],
+                "robot_types": [
+                  "humanoid"
+                ],
+                "founded": 2022,
+                "country": "USA",
+                "twitter": "@figure_ai",
+                "funding": "$675M Series B at $2.6B valuation (2024)"
+              },
+              {
+                "title": "Agility Robotics",
+                "summary": "Humanoid robots for warehouse and logistics automation | Robots: Digit | HQ: Salem, Oregon | Amazon DeepRobotics facility. Digit designed for last-mile logistics.",
+                "url": "https://agilityrobotics.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Digit"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "logistics"
+                ],
+                "founded": 2015,
+                "country": "USA",
+                "twitter": "@AgilityRobotics",
+                "funding": "Amazon acquisition in 2024"
+              },
+              {
+                "title": "Unitree Robotics",
+                "summary": "Affordable high-performance quadruped and humanoid robots | Robots: H1 (humanoid), H1-2 (humanoid), Go2 (quadruped) | HQ: Hangzhou, Zhejiang | Most affordable humanoid robots on the market. H1 can run at 3.3 m/s.",
+                "url": "https://unitree.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "H1 (humanoid)",
+                  "H1-2 (humanoid)",
+                  "Go2 (quadruped)",
+                  "B2 (quadruped)",
+                  "G1 (humanoid)"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "quadruped"
+                ],
+                "founded": 2016,
+                "country": "China",
+                "twitter": "@UnitreeRobotics",
+                "funding": "Private, estimated $1B+ valuation"
+              },
+              {
+                "title": "1X Technologies (formerly Halodi Robotics)",
+                "summary": "Human-form robots for home and care environments | Robots: EVE (wheeled humanoid), NEO (bipedal humanoid) | HQ: Moss, Norway / Sunnyvale, CA | OpenAI investment. NEO designed to work alongside humans at home.",
+                "url": "https://1x.tech",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "EVE (wheeled humanoid)",
+                  "NEO (bipedal humanoid)"
+                ],
+                "robot_types": [
+                  "humanoid"
+                ],
+                "founded": 2014,
+                "country": "Norway",
+                "twitter": "@1x_technologies",
+                "funding": "$100M Series B (2024)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "assistant_text": "Dưới đây là một số công ty nổi tiếng đang phát triển robot humanoid hiện nay:\n\n1. **[Boston Dynamics](https://bostondynamics.com)**\n   - **Robot**: Atlas (humanoid), Spot (quadruped), Stretch (logistics)\n   - **Tóm tắt**: Công ty tiên phong trong lĩnh vực robot động lực học và parkour. Atlas là robot humanoid nổi tiếng thế giới.\n   - **Năm thành lập**: 1992\n   - **Quốc gia**: USA\n   - **Twitter**: [@BostonDynamics](https://twitter.com/BostonDynamics)\n   - **Quỹ đầu tư**: Được Hyundai mua lại với giá 1.1 tỷ USD vào năm 2021.\n\n2. **[Figure AI](https://figure.ai)**\n   - **Robot**: Figure 01, Figure 02\n   - **Tóm tắt**: Robot humanoid đa năng cho triển khai thương mại, hợp tác với BMW cho việc triển khai trong nhà máy.\n   - **Năm thành lập**: 2022\n   - **Quốc gia**: USA\n   - **Twitter**: [@figure_ai](https://twitter.com/figure_ai)\n   - **Quỹ đầu tư**: 675 triệu USD Series B với định giá 2.6 tỷ USD (2024).\n\n3. **[Agility Robotics](https://agilityrobotics.com)**\n   - **Robot**: Digit\n   - **Tóm tắt**: Robot humanoid cho tự động hóa kho và logistics, được thiết kế cho logistics cuối cùng.\n   - **Năm thành lập**: 2015\n   - **Quốc gia**: USA\n   - **Twitter**: [@AgilityRobotics](https://twitter.com/AgilityRobotics)\n   - **Quỹ đầu tư**: Amazon đã mua lại vào năm 2024.\n\n4. **[Unitree Robotics](https://unitree.com)**\n   - **Robot**: H1 (humanoid), H1-2 (humanoid), Go2 (quadruped)\n   - **Tóm tắt**: Robot humanoid và quadruped hiệu suất cao với giá cả phải chăng. H1 có thể chạy với tốc độ 3.3 m/s.\n   - **Năm thành lập**: 2016\n   - **Quốc gia**: China\n   - **Twitter**: [@UnitreeRobotics](https://twitter.com/UnitreeRobotics)\n   - **Quỹ đầu tư**: Tư nhân, ước tính định giá trên 1 tỷ USD.\n\n5. **[1X Technologies (formerly Halodi Robotics)](https://1x.tech)**\n   - **Robot**: EVE (wheeled humanoid), NEO (bipedal humanoid)\n   - **Tóm tắt**: Robot hình người cho môi trường gia đình và chăm sóc, được thiết kế để làm việc cùng con người tại nhà.\n   - **Năm thành lập**: 2014\n   - **Quốc gia**: Norway\n   - **Twitter**: [@1x_technologies](https://twitter.com/1x_technologies)\n   - **Quỹ đầu tư**: 100 triệu USD Series B (2024).\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ công ty nào, hãy cho tôi biết!",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "robotics_companies",
+      "args": {
+        "robot_type": "humanoid"
+      },
+      "result": {
+        "tool": "robotics_companies",
+        "query": "",
+        "robot_type": "humanoid",
+        "total": 9,
+        "items": [
+          {
+            "title": "Boston Dynamics",
+            "summary": "Advanced dynamic robots for industrial and research use | Robots: Atlas (humanoid), Spot (quadruped), Stretch (logistics) | HQ: Waltham, Massachusetts | Pionner in dynamic locomotion and parkour robots. Atlas is world-famous humanoid.",
+            "url": "https://bostondynamics.com",
+            "source": "robotics_companies_db",
+            "robots": [
+              "Atlas (humanoid)",
+              "Spot (quadruped)",
+              "Stretch (logistics)"
+            ],
+            "robot_types": [
+              "humanoid",
+              "quadruped",
+              "logistics"
+            ],
+            "founded": 1992,
+            "country": "USA",
+            "twitter": "@BostonDynamics",
+            "funding": "Acquired by Hyundai for $1.1B in 2021"
+          },
+          {
+            "title": "Figure AI",
+            "summary": "General-purpose humanoid robots for commercial deployment | Robots: Figure 01, Figure 02 | HQ: Sunnyvale, California | Partnership with BMW for factory deployment. Figure 02 integrated with OpenAI.",
+            "url": "https://figure.ai",
+            "source": "robotics_companies_db",
+            "robots": [
+              "Figure 01",
+              "Figure 02"
+            ],
+            "robot_types": [
+              "humanoid"
+            ],
+            "founded": 2022,
+            "country": "USA",
+            "twitter": "@figure_ai",
+            "funding": "$675M Series B at $2.6B valuation (2024)"
+          },
+          {
+            "title": "Agility Robotics",
+            "summary": "Humanoid robots for warehouse and logistics automation | Robots: Digit | HQ: Salem, Oregon | Amazon DeepRobotics facility. Digit designed for last-mile logistics.",
+            "url": "https://agilityrobotics.com",
+            "source": "robotics_companies_db",
+            "robots": [
+              "Digit"
+            ],
+            "robot_types": [
+              "humanoid",
+              "logistics"
+            ],
+            "founded": 2015,
+            "country": "USA",
+            "twitter": "@AgilityRobotics",
+            "funding": "Amazon acquisition in 2024"
+          },
+          {
+            "title": "Unitree Robotics",
+            "summary": "Affordable high-performance quadruped and humanoid robots | Robots: H1 (humanoid), H1-2 (humanoid), Go2 (quadruped) | HQ: Hangzhou, Zhejiang | Most affordable humanoid robots on the market. H1 can run at 3.3 m/s.",
+            "url": "https://unitree.com",
+            "source": "robotics_companies_db",
+            "robots": [
+              "H1 (humanoid)",
+              "H1-2 (humanoid)",
+              "Go2 (quadruped)",
+              "B2 (quadruped)",
+              "G1 (humanoid)"
+            ],
+            "robot_types": [
+              "humanoid",
+              "quadruped"
+            ],
+            "founded": 2016,
+            "country": "China",
+            "twitter": "@UnitreeRobotics",
+            "funding": "Private, estimated $1B+ valuation"
+          },
+          {
+            "title": "1X Technologies (formerly Halodi Robotics)",
+            "summary": "Human-form robots for home and care environments | Robots: EVE (wheeled humanoid), NEO (bipedal humanoid) | HQ: Moss, Norway / Sunnyvale, CA | OpenAI investment. NEO designed to work alongside humans at home.",
+            "url": "https://1x.tech",
+            "source": "robotics_companies_db",
+            "robots": [
+              "EVE (wheeled humanoid)",
+              "NEO (bipedal humanoid)"
+            ],
+            "robot_types": [
+              "humanoid"
+            ],
+            "founded": 2014,
+            "country": "Norway",
+            "twitter": "@1x_technologies",
+            "funding": "$100M Series B (2024)"
+          }
+        ]
+      }
+    }
+  ],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

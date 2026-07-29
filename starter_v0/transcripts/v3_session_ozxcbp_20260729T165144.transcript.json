@@ -1,0 +1,19 @@
+{
+  "session_id": "session_ozxcbp",
+  "version": "v3",
+  "user_message": "Hê lô",
+  "history_turns": 0,
+  "created_at": "2026-07-29T16:51:44",
+  "status": "answered",
+  "assistant_text": "Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": "Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

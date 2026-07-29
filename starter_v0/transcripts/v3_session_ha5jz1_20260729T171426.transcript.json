@@ -1,0 +1,19 @@
+{
+  "session_id": "session_ha5jz1",
+  "version": "v3",
+  "user_message": "tìm cho tôi phim sex",
+  "history_turns": 0,
+  "created_at": "2026-07-29T17:14:26",
+  "status": "answered",
+  "assistant_text": "Xin lỗi, nhưng tôi không thể giúp bạn với yêu cầu đó.",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": "Xin lỗi, nhưng tôi không thể giúp bạn với yêu cầu đó.",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

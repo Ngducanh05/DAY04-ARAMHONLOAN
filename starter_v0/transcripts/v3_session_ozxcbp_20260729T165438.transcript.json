@@ -1,0 +1,540 @@
+{
+  "session_id": "session_ozxcbp",
+  "version": "v3",
+  "user_message": "tìm cho tôi 10 bài báo mới nhất vể robotic",
+  "history_turns": 8,
+  "created_at": "2026-07-29T16:54:38",
+  "status": "answered",
+  "assistant_text": "Dưới đây là 10 bài báo mới nhất về Robotics:\n\n1. **[INTACT: Isomorphic Intent-to-Action Learning for Search-Free World Models](http://arxiv.org/abs/2607.26056v1)**\n   - **Tác giả**: Junhan Sun, Hao Zhao, Guofeng Zhang\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu INTACT, một mô hình học sâu giúp chuyển đổi các quỹ đạo không có phần thưởng thành một giao diện ý định-hành động có thể triển khai.\n\n2. **[$π\\mathbf{R}^2$: Reactive Real-time Flow Policies](http://arxiv.org/abs/2607.26055v1)**\n   - **Tác giả**: Sungjae Park, Shubham Tulsiani\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo trình bày một phương pháp mới cho các chính sách thao tác, cho phép phản ứng và lập kế hoạch lại trong thời gian thực.\n\n3. **[S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information](http://arxiv.org/abs/2607.26047v1)**\n   - **Tác giả**: Kaneyoshi Hiratsuka, Benjamin Yen, Ryosuke Kojima\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này giới thiệu một bộ nhiệm vụ thao tác nhận thức âm thanh mới cho học bắt chước.\n\n4. **[Pictura: Perspective-View Self-Play at Scale for Driving](http://arxiv.org/abs/2607.26005v1)**\n   - **Tác giả**: Yuan Yin, Elias Ramzi, Marc Lafon, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu Pictura, một trình giả lập lái xe đa tác nhân, giúp giảm thiểu khoảng cách đại diện trong đào tạo.\n\n5. **[Untangling Co-Drift: Proactive Multi-Intent Failure Prediction and Root-Cause Disambiguation for Self-Driving Networks](http://arxiv.org/abs/2607.25989v1)**\n   - **Tác giả**: Md. Kamrul Hossain, Walid Aljoby\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu MILD, một khung dự đoán thất bại chủ động cho các mạng tự lái.\n\n6. **[Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics](http://arxiv.org/abs/2607.25985v1)**\n   - **Tác giả**: Ya-Chia Shen, Woei-Leong Chan\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này điều tra một phương pháp học sâu cho việc điều khiển quadcopter, giải quyết các thách thức trong điều khiển tự động.\n\n7. **[DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models](http://arxiv.org/abs/2607.25918v1)**\n   - **Tác giả**: Haoyuan Ji, Lingxiang Fan, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo đề xuất DC-WAM, một khung WAM tập trung vào động lực, cải thiện hiệu suất chính sách.\n\n8. **[SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models](http://arxiv.org/abs/2607.25912v1)**\n   - **Tác giả**: Zonghe Liu, Shanyuan Jie, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu một khung căn chỉnh đại diện 3D tập trung vào đối tượng cho các mô hình VLA.\n\n9. **[HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone](http://arxiv.org/abs/2607.25895v1)**\n   - **Tác giả**: Yuteng Wei, Jinming Ma, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này trình bày HiFi-UMI, một hệ thống sản xuất dữ liệu UMI cho việc học chính sách thao tác.\n\n10. **[Modular Robotic Catheters for Endovascular Aneurysm Repair](http://arxiv.org/abs/2607.25807v1)**\n    - **Tác giả**: Alex Ranne, Jinshi Zhao, và nhiều tác giả khác\n    - **Ngày xuất bản**: 28 tháng 7, 2026\n    - **Tóm tắt**: Bài báo giới thiệu một hệ thống catheter robot có thể điều khiển cho việc sửa chữa phình động mạch.\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "papers",
+          "args": {
+            "query": "robotics",
+            "max_results": 10,
+            "sort_by": "submittedDate"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "papers",
+          "args": {
+            "query": "robotics",
+            "max_results": 10,
+            "sort_by": "submittedDate"
+          },
+          "result": {
+            "tool": "arxiv_search",
+            "query": "robotics",
+            "api_query": "all:robotics",
+            "total_results": 69376,
+            "items": [
+              {
+                "arxiv_id": "2607.26056v1",
+                "title": "INTACT: Isomorphic Intent-to-Action Learning for Search-Free World Models",
+                "summary": "Forward latent world models predict how actions change a scene, but recover actions for a desired change only through expensive test-time search. We introduce INTACT (INtent-To-ACTion), an end-to-end JEPA that turns action-labeled, reward-free trajectories into a deployable intent-to-action interface. Each transition supplies physical intent $z_{t+1}-z_t$, while a future goal supplies deployment intent $\\operatorname{sg}(z_g)-z_t$. The architecture is isomorphic between the local and goal motion-intent backbone-input graphs through an identical four-slot grammar and shared parameters, and between supported local and goal motion-intent families through action-law semantics induced by the same predictor rather than pointwise latent equality. INTACT also provides intact transfer from RGB evidence to action-effective latent intent coordinates and from intent families to their corresponding action-law families. Asymmetric endpoint gradients ground physical successors and fix future goals as anchors, joining representation learning and control without pointwise latent matching or globally linear dynamics. The resulting coordinates support a robust distributional action law: its conditional mean serves directly as a search-free policy, while sampling remains available for diversity or optional verification. On the four official LeWM tasks, one-epoch, zero-search models reach 85.78\\%, 100.00\\%, 97.67\\%, and 97.89\\% success. Optional local CEM centered on the Direct plan reaches 96.86\\% macro success using 384 instead of 9,000 candidate sequences, reducing sampling by $23.44\\times$ while improving pure CEM by 16.00 points. One shared four-task encoder reaches 89.39\\% E5 Direct macro and improves every task over jointly trained LeWM, while predicted--expert action-family kNN tracks Direct success at $r=0.954$. Direct inference takes 2.9--5.5 ms.",
+                "authors": [
+                  "Junhan Sun",
+                  "Hao Zhao",
+                  "Guofeng Zhang"
+                ],
+                "published": "2026-07-28T17:59:40Z",
+                "updated": "2026-07-28T17:59:40Z",
+                "url": "http://arxiv.org/abs/2607.26056v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26056v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.26055v1",
+                "title": "$π\\mathbf{R}^2$: Reactive Real-time Flow Policies",
+                "summary": "Generalist manipulation policies increasingly take the form of action-chunking flow policies built on large pretrained backbones. Such chunks run open-loop, so the policy cannot react to sensory input arriving mid-execution, sacrificing \\emph{reactivity}. Replanning more often would restore it, but the perception-to-action pipeline (a large backbone plus multiple denoising steps) is too slow: this \\emph{latency} forbids frequent replanning and leaves committed actions stale, making such policies ill-suited for dynamic, closed-loop control. We present $π\\mathbf{R}^2$, which makes these policies reactive and real-time while retaining large backbones, expressive multi-modal policies, and multi-action prediction. Built on the per-position noise schedule of diffusion forcing, $π\\mathbf{R}^2$ contributes two ideas. First, it splits conditioning into a fast channel (proprioception, fresh every tick) and an asynchronously updated slow channel (vision-language features), so the policy reacts to proprioception within a chunk while tolerating stale vision. Second, a latency-adaptive flow schedule treats in-flight actions as inpainting conditioning and emits actions in one denoising step per call, letting one trained model adapt to varying hardware latency. Requiring minimal modification to existing architectures, $π\\mathbf{R}^2$ can be finetuned from a pretrained policy: applied to GR00T-N1.7 on a real xArm6+XHand platform, it replans closed-loop roughly $4\\times$ faster than the base policy (~$25$Hz on an A5000 GPU), acting on a fresh observation every $40$ms. Across simulation and real-world manipulation tasks, $π\\mathbf{R}^2$ improves the success rate by up to $23\\%$ in simulation and $30\\%$ in the real world over the strongest baseline. Project page: https://pi-r2-flow.github.io/",
+                "authors": [
+                  "Sungjae Park",
+                  "Shubham Tulsiani"
+                ],
+                "published": "2026-07-28T17:59:31Z",
+                "updated": "2026-07-28T17:59:31Z",
+                "url": "http://arxiv.org/abs/2607.26055v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26055v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.AI",
+                  "cs.LG"
+                ]
+              },
+              {
+                "arxiv_id": "2607.26047v1",
+                "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                "summary": "Acoustic information provides rich cues about object location, material properties, and changes caused by contact or motion. This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, in which robots must use auditory cues to determine manipulation targets. These tasks require sound source localization and identification for active exploration in robotic manipulation. Also, we propose a multimodal imitation learning framework, Spatial-Spectral Audio Action (S2A2), that integrates visual features with acoustic spatial and acoustic signal information for the acoustic-aware manipulation tasks. We implemented S2A2 models that integrates policies such as ACT, Diffusion Policy, VQ-BeT, and $π_0$, into our framework. Simulation experiments showed that the proposed method is the most effective for tasks requiring both position and timbre. Furthermore, real-robot experiments confirm the applicability of the proposed tasks and framework to real-world manipulation.",
+                "authors": [
+                  "Kaneyoshi Hiratsuka",
+                  "Benjamin Yen",
+                  "Ryosuke Kojima"
+                ],
+                "published": "2026-07-28T17:56:07Z",
+                "updated": "2026-07-28T17:56:07Z",
+                "url": "http://arxiv.org/abs/2607.26047v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.26005v1",
+                "title": "Pictura: Perspective-View Self-Play at Scale for Driving",
+                "summary": "Self-play in simulation produces robust driving policies at scale. Demonstrations of such behavior have been made using privileged vectorized observations such as exact poses and velocities, even for occluded agents. This assumes that perception is solved and introduces a representation gap with the partial observation of a deployed agent driving from the perspective view of egocentric cameras. A common fix, distilling the privileged policy into a camera-input student, leaves the student imitating decisions its own view cannot justify. Instead, we establish perspective-view self-play as a practical training regime. We introduce Pictura, a GPU-accelerated multi-agent driving simulator that renders each agent's egocentric view at every step, mitigating the representation gap at its source. Pictura sustains up to 500K agent-steps/s (2M images/s) on a single H100. Using Pictura, we train Alberti by self-play with plain PPO. It is the first large-scale driving self-play policy trained directly from perspective images, without privileged observations. Training spans 50B agent steps for ~35M km of driving. It approaches the driving performance of its privileged vectorized counterpart, and transfers zero-shot to Waymo Open Motion Dataset layouts re-rendered in Pictura, where it outperforms privileged vectorized agents. Project page: https://valeoai.github.io/Pictura/",
+                "authors": [
+                  "Yuan Yin",
+                  "Elias Ramzi",
+                  "Marc Lafon",
+                  "Valentin Charraut",
+                  "Victor Bares",
+                  "Yihong Xu",
+                  "Éloi Zablocki",
+                  "Alexandre Boulch",
+                  "Thibault Buhet",
+                  "Andrei Bursuc",
+                  "Matthieu Cord"
+                ],
+                "published": "2026-07-28T17:20:39Z",
+                "updated": "2026-07-28T17:20:39Z",
+                "url": "http://arxiv.org/abs/2607.26005v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26005v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.CV",
+                "categories": [
+                  "cs.CV",
+                  "cs.AI",
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25989v1",
+                "title": "Untangling Co-Drift: Proactive Multi-Intent Failure Prediction and Root-Cause Disambiguation for Self-Driving Networks",
+                "summary": "The vision of self-driving networks that monitor, reason, and act upon themselves with minimal human intervention relies on tightly coupled monitoring, analytics, and actuation functions. In this work, we treat these functions as three operational macro-intents: continuous telemetry, real-time analytics, and programmatic actuation, and formalize the health of each function as an intent that the network must continuously satisfy. A critical, yet underexplored, challenge stems from the causal coupling among these intents, where a singular fault within one macro-intent propagates as a co-drift and subsequently triggers cascading, symptomatic anomalies across the remaining intents. This ambiguity makes it exceedingly difficult for existing, reactive approaches to distinguish the true root-cause intent from symptomatic victim intents, and their reliance on threshold-crossing detection leaves insufficient time for proactive remediation. We introduce MILD, a novel framework that reformulates intent assurance from reactive drift detection to proactive failure prediction. Grounded in our three-macro-intent formulation of the self-driving control loop, MILD employs a teacher-augmented Mixture-of-Experts architecture with a hybrid objective that jointly optimizes intent failure prediction and root-cause attribution. MILD enables KPI-level diagnostics via SHAP explainability and dynamic intent failure urgency estimation via multi-horizon modeling. Our extensive evaluation of MILD across three environments of increasing realism, from a controlled statistical benchmark, to a microservices application, to an SDN-based edge-to-cloud testbed, demonstrates that MILD achieves high failure detection rates, strong remediation lead times, and accurate intent-level root-cause disambiguation. This positions MILD as a practical enabler of closed-loop assurance in next-generation autonomous networks.",
+                "authors": [
+                  "Md. Kamrul Hossain",
+                  "Walid Aljoby"
+                ],
+                "published": "2026-07-28T17:06:24Z",
+                "updated": "2026-07-28T17:06:24Z",
+                "url": "http://arxiv.org/abs/2607.25989v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25989v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.NI",
+                "categories": [
+                  "cs.NI",
+                  "cs.LG",
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25985v1",
+                "title": "Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics",
+                "summary": "Unmanned aerial vehicles (UAVs), particularly quadcopters, present unique challenges for autonomous control due to their underactuated dynamics: only four available control inputs must govern six degrees of freedom. This paper investigates a physics-aware, end-to-end deep reinforcement learning (DRL) approach that acts directly on low-level body inputs, total thrust and body torques $(T, τ_x, τ_y, τ_z)$, and closes the loop through a high-fidelity Simulink environment. Our simulator integrates a 12-state rigid-body model (MATLAB Level-2 S-Function) with (i) an Action2RPM allocation based on the Moore-Penrose pseudo-inverse of a coefficient matrix derived from thrust and drag terms, and (ii) first-order actuator dynamics for each motor (time constant $T_m = 0.076$ s), including rotor gyroscopic coupling. A shaped reward balances goal-reaching and stability using an exponential position well, attitude penalties, and quadratic velocity costs. Four DRL algorithms, DDPG, TD3, PPO, and SAC, are evaluated in two stages: (S1) thrust-only hover and (S2) hover with pitch torque and a translated goal. Results show that SAC and TD3 achieve superior stability and exploration efficiency, while PPO is less sample-efficient. The study highlights the significance of modeling actuator lags and aerodynamic moments for stable low-level control and provides a reproducible benchmark for quadcopter DRL.",
+                "authors": [
+                  "Ya-Chia Shen",
+                  "Woei-Leong Chan"
+                ],
+                "published": "2026-07-28T17:05:47Z",
+                "updated": "2026-07-28T17:05:47Z",
+                "url": "http://arxiv.org/abs/2607.25985v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25985v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.LG",
+                  "eess.SY"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25918v1",
+                "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                "summary": "World-Action Models (WAMs) augment robot policies with future visual prediction, but it remains unclear what the visual modality should learn for control. While photorealistic future prediction provides dense supervision, it also incurs substantial computation and can allocate capacity to texture, illumination, and background variations that are only weakly related to action selection. Recent efficient WAM variants suggest that the main benefit of the video branch may not lie in the rendered future itself, but in the control-relevant visual representations induced during training. In this work, we revisit future video prediction from a dynamic-centric perspective and ask whether an existing RGB-based WAM can be redirected from appearance-dominated reconstruction toward interaction-induced visual dynamics without introducing additional modality-specific predictions or online inputs at deployment. We propose DC-WAM, a dynamic-centric WAM framework that redistributes supervision and computation in the RGB video branch. At the supervision level, DC-WAM combines temporal-difference flow matching with trajectory-guided weighting, emphasizing dense temporal changes and localized regions where the gripper, manipulated objects, and contact areas move. At the reasoning level, DynaRoute predicts token-wise dynamic relevance and converts it into an attention bias, guiding the model toward control-relevant future tokens. Experiments in simulation and on real-world manipulation tasks show that DC-WAM consistently improves policy performance, especially under out-of-distribution perturbations in lighting, object appearance, and background texture.",
+                "authors": [
+                  "Haoyuan Ji",
+                  "Lingxiang Fan",
+                  "Shang Su",
+                  "Yinqiao Lu",
+                  "Mengkai Shi",
+                  "Jun Gao",
+                  "Shuo Feng"
+                ],
+                "published": "2026-07-28T16:08:50Z",
+                "updated": "2026-07-28T16:08:50Z",
+                "url": "http://arxiv.org/abs/2607.25918v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25912v1",
+                "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                "summary": "Vision-Language-Action (VLA) models have shown strong potential for general robot manipulation, but most existing models rely on 2D visual-language backbones and lack fine-grained 3D understanding of target objects, especially under occlusion, pose variation, scale changes, and precise spatial interaction. We propose an object-centric 3D representation alignment framework built upon $π_0$, using SAM3D as a frozen 3D teacher to provide target-object 3D priors during training. Specifically, we localize task-relevant objects with object recognition models, generate corresponding object masks, and use SAM3D to extract dense object-level 3D representations, which are aligned with intermediate visual features of $π_0$. This enables the policy to internalize target-object 3D information while preserving the original RGB-language-to-action inference pipeline without requiring depth, point clouds, masks, SAM3D, or additional 3D modules at test time. Simulation experiments show consistent improvements, achieving 99.1\\% on LIBERO and an average length of 4.11 on CALVIN. Real-world experiments further demonstrate that our method is particularly effective in long-horizon manipulation scenarios where the robot must focus on different target objects across multiple subtasks.",
+                "authors": [
+                  "Zonghe Liu",
+                  "Shanyuan Jie",
+                  "Xiaoquan Sun",
+                  "Chen Cao",
+                  "Zetian Xu",
+                  "Zongsheng Liu",
+                  "Jiayu Chen"
+                ],
+                "published": "2026-07-28T16:05:32Z",
+                "updated": "2026-07-28T16:05:32Z",
+                "url": "http://arxiv.org/abs/2607.25912v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.AI"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25895v1",
+                "title": "HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone",
+                "summary": "Learning deployable manipulation policies is bottlenecked by the scarcity of data that is both high-fidelity and scalable. Real-robot teleoperation is accurate but costly to scale; robot-free UMI capture scales readily, and current practice uses the resulting data mainly for pre-training, adding a small real-robot \"anchor\" at post-training. We ask whether raising the fidelity of robot-free UMI data, rather than shrinking the real-robot fraction, can remove that anchor. We present HiFi-UMI, a portable UMI data-production system co-designed for trajectory accuracy, inter-gripper relative pose, synchronization, and field of view: head-mounted offline stereo-inertial SLAM, native rather than reconstructed relative pose, a shared microsecond GPIO trigger, and two wide-angle cameras per hand covering ~200 degrees. It reaches 3 mm workspace-local end-effector accuracy without external tracking infrastructure. Using this corpus, we demonstrate zero-robot post-training: a policy post-trained solely on HiFi-UMI demonstrations deploys directly on a real robot and matches in-domain teleoperation across three backbones spanning the vision-language-action and world-action-model families, with success-rate differences of -2.5, +3.1, and -0.6 percentage points on StarVLA-QwenPI, OpenPI-pi_0.5, and LingBot-VA; the strongest policy reaches 85% on a precision insertion task, even though the teleoperation baseline is collected in the evaluation scene and no HiFi-UMI trajectory is. Pre-training on 4,000 hours from the same corpus lowers action error on ten unseen tasks by 41% and, on StarVLA-QwenPI, raises real-robot success by a further 18.1 percentage points. We open-source HiFi-UMI-2K, 2,000 hours of microsecond-synchronized, ultra-wide-FoV demonstrations, each automatically reconstructed and validated through simulation replay, as a large-scale, high-fidelity resource for the robot-learning community.",
+                "authors": [
+                  "Simple AI",
+                  ":",
+                  "Yuteng Wei",
+                  "Jinming Ma",
+                  "Jiawei Wang",
+                  "Weitao Zhou",
+                  "Yushen Zuo",
+                  "Ke Rui",
+                  "Minglei Li",
+                  "Jinhao Zhang",
+                  "Zhikang Pan",
+                  "Xiang Wang",
+                  "Haoran Jia",
+                  "Huan Du",
+                  "Zicheng Zeng",
+                  "Jun Ma",
+                  "Guiyu Qin",
+                  "Di Zhang",
+                  "Xiaofei Li"
+                ],
+                "published": "2026-07-28T15:52:02Z",
+                "updated": "2026-07-28T15:52:02Z",
+                "url": "http://arxiv.org/abs/2607.25895v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25895v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.CV",
+                  "cs.LG"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25807v1",
+                "title": "Modular Robotic Catheters for Endovascular Aneurysm Repair",
+                "summary": "Fenestrated/Branched endovascular aneurysm repair (FEVAR/BEVAR) require surgeons to navigate catheters and guidewires into various branches of the abdominal aorta, before deploying stent grafts to alleviate pressure on the aneurysm. Previous clinical studies suggests that surgeons continue to struggle with vessel access using standard commercial instruments, prolonging the procedural time and inducing further complications. In this work, we present two contributions to solving this problem: 1) A bespoke 2-segment steerable catheter, consisting of 4 degrees of freedom to enhance dexterity. 2) An expandable, modular tendon-driven actuation platform that can accommodate for the redundancies introduced in our system. To fabricate the catheter, we capitalized on thermal fiber drawing, a technique that creates high-aspect ratio devices at scale, and processed the catheter with laser micro-machining to soften its tip. We evaluated the system using simulations, where we investigated the catheter's bending stiffness, then its steerability with in-vitro experiments in vascular phantoms. This handheld, robotic steerable catheter system has the potential to shorten the length of future endovascular surgeries, and give clinicians the tools to resolve challenging clinical cases.",
+                "authors": [
+                  "Alex Ranne",
+                  "Jinshi Zhao",
+                  "Ali Anil Demircali",
+                  "Songli Moey",
+                  "Ayhan Aktas",
+                  "Burak Temelkuran",
+                  "Nassir Navab",
+                  "Ferdinando Rodriguez y Baena"
+                ],
+                "published": "2026-07-28T14:53:03Z",
+                "updated": "2026-07-28T14:53:03Z",
+                "url": "http://arxiv.org/abs/2607.25807v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25807v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              }
+            ],
+            "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "assistant_text": "Dưới đây là 10 bài báo mới nhất về Robotics:\n\n1. **[INTACT: Isomorphic Intent-to-Action Learning for Search-Free World Models](http://arxiv.org/abs/2607.26056v1)**\n   - **Tác giả**: Junhan Sun, Hao Zhao, Guofeng Zhang\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu INTACT, một mô hình học sâu giúp chuyển đổi các quỹ đạo không có phần thưởng thành một giao diện ý định-hành động có thể triển khai.\n\n2. **[$π\\mathbf{R}^2$: Reactive Real-time Flow Policies](http://arxiv.org/abs/2607.26055v1)**\n   - **Tác giả**: Sungjae Park, Shubham Tulsiani\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo trình bày một phương pháp mới cho các chính sách thao tác, cho phép phản ứng và lập kế hoạch lại trong thời gian thực.\n\n3. **[S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information](http://arxiv.org/abs/2607.26047v1)**\n   - **Tác giả**: Kaneyoshi Hiratsuka, Benjamin Yen, Ryosuke Kojima\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này giới thiệu một bộ nhiệm vụ thao tác nhận thức âm thanh mới cho học bắt chước.\n\n4. **[Pictura: Perspective-View Self-Play at Scale for Driving](http://arxiv.org/abs/2607.26005v1)**\n   - **Tác giả**: Yuan Yin, Elias Ramzi, Marc Lafon, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu Pictura, một trình giả lập lái xe đa tác nhân, giúp giảm thiểu khoảng cách đại diện trong đào tạo.\n\n5. **[Untangling Co-Drift: Proactive Multi-Intent Failure Prediction and Root-Cause Disambiguation for Self-Driving Networks](http://arxiv.org/abs/2607.25989v1)**\n   - **Tác giả**: Md. Kamrul Hossain, Walid Aljoby\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu MILD, một khung dự đoán thất bại chủ động cho các mạng tự lái.\n\n6. **[Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics](http://arxiv.org/abs/2607.25985v1)**\n   - **Tác giả**: Ya-Chia Shen, Woei-Leong Chan\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này điều tra một phương pháp học sâu cho việc điều khiển quadcopter, giải quyết các thách thức trong điều khiển tự động.\n\n7. **[DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models](http://arxiv.org/abs/2607.25918v1)**\n   - **Tác giả**: Haoyuan Ji, Lingxiang Fan, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo đề xuất DC-WAM, một khung WAM tập trung vào động lực, cải thiện hiệu suất chính sách.\n\n8. **[SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models](http://arxiv.org/abs/2607.25912v1)**\n   - **Tác giả**: Zonghe Liu, Shanyuan Jie, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Bài báo giới thiệu một khung căn chỉnh đại diện 3D tập trung vào đối tượng cho các mô hình VLA.\n\n9. **[HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone](http://arxiv.org/abs/2607.25895v1)**\n   - **Tác giả**: Yuteng Wei, Jinming Ma, và nhiều tác giả khác\n   - **Ngày xuất bản**: 28 tháng 7, 2026\n   - **Tóm tắt**: Nghiên cứu này trình bày HiFi-UMI, một hệ thống sản xuất dữ liệu UMI cho việc học chính sách thao tác.\n\n10. **[Modular Robotic Catheters for Endovascular Aneurysm Repair](http://arxiv.org/abs/2607.25807v1)**\n    - **Tác giả**: Alex Ranne, Jinshi Zhao, và nhiều tác giả khác\n    - **Ngày xuất bản**: 28 tháng 7, 2026\n    - **Tóm tắt**: Bài báo giới thiệu một hệ thống catheter robot có thể điều khiển cho việc sửa chữa phình động mạch.\n\nNếu bạn cần thêm thông tin chi tiết về bất kỳ bài báo nào, hãy cho tôi biết!",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "papers",
+      "args": {
+        "query": "robotics",
+        "max_results": 10,
+        "sort_by": "submittedDate"
+      },
+      "result": {
+        "tool": "arxiv_search",
+        "query": "robotics",
+        "api_query": "all:robotics",
+        "total_results": 69376,
+        "items": [
+          {
+            "arxiv_id": "2607.26056v1",
+            "title": "INTACT: Isomorphic Intent-to-Action Learning for Search-Free World Models",
+            "summary": "Forward latent world models predict how actions change a scene, but recover actions for a desired change only through expensive test-time search. We introduce INTACT (INtent-To-ACTion), an end-to-end JEPA that turns action-labeled, reward-free trajectories into a deployable intent-to-action interface. Each transition supplies physical intent $z_{t+1}-z_t$, while a future goal supplies deployment intent $\\operatorname{sg}(z_g)-z_t$. The architecture is isomorphic between the local and goal motion-intent backbone-input graphs through an identical four-slot grammar and shared parameters, and between supported local and goal motion-intent families through action-law semantics induced by the same predictor rather than pointwise latent equality. INTACT also provides intact transfer from RGB evidence to action-effective latent intent coordinates and from intent families to their corresponding action-law families. Asymmetric endpoint gradients ground physical successors and fix future goals as anchors, joining representation learning and control without pointwise latent matching or globally linear dynamics. The resulting coordinates support a robust distributional action law: its conditional mean serves directly as a search-free policy, while sampling remains available for diversity or optional verification. On the four official LeWM tasks, one-epoch, zero-search models reach 85.78\\%, 100.00\\%, 97.67\\%, and 97.89\\% success. Optional local CEM centered on the Direct plan reaches 96.86\\% macro success using 384 instead of 9,000 candidate sequences, reducing sampling by $23.44\\times$ while improving pure CEM by 16.00 points. One shared four-task encoder reaches 89.39\\% E5 Direct macro and improves every task over jointly trained LeWM, while predicted--expert action-family kNN tracks Direct success at $r=0.954$. Direct inference takes 2.9--5.5 ms.",
+            "authors": [
+              "Junhan Sun",
+              "Hao Zhao",
+              "Guofeng Zhang"
+            ],
+            "published": "2026-07-28T17:59:40Z",
+            "updated": "2026-07-28T17:59:40Z",
+            "url": "http://arxiv.org/abs/2607.26056v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.26056v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.26055v1",
+            "title": "$π\\mathbf{R}^2$: Reactive Real-time Flow Policies",
+            "summary": "Generalist manipulation policies increasingly take the form of action-chunking flow policies built on large pretrained backbones. Such chunks run open-loop, so the policy cannot react to sensory input arriving mid-execution, sacrificing \\emph{reactivity}. Replanning more often would restore it, but the perception-to-action pipeline (a large backbone plus multiple denoising steps) is too slow: this \\emph{latency} forbids frequent replanning and leaves committed actions stale, making such policies ill-suited for dynamic, closed-loop control. We present $π\\mathbf{R}^2$, which makes these policies reactive and real-time while retaining large backbones, expressive multi-modal policies, and multi-action prediction. Built on the per-position noise schedule of diffusion forcing, $π\\mathbf{R}^2$ contributes two ideas. First, it splits conditioning into a fast channel (proprioception, fresh every tick) and an asynchronously updated slow channel (vision-language features), so the policy reacts to proprioception within a chunk while tolerating stale vision. Second, a latency-adaptive flow schedule treats in-flight actions as inpainting conditioning and emits actions in one denoising step per call, letting one trained model adapt to varying hardware latency. Requiring minimal modification to existing architectures, $π\\mathbf{R}^2$ can be finetuned from a pretrained policy: applied to GR00T-N1.7 on a real xArm6+XHand platform, it replans closed-loop roughly $4\\times$ faster than the base policy (~$25$Hz on an A5000 GPU), acting on a fresh observation every $40$ms. Across simulation and real-world manipulation tasks, $π\\mathbf{R}^2$ improves the success rate by up to $23\\%$ in simulation and $30\\%$ in the real world over the strongest baseline. Project page: https://pi-r2-flow.github.io/",
+            "authors": [
+              "Sungjae Park",
+              "Shubham Tulsiani"
+            ],
+            "published": "2026-07-28T17:59:31Z",
+            "updated": "2026-07-28T17:59:31Z",
+            "url": "http://arxiv.org/abs/2607.26055v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.26055v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO",
+              "cs.AI",
+              "cs.LG"
+            ]
+          },
+          {
+            "arxiv_id": "2607.26047v1",
+            "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+            "summary": "Acoustic information provides rich cues about object location, material properties, and changes caused by contact or motion. This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, in which robots must use auditory cues to determine manipulation targets. These tasks require sound source localization and identification for active exploration in robotic manipulation. Also, we propose a multimodal imitation learning framework, Spatial-Spectral Audio Action (S2A2), that integrates visual features with acoustic spatial and acoustic signal information for the acoustic-aware manipulation tasks. We implemented S2A2 models that integrates policies such as ACT, Diffusion Policy, VQ-BeT, and $π_0$, into our framework. Simulation experiments showed that the proposed method is the most effective for tasks requiring both position and timbre. Furthermore, real-robot experiments confirm the applicability of the proposed tasks and framework to real-world manipulation.",
+            "authors": [
+              "Kaneyoshi Hiratsuka",
+              "Benjamin Yen",
+              "Ryosuke Kojima"
+            ],
+            "published": "2026-07-28T17:56:07Z",
+            "updated": "2026-07-28T17:56:07Z",
+            "url": "http://arxiv.org/abs/2607.26047v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.26005v1",
+            "title": "Pictura: Perspective-View Self-Play at Scale for Driving",
+            "summary": "Self-play in simulation produces robust driving policies at scale. Demonstrations of such behavior have been made using privileged vectorized observations such as exact poses and velocities, even for occluded agents. This assumes that perception is solved and introduces a representation gap with the partial observation of a deployed agent driving from the perspective view of egocentric cameras. A common fix, distilling the privileged policy into a camera-input student, leaves the student imitating decisions its own view cannot justify. Instead, we establish perspective-view self-play as a practical training regime. We introduce Pictura, a GPU-accelerated multi-agent driving simulator that renders each agent's egocentric view at every step, mitigating the representation gap at its source. Pictura sustains up to 500K agent-steps/s (2M images/s) on a single H100. Using Pictura, we train Alberti by self-play with plain PPO. It is the first large-scale driving self-play policy trained directly from perspective images, without privileged observations. Training spans 50B agent steps for ~35M km of driving. It approaches the driving performance of its privileged vectorized counterpart, and transfers zero-shot to Waymo Open Motion Dataset layouts re-rendered in Pictura, where it outperforms privileged vectorized agents. Project page: https://valeoai.github.io/Pictura/",
+            "authors": [
+              "Yuan Yin",
+              "Elias Ramzi",
+              "Marc Lafon",
+              "Valentin Charraut",
+              "Victor Bares",
+              "Yihong Xu",
+              "Éloi Zablocki",
+              "Alexandre Boulch",
+              "Thibault Buhet",
+              "Andrei Bursuc",
+              "Matthieu Cord"
+            ],
+            "published": "2026-07-28T17:20:39Z",
+            "updated": "2026-07-28T17:20:39Z",
+            "url": "http://arxiv.org/abs/2607.26005v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.26005v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.CV",
+            "categories": [
+              "cs.CV",
+              "cs.AI",
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25989v1",
+            "title": "Untangling Co-Drift: Proactive Multi-Intent Failure Prediction and Root-Cause Disambiguation for Self-Driving Networks",
+            "summary": "The vision of self-driving networks that monitor, reason, and act upon themselves with minimal human intervention relies on tightly coupled monitoring, analytics, and actuation functions. In this work, we treat these functions as three operational macro-intents: continuous telemetry, real-time analytics, and programmatic actuation, and formalize the health of each function as an intent that the network must continuously satisfy. A critical, yet underexplored, challenge stems from the causal coupling among these intents, where a singular fault within one macro-intent propagates as a co-drift and subsequently triggers cascading, symptomatic anomalies across the remaining intents. This ambiguity makes it exceedingly difficult for existing, reactive approaches to distinguish the true root-cause intent from symptomatic victim intents, and their reliance on threshold-crossing detection leaves insufficient time for proactive remediation. We introduce MILD, a novel framework that reformulates intent assurance from reactive drift detection to proactive failure prediction. Grounded in our three-macro-intent formulation of the self-driving control loop, MILD employs a teacher-augmented Mixture-of-Experts architecture with a hybrid objective that jointly optimizes intent failure prediction and root-cause attribution. MILD enables KPI-level diagnostics via SHAP explainability and dynamic intent failure urgency estimation via multi-horizon modeling. Our extensive evaluation of MILD across three environments of increasing realism, from a controlled statistical benchmark, to a microservices application, to an SDN-based edge-to-cloud testbed, demonstrates that MILD achieves high failure detection rates, strong remediation lead times, and accurate intent-level root-cause disambiguation. This positions MILD as a practical enabler of closed-loop assurance in next-generation autonomous networks.",
+            "authors": [
+              "Md. Kamrul Hossain",
+              "Walid Aljoby"
+            ],
+            "published": "2026-07-28T17:06:24Z",
+            "updated": "2026-07-28T17:06:24Z",
+            "url": "http://arxiv.org/abs/2607.25989v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25989v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.NI",
+            "categories": [
+              "cs.NI",
+              "cs.LG",
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25985v1",
+            "title": "Physics-Aware End-to-End Deep Reinforcement Learning for Quadcopter Control with Actuator Dynamics",
+            "summary": "Unmanned aerial vehicles (UAVs), particularly quadcopters, present unique challenges for autonomous control due to their underactuated dynamics: only four available control inputs must govern six degrees of freedom. This paper investigates a physics-aware, end-to-end deep reinforcement learning (DRL) approach that acts directly on low-level body inputs, total thrust and body torques $(T, τ_x, τ_y, τ_z)$, and closes the loop through a high-fidelity Simulink environment. Our simulator integrates a 12-state rigid-body model (MATLAB Level-2 S-Function) with (i) an Action2RPM allocation based on the Moore-Penrose pseudo-inverse of a coefficient matrix derived from thrust and drag terms, and (ii) first-order actuator dynamics for each motor (time constant $T_m = 0.076$ s), including rotor gyroscopic coupling. A shaped reward balances goal-reaching and stability using an exponential position well, attitude penalties, and quadratic velocity costs. Four DRL algorithms, DDPG, TD3, PPO, and SAC, are evaluated in two stages: (S1) thrust-only hover and (S2) hover with pitch torque and a translated goal. Results show that SAC and TD3 achieve superior stability and exploration efficiency, while PPO is less sample-efficient. The study highlights the significance of modeling actuator lags and aerodynamic moments for stable low-level control and provides a reproducible benchmark for quadcopter DRL.",
+            "authors": [
+              "Ya-Chia Shen",
+              "Woei-Leong Chan"
+            ],
+            "published": "2026-07-28T17:05:47Z",
+            "updated": "2026-07-28T17:05:47Z",
+            "url": "http://arxiv.org/abs/2607.25985v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25985v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO",
+              "cs.LG",
+              "eess.SY"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25918v1",
+            "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+            "summary": "World-Action Models (WAMs) augment robot policies with future visual prediction, but it remains unclear what the visual modality should learn for control. While photorealistic future prediction provides dense supervision, it also incurs substantial computation and can allocate capacity to texture, illumination, and background variations that are only weakly related to action selection. Recent efficient WAM variants suggest that the main benefit of the video branch may not lie in the rendered future itself, but in the control-relevant visual representations induced during training. In this work, we revisit future video prediction from a dynamic-centric perspective and ask whether an existing RGB-based WAM can be redirected from appearance-dominated reconstruction toward interaction-induced visual dynamics without introducing additional modality-specific predictions or online inputs at deployment. We propose DC-WAM, a dynamic-centric WAM framework that redistributes supervision and computation in the RGB video branch. At the supervision level, DC-WAM combines temporal-difference flow matching with trajectory-guided weighting, emphasizing dense temporal changes and localized regions where the gripper, manipulated objects, and contact areas move. At the reasoning level, DynaRoute predicts token-wise dynamic relevance and converts it into an attention bias, guiding the model toward control-relevant future tokens. Experiments in simulation and on real-world manipulation tasks show that DC-WAM consistently improves policy performance, especially under out-of-distribution perturbations in lighting, object appearance, and background texture.",
+            "authors": [
+              "Haoyuan Ji",
+              "Lingxiang Fan",
+              "Shang Su",
+              "Yinqiao Lu",
+              "Mengkai Shi",
+              "Jun Gao",
+              "Shuo Feng"
+            ],
+            "published": "2026-07-28T16:08:50Z",
+            "updated": "2026-07-28T16:08:50Z",
+            "url": "http://arxiv.org/abs/2607.25918v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25912v1",
+            "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+            "summary": "Vision-Language-Action (VLA) models have shown strong potential for general robot manipulation, but most existing models rely on 2D visual-language backbones and lack fine-grained 3D understanding of target objects, especially under occlusion, pose variation, scale changes, and precise spatial interaction. We propose an object-centric 3D representation alignment framework built upon $π_0$, using SAM3D as a frozen 3D teacher to provide target-object 3D priors during training. Specifically, we localize task-relevant objects with object recognition models, generate corresponding object masks, and use SAM3D to extract dense object-level 3D representations, which are aligned with intermediate visual features of $π_0$. This enables the policy to internalize target-object 3D information while preserving the original RGB-language-to-action inference pipeline without requiring depth, point clouds, masks, SAM3D, or additional 3D modules at test time. Simulation experiments show consistent improvements, achieving 99.1\\% on LIBERO and an average length of 4.11 on CALVIN. Real-world experiments further demonstrate that our method is particularly effective in long-horizon manipulation scenarios where the robot must focus on different target objects across multiple subtasks.",
+            "authors": [
+              "Zonghe Liu",
+              "Shanyuan Jie",
+              "Xiaoquan Sun",
+              "Chen Cao",
+              "Zetian Xu",
+              "Zongsheng Liu",
+              "Jiayu Chen"
+            ],
+            "published": "2026-07-28T16:05:32Z",
+            "updated": "2026-07-28T16:05:32Z",
+            "url": "http://arxiv.org/abs/2607.25912v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO",
+              "cs.AI"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25895v1",
+            "title": "HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone",
+            "summary": "Learning deployable manipulation policies is bottlenecked by the scarcity of data that is both high-fidelity and scalable. Real-robot teleoperation is accurate but costly to scale; robot-free UMI capture scales readily, and current practice uses the resulting data mainly for pre-training, adding a small real-robot \"anchor\" at post-training. We ask whether raising the fidelity of robot-free UMI data, rather than shrinking the real-robot fraction, can remove that anchor. We present HiFi-UMI, a portable UMI data-production system co-designed for trajectory accuracy, inter-gripper relative pose, synchronization, and field of view: head-mounted offline stereo-inertial SLAM, native rather than reconstructed relative pose, a shared microsecond GPIO trigger, and two wide-angle cameras per hand covering ~200 degrees. It reaches 3 mm workspace-local end-effector accuracy without external tracking infrastructure. Using this corpus, we demonstrate zero-robot post-training: a policy post-trained solely on HiFi-UMI demonstrations deploys directly on a real robot and matches in-domain teleoperation across three backbones spanning the vision-language-action and world-action-model families, with success-rate differences of -2.5, +3.1, and -0.6 percentage points on StarVLA-QwenPI, OpenPI-pi_0.5, and LingBot-VA; the strongest policy reaches 85% on a precision insertion task, even though the teleoperation baseline is collected in the evaluation scene and no HiFi-UMI trajectory is. Pre-training on 4,000 hours from the same corpus lowers action error on ten unseen tasks by 41% and, on StarVLA-QwenPI, raises real-robot success by a further 18.1 percentage points. We open-source HiFi-UMI-2K, 2,000 hours of microsecond-synchronized, ultra-wide-FoV demonstrations, each automatically reconstructed and validated through simulation replay, as a large-scale, high-fidelity resource for the robot-learning community.",
+            "authors": [
+              "Simple AI",
+              ":",
+              "Yuteng Wei",
+              "Jinming Ma",
+              "Jiawei Wang",
+              "Weitao Zhou",
+              "Yushen Zuo",
+              "Ke Rui",
+              "Minglei Li",
+              "Jinhao Zhang",
+              "Zhikang Pan",
+              "Xiang Wang",
+              "Haoran Jia",
+              "Huan Du",
+              "Zicheng Zeng",
+              "Jun Ma",
+              "Guiyu Qin",
+              "Di Zhang",
+              "Xiaofei Li"
+            ],
+            "published": "2026-07-28T15:52:02Z",
+            "updated": "2026-07-28T15:52:02Z",
+            "url": "http://arxiv.org/abs/2607.25895v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25895v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO",
+              "cs.CV",
+              "cs.LG"
+            ]
+          },
+          {
+            "arxiv_id": "2607.25807v1",
+            "title": "Modular Robotic Catheters for Endovascular Aneurysm Repair",
+            "summary": "Fenestrated/Branched endovascular aneurysm repair (FEVAR/BEVAR) require surgeons to navigate catheters and guidewires into various branches of the abdominal aorta, before deploying stent grafts to alleviate pressure on the aneurysm. Previous clinical studies suggests that surgeons continue to struggle with vessel access using standard commercial instruments, prolonging the procedural time and inducing further complications. In this work, we present two contributions to solving this problem: 1) A bespoke 2-segment steerable catheter, consisting of 4 degrees of freedom to enhance dexterity. 2) An expandable, modular tendon-driven actuation platform that can accommodate for the redundancies introduced in our system. To fabricate the catheter, we capitalized on thermal fiber drawing, a technique that creates high-aspect ratio devices at scale, and processed the catheter with laser micro-machining to soften its tip. We evaluated the system using simulations, where we investigated the catheter's bending stiffness, then its steerability with in-vitro experiments in vascular phantoms. This handheld, robotic steerable catheter system has the potential to shorten the length of future endovascular surgeries, and give clinicians the tools to resolve challenging clinical cases.",
+            "authors": [
+              "Alex Ranne",
+              "Jinshi Zhao",
+              "Ali Anil Demircali",
+              "Songli Moey",
+              "Ayhan Aktas",
+              "Burak Temelkuran",
+              "Nassir Navab",
+              "Ferdinando Rodriguez y Baena"
+            ],
+            "published": "2026-07-28T14:53:03Z",
+            "updated": "2026-07-28T14:53:03Z",
+            "url": "http://arxiv.org/abs/2607.25807v1",
+            "pdf_url": "https://arxiv.org/pdf/2607.25807v1",
+            "source": "arxiv.org",
+            "primary_category": "cs.RO",
+            "categories": [
+              "cs.RO"
+            ]
+          }
+        ],
+        "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+      }
+    }
+  ],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}

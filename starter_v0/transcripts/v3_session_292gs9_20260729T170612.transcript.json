@@ -1,0 +1,57 @@
+{
+  "session_id": "session_292gs9",
+  "version": "v3",
+  "user_message": "cho tôi bái về robot",
+  "history_turns": 0,
+  "created_at": "2026-07-29T17:06:12",
+  "status": "waiting_for_user",
+  "assistant_text": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": null,
+      "tool_calls": [
+        {
+          "name": "clarify",
+          "args": {
+            "question": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+            "response_type": "text"
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    }
+  ],
+  "tool_events": [
+    {
+      "tool": "clarify",
+      "args": {
+        "question": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+        "response_type": "text"
+      },
+      "result": {
+        "tool": "ask_user",
+        "question": "Bạn muốn tìm bài viết về chủ đề robot nào? (ví dụ: robot humanoid, robot công nghiệp, robot tự hành, v.v.)",
+        "response_type": "text",
+        "options": [],
+        "awaiting_user": true
+      }
+    }
+  ],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}
