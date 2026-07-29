@@ -372,9 +372,10 @@ function App() {
     transcript_id: latestTranscriptName || apiResponse?.session_id || `${mode}_${version}_${scenarioId}`,
     status: displayRun.status,
     turns: [turn],
-  }), [apiResponse, displayRun.status, evidence.transcript, latestTranscriptName, mode, scenarioId, turn, version])
-  const toolCount = turn.rounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
-  const toolErrorCount = turn.rounds.reduce(
+  }), [apiResponse, displayRun.status, evidence?.transcript, latestTranscriptName, mode, scenarioId, turn, version])
+  const safeRounds = turn?.rounds || []
+  const toolCount = safeRounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
+  const toolErrorCount = safeRounds.reduce(
     (count, round) => count + (round.tool_results || []).filter(
       (event) => event.error || event.result?.error || event.status === 'error',
     ).length,

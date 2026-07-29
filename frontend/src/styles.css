@@ -81,6 +81,11 @@ select:disabled, .composer input:disabled, .composer button:disabled { cursor: n
 .bottom-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 18px; margin-top: 18px; } .comparison-table { display: grid; overflow-x: auto; gap: 2px; } .table-row { display: grid; grid-template-columns: 1.4fr repeat(4, .7fr); min-width: 540px; align-items: center; min-height: 37px; padding: 0 10px; border-bottom: 1px solid #1a2433; color: #a9b7cb; font-size: 11px; } .table-row:last-child { border-bottom: 0; } .table-head { min-height: 27px; border-bottom: 1px solid #27344a; font-size: 9px; } .table-row b { display: inline-block; width: 22px; color: #e4ecfb; font: 500 11px 'DM Mono', monospace; } .current-row { border-radius: 6px; background: rgba(53, 113, 190, .11); color: #e1eaf8; } .delta { color: #68d7a7; font-family: 'DM Mono', monospace; }
 details summary { cursor: pointer; color: #9db8dc; font-size: 11px; } details .json-block { max-height: 270px; margin-top: 12px; }
 footer { display: flex; justify-content: space-between; padding: 20px 2px 0; color: #526078; font: 10px 'DM Mono', monospace; }
+.fatal-error { display: grid; min-height: 100vh; place-items: center; padding: 24px; }
+.fatal-error-card { width: min(520px, 100%); padding: 28px; border: 1px solid #49303a; border-radius: 14px; background: #141018; box-shadow: 0 24px 70px rgba(0, 0, 0, .32); }
+.fatal-error-card h1 { margin-bottom: 12px; font-size: 20px; }
+.fatal-error-card > p:not(.eyebrow) { color: #c89aa4; font: 12px/1.6 'DM Mono', monospace; }
+.fatal-error-card button { margin-top: 8px; padding: 10px 14px; border: 0; border-radius: 8px; background: #356fbe; color: #fff; font-weight: 700; }
 
 :root[data-theme='light'] body { background: radial-gradient(circle at 10% 0%, rgba(85, 139, 211, .16), transparent 32rem), #edf2f9; }
 :root[data-theme='light'] .panel { border-color: #d7e0ec; background: linear-gradient(145deg, rgba(255, 255, 255, .97), rgba(246, 249, 253, .98)); box-shadow: 0 18px 48px rgba(50, 72, 104, .09); }
@@ -149,6 +154,8 @@ footer { display: flex; justify-content: space-between; padding: 20px 2px 0; col
 :root[data-theme='light'] .delta { color: #167959; }
 :root[data-theme='light'] details summary { color: #3f648f; }
 :root[data-theme='light'] footer { color: #728299; }
+:root[data-theme='light'] .fatal-error-card { border-color: #e1c4c9; background: #fff7f8; box-shadow: 0 24px 60px rgba(69, 48, 56, .12); }
+:root[data-theme='light'] .fatal-error-card > p:not(.eyebrow) { color: #855c65; }
 
 @media (max-width: 1050px) {
   .dashboard-grid, .bottom-grid { grid-template-columns: 1fr; }
