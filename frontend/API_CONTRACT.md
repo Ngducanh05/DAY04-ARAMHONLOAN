@@ -109,7 +109,7 @@ Input: transcript filename as a URL path parameter.
 
 Output: the complete stored transcript JSON.
 
-## APIs still missing for the current UI
+## API endpoints added by the updated backend
 
 ### 1. `GET /runs`
 
@@ -234,5 +234,18 @@ Suggested `GET /config` output:
 }
 ```
 
-Until these endpoints exist, run metrics/version comparison remain explicitly
-marked as mock data in the frontend.
+## Backend caveats found during runtime check
+
+- Run list currently returns an empty `generated_at` because the backend
+  reads `timestamp/run_at`, while run JSON uses `generated_at`.
+- `/artifacts/current` hashes the active root artifacts; its v3 hash can
+  differ from the historical hash recorded by `/versions`.
+- `/versions` derives routing/argument/multiturn values from case accuracy
+  instead of reading those metrics from each run summary.
+- `provider/model` fields are accepted by `POST /chat`, but the backend
+  still uses startup configuration from `AGENT_PROVIDER/AGENT_MODEL`.
+- Run `uvicorn app:app --reload --port 8000`. `server.py` is the legacy
+  API and does not expose the added runs/artifacts/versions/config endpoints.
+
+The frontend uses real API data in Live API mode. Mock data is only used by
+the explicit Fallback mode.

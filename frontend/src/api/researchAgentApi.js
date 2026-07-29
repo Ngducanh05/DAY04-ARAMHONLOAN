@@ -83,4 +83,32 @@ export function getTranscript(filename) {
   return request(`/transcripts/${encodeURIComponent(filename)}`, { timeoutMs: 5000 })
 }
 
+export function getRuns({ version, suite, limit = 20 } = {}) {
+  const params = new URLSearchParams()
+  if (version) params.set('version', version)
+  if (suite) params.set('suite', suite)
+  params.set('limit', String(limit))
+  return request(`/runs?${params.toString()}`, { timeoutMs: 5000 })
+}
+
+export function getRun(runId) {
+  return request(`/runs/${encodeURIComponent(runId)}`, { timeoutMs: 10000 })
+}
+
+export function getCurrentArtifact(version = 'v3') {
+  const params = new URLSearchParams({ version })
+  return request(`/artifacts/current?${params.toString()}`, { timeoutMs: 5000 })
+}
+
+export function getVersions(suite) {
+  const params = new URLSearchParams()
+  if (suite) params.set('suite', suite)
+  const suffix = params.size ? `?${params.toString()}` : ''
+  return request(`/versions${suffix}`, { timeoutMs: 5000 })
+}
+
+export function getConfig() {
+  return request('/config', { timeoutMs: 5000 })
+}
+
 export { API_BASE_URL }
