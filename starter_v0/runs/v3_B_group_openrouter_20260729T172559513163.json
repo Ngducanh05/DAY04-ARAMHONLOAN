@@ -1,0 +1,1516 @@
+{
+  "run_id": "v3_B_group_openrouter_20260729T172559513163",
+  "version": "v3",
+  "artifact_version": "v3+pccca4ce231f0+t890b77c2a230",
+  "prompt_hash": "ccca4ce231f08634bce7d0c1f1ac482286d2bb979c24a6f6b704c65c153c30aa",
+  "tools_hash": "890b77c2a230ffda1c65c0a061fc9a1c747efcf8ad95f58b4d5ad19ceb08830d",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Documents\\AIinAction\\Labs\\DAY04-ARAMHONLOAN\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Documents\\AIinAction\\Labs\\DAY04-ARAMHONLOAN\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "starter_v0\\data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Bộ test case tự thiết kế kết hợp từ các nhánh.",
+  "generated_at": "2026-07-29T17:25:59",
+  "summary": {
+    "total_cases": 20,
+    "measured_cases": 20,
+    "provider_error_cases": 0,
+    "passed_cases": 20,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_robotics_news_week",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Single-turn: 'tuần này' → timeframe=week, topic=news. Không được dùng timeframe=day hay general."
+      },
+      "input": "Tin tức robotics tuần này có gì nổi bật?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "week"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Top Robotics Stocks Worth Investing Right Now for Solid ...",
+                "url": "https://finance.yahoo.com/markets/stocks/articles/top-robotics-stocks-worth-investing-154200515.html",
+                "source": "finance.yahoo.com",
+                "summary": "The Robotics Screen makes it easy to identify high-potential stocks at any given time, just like the ones discussed below. Leveraging advanced tools, the thematic screens identify companies shaping the future, making it easier to capitalize on emerging trends.  \n  \nReady to uncover more transformative thematic investment ideas? Explore 30 cutting-edge investment themes with Zacks Thematic Screens and discover your next big opportunity. [...] NVIDIA released open-source physical AI skills at GTC Taipei and Computex in June to cut robot development costs industry-wide. Collaborative Robotics unveiled a redesigned Proxie mobile robot featuring two-armed manipulation, self-swapping batteries and autonomous task identification, broadening collaborative automation across healthcare, logistics and manufacturing. [...] With physical AI maturing, surgical robotics entering its most competitive era in decades, defense autonomy deepening and space robotic servicing nearing reality, the rest of 2026 and the near term represent a broad opportunity for U.S. robotics stocks.",
+                "score": 0.50432175
+              },
+              {
+                "title": "The Robots Cometh",
+                "url": "https://time.com/article/2026/07/23/unitree-china-human-robotics",
+                "source": "time.com",
+                "summary": "Boosted connectivity would solve the robotics bottlenecks of weight and battery life. Navigating our world requires simultaneously processing 4K video, spatial lidar, audio, and delicate tactile or proprioceptive feedback. But carrying heavy computational hardware and the means to power it severely limits both robot agility and operating time. 6G could potentially combine cloud processing with network lag of a near instantaneous 0.1 to 1 millisecond. Suddenly, lightweight physical robots could [...] Unitree’s blossoming came just as the Chinese government began leaning into AI and robotics, which President Xi Jinping has highlighted as key examples of the “new growth drivers.” China’s Ministry of Industry and Information Technology in turn declared humanoids a “disruptive innovation” on the same level as smartphones and EVs—breakthroughs destined to transform human production and lifestyle, making leadership a matter of economic and national security. It’s a policy push backed by hard [...] The possibilities and promises of a humanoid revolution have occupied him since he was 10 years old and first watched early televised robotics experiments performed at MIT by Marc Raibert, founder of Boston Dynamics. He spent his free time building model aircraft, conducting experiments, and, before long, assembling miniature turbojet engines.\n\nAdvertisement\n\nMeet Unitree’s GD01 Robot",
+                "score": 0.40471974
+              },
+              {
+                "title": "Uber co-founder raises $1.7B for new robotics startup ATOMS",
+                "url": "https://www.therobotreport.com/uber-co-founder-raises-1-7b-for-new-robotics-startup-atoms",
+                "source": "therobotreport.com",
+                "summary": "Kraken Technology has developed modular maritime platforms for defense use.\n\n##### Kraken Technology raises Series B funding for autonomous vessels\n\nHoliday Robotics said its robot FRIDAY reduces the burden of repetitive physical work.\n\n##### Holiday Robotics raises $105M for its FRIDAY wheeled humanoid\n\nRopedia's HOMIE is a lightweight device that includes four cameras and a swappable battery module.\n\n##### Ropedia raises $22M to scale data collection for training robots [...] ATOMS, a robotics startup led by former Uber co-founder and former CEO Travis Kalanick, today said it has  raised $1.7 billion in equity investment. Kalanick said the funding will enable ATOMS to complete completion of the “bits-to-atoms” story arc he started at Uber and continued at CloudKitchens. [...] - Collaborative Robotics Trends\n  + Search Robotics Database\n  + Videos\n  + Webinars / Digital Events\n Events\n  + RoboBusiness\n  + Robotics Summit & Expo\n  + DeviceTalks\n  + R&D 100\n  + Robotics Weeks\n Podcast\n  + Episodes\n Advertise\n Subscribe",
+                "score": 0.40260404
+              },
+              {
+                "title": "Tech Moves: Agility Robotics gets CFO; Microsoft security departure; Zap's legal officer; new KEXP CPTO",
+                "url": "https://www.geekwire.com/2026/tech-moves-agility-robotics-gets-cfo-microsoft-security-departure-zaps-legal-officer-new-kexp-cto",
+                "source": "geekwire.com",
+                "summary": "— Agility Robotics named Michael Beer as its chief financial officer. Current CFO and chief operating officer Jennifer Hunter will transition to serving exclusively as COO.\n\n“Michael brings outstanding public company finance and capital markets experience, while Jennifer, with her prior experience as a publicly traded COO, will focus exclusively on scaling our operational excellence and manufacturing capabilities,” said CEO Peggy Johnson, in a statement. [...] The Salem, Ore.-based startup, whose two-legged Digit robots have been tested inside Amazon warehouses, is set to become the first publicly traded U.S. company dedicated solely to humanoid robots, the company announced last month.\n\nBeer joins Agility Robotics from the California energy storage company Energy Vault, where he was CFO for two years. Past roles include venture partner at Vest Coast Capital and CFO at FreeWire Technologies. [...] ### Latest Stories\n\n### GeekWire Newsletters\n\nSubscribe to GeekWire's free newsletters to catch every headline\n\n### Send Us a Tip\n\nHave a scoop that you'd like GeekWire to cover? Let us know.\n\n### Related Stories\n\n‘Digit’ maker Agility Robotics to go public in $2.5B deal — here’s what the filings say about its finances\n\nTech Moves: Carbon Robotics’ new CFO; Microsoft gaming GM goes to Netflix; Nordstrom gets VP of AI\n\nAgility Robotics reportedly raising $400M for humanoid warehouse robots",
+                "score": 0.38650924
+              },
+              {
+                "title": "Developing Healthcare Robotics with GPU-Native Medical ...",
+                "url": "https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation",
+                "source": "developer.nvidia.com",
+                "summary": "Healthcare robotics faces critical challenges in data scarcity, generalization, and development velocity due to limited access to annotated demonstrations, the prevalence of rare but clinically important scenarios, and slow, resource-intensive prototyping cycles. [...] AI-generated content may summarize information incompletely. Verify important information. Learn more\n\nUnlike autonomous driving or industrial robotics, healthcare robotics can’t rely on internet-scale data collection or unlimited real-world experimentation. Every demonstration requires specialized equipment, clinical expertise, and access to patients or laboratory environments. This creates three fundamental challenges for developers. [...] The third challenge is development velocity. Medical robotics development relies on benchtop phantoms, cadaver studies, animal models, and limited clinical evaluations. These remain essential, but they are inherently sequential, expensive, and difficult to scale. Iterating on designs and algorithms currently takes months, pushing total development cycles to 4–7 years.",
+                "score": 0.37586737
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_company_humanoid",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Single-turn: Câu hỏi về danh sách công ty robotics → robotics_companies, KHÔNG dùng lookup hay social_search."
+      },
+      "input": "Những công ty nào đang làm humanoid robot?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_companies",
+            "args": {
+              "robot_type": "humanoid"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "robotics_companies",
+            "args": {
+              "robot_type": "humanoid"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "robotics_companies",
+          "args": {
+            "robot_type": "humanoid"
+          },
+          "result": {
+            "tool": "robotics_companies",
+            "query": "",
+            "robot_type": "humanoid",
+            "total": 9,
+            "items": [
+              {
+                "title": "Boston Dynamics",
+                "summary": "Advanced dynamic robots for industrial and research use | Robots: Atlas (humanoid), Spot (quadruped), Stretch (logistics) | HQ: Waltham, Massachusetts | Pionner in dynamic locomotion and parkour robots. Atlas is world-famous humanoid.",
+                "url": "https://bostondynamics.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Atlas (humanoid)",
+                  "Spot (quadruped)",
+                  "Stretch (logistics)"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "quadruped",
+                  "logistics"
+                ],
+                "founded": 1992,
+                "country": "USA",
+                "twitter": "@BostonDynamics",
+                "funding": "Acquired by Hyundai for $1.1B in 2021"
+              },
+              {
+                "title": "Figure AI",
+                "summary": "General-purpose humanoid robots for commercial deployment | Robots: Figure 01, Figure 02 | HQ: Sunnyvale, California | Partnership with BMW for factory deployment. Figure 02 integrated with OpenAI.",
+                "url": "https://figure.ai",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Figure 01",
+                  "Figure 02"
+                ],
+                "robot_types": [
+                  "humanoid"
+                ],
+                "founded": 2022,
+                "country": "USA",
+                "twitter": "@figure_ai",
+                "funding": "$675M Series B at $2.6B valuation (2024)"
+              },
+              {
+                "title": "Agility Robotics",
+                "summary": "Humanoid robots for warehouse and logistics automation | Robots: Digit | HQ: Salem, Oregon | Amazon DeepRobotics facility. Digit designed for last-mile logistics.",
+                "url": "https://agilityrobotics.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "Digit"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "logistics"
+                ],
+                "founded": 2015,
+                "country": "USA",
+                "twitter": "@AgilityRobotics",
+                "funding": "Amazon acquisition in 2024"
+              },
+              {
+                "title": "Unitree Robotics",
+                "summary": "Affordable high-performance quadruped and humanoid robots | Robots: H1 (humanoid), H1-2 (humanoid), Go2 (quadruped) | HQ: Hangzhou, Zhejiang | Most affordable humanoid robots on the market. H1 can run at 3.3 m/s.",
+                "url": "https://unitree.com",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "H1 (humanoid)",
+                  "H1-2 (humanoid)",
+                  "Go2 (quadruped)",
+                  "B2 (quadruped)",
+                  "G1 (humanoid)"
+                ],
+                "robot_types": [
+                  "humanoid",
+                  "quadruped"
+                ],
+                "founded": 2016,
+                "country": "China",
+                "twitter": "@UnitreeRobotics",
+                "funding": "Private, estimated $1B+ valuation"
+              },
+              {
+                "title": "1X Technologies (formerly Halodi Robotics)",
+                "summary": "Human-form robots for home and care environments | Robots: EVE (wheeled humanoid), NEO (bipedal humanoid) | HQ: Moss, Norway / Sunnyvale, CA | OpenAI investment. NEO designed to work alongside humans at home.",
+                "url": "https://1x.tech",
+                "source": "robotics_companies_db",
+                "robots": [
+                  "EVE (wheeled humanoid)",
+                  "NEO (bipedal humanoid)"
+                ],
+                "robot_types": [
+                  "humanoid"
+                ],
+                "founded": 2014,
+                "country": "Norway",
+                "twitter": "@1x_technologies",
+                "funding": "$100M Series B (2024)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_atlas_specs",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Single-turn: Hỏi specs cụ thể của một robot → robot_specs, KHÔNG dùng lookup."
+      },
+      "input": "Thông số kỹ thuật của robot Atlas là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robot_specs",
+            "args": {
+              "robot_name": "Atlas"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "robot_specs",
+            "args": {
+              "robot_name": "Atlas"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "robot_specs",
+          "args": {
+            "robot_name": "Atlas"
+          },
+          "result": {
+            "tool": "robot_specs",
+            "query": "Atlas",
+            "spec_category": "all",
+            "robot": "Atlas",
+            "manufacturer": "Boston Dynamics",
+            "type": "Humanoid",
+            "summary": "Atlas by Boston Dynamics (Humanoid) | Year: 2013 | Height: 150cm, Weight: 89kg | Max speed: 2.5 m/s | Notable: Can do parkour, backflips, gymnastics. 2024 model fully electric.",
+            "specs": {
+              "type": "Humanoid",
+              "year": 2013,
+              "latest_version": "Atlas (Electric, 2024)",
+              "physical": {
+                "height_cm": 150,
+                "weight_kg": 89,
+                "degrees_of_freedom": 28,
+                "material": "Titanium, aluminum, 3D-printed polymer"
+              },
+              "mobility": {
+                "max_speed_ms": 2.5,
+                "jump_height_cm": 120,
+                "can_backflip": true,
+                "can_run": true,
+                "terrain": "All terrain including rough outdoor, stairs, obstacles",
+                "actuation": "Electric (2024 model); previously hydraulic"
+              },
+              "sensors": {
+                "vision": "Stereo cameras, LIDAR, depth sensors",
+                "imu": true,
+                "force_torque": true
+              },
+              "power": {
+                "battery_wh": "Not publicly disclosed",
+                "runtime_min": "~60 min (estimated)",
+                "charging": "Plug-in electric"
+              },
+              "software": {
+                "os": "Custom Boston Dynamics runtime",
+                "programming": "Proprietary",
+                "ai": "Reinforcement learning, whole-body control",
+                "ros_support": false
+              },
+              "use_cases": [
+                "Research",
+                "Search & Rescue",
+                "Industrial inspection",
+                "Manipulation"
+              ],
+              "notable": "Can do parkour, backflips, gymnastics. 2024 model fully electric.",
+              "url": "https://bostondynamics.com/atlas"
+            },
+            "url": "https://bostondynamics.com/atlas"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_doi_metadata_routing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Tool mới (HaiYen): user cung cấp DOI cụ thể và hỏi metadata học thuật → route sang robotics_paper_lookup(lookup_type=doi)."
+      },
+      "input": "Cho mình xem thông tin học thuật (tác giả, venue, số lượt trích dẫn) của bài báo có DOI là 10.1109/LRA.2023.1234567 được không?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "10.1109/LRA.2023.1234567",
+              "lookup_type": "doi"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "10.1109/LRA.2023.1234567",
+              "lookup_type": "doi"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "robotics_paper_lookup",
+          "args": {
+            "query": "10.1109/LRA.2023.1234567",
+            "lookup_type": "doi"
+          },
+          "result": {
+            "tool": "robotics_paper_lookup",
+            "query": "10.1109/LRA.2023.1234567",
+            "lookup_type": "doi",
+            "items": [],
+            "error": "not_found",
+            "message": "No Crossref paper metadata was found for this query."
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_out_of_scope_math",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Single-turn: Câu hỏi toán học ngoài phạm vi → từ chối lịch sự, KHÔNG gọi tool."
+      },
+      "input": "Giúp mình giải bài toán này: tính nghiệm của phương trình bậc 2 x^2 - 5x + 6 = 0",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng yêu cầu của bạn nằm ngoài phạm vi nghiên cứu của tôi. Tôi không thể giải bài toán toán học. Tuy nhiên, bạn có thể sử dụng công thức nghiệm của phương trình bậc 2 hoặc một công cụ giải toán trực tuyến để tìm nghiệm của phương trình này.",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G06_stock_quote_custom_tool",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_stock_quote",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cứu giá cổ phiếu theo mã ticker NVDA dùng tool stock_quote."
+      },
+      "input": "Giá cổ phiếu NVIDIA (NVDA) hôm nay là bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "stock_quote",
+            "args": {
+              "symbol": "NVDA"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "stock_quote",
+            "args": {
+              "symbol": "NVDA"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "stock_quote",
+          "args": {
+            "symbol": "NVDA"
+          },
+          "result": {
+            "tool": "stock_quote",
+            "symbol": "NVDA",
+            "company": "NVIDIA Corporation",
+            "price": 122.8,
+            "change_percent": "+3.5%",
+            "currency": "USD"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_export_report_custom_tool",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_export_report",
+        "difficulty": "easy",
+        "what_it_tests": "Xuất báo cáo ra file markdown dùng tool export_report."
+      },
+      "input": "Xuất báo cáo nghiên cứu này ra file markdown với tiêu đề 'Báo cáo AI 2026' và nội dung 'Tóm tắt thị trường AI'.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "export_report",
+            "args": {
+              "title": "Báo cáo AI 2026",
+              "file_format": "markdown"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "export_report",
+            "args": {
+              "title": "Báo cáo AI 2026",
+              "content": "Tóm tắt thị trường AI",
+              "file_format": "markdown"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "export_report",
+          "args": {
+            "title": "Báo cáo AI 2026",
+            "content": "Tóm tắt thị trường AI",
+            "file_format": "markdown"
+          },
+          "result": {
+            "tool": "export_report",
+            "title": "Báo cáo AI 2026",
+            "file_path": "C:\\Documents\\AIinAction\\Labs\\DAY04-ARAMHONLOAN\\starter_v0\\exports\\B_o_c_o_AI_2026.md",
+            "file_format": "markdown",
+            "bytes_written": 51,
+            "status": "success"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_translate_custom_tool",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_translate",
+        "difficulty": "easy",
+        "what_it_tests": "Dịch văn bản sang tiếng Việt dùng tool translate."
+      },
+      "input": "Dịch đoạn văn này sang tiếng Việt: 'Artificial intelligence is reshaping the global economy.'",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "translate",
+            "args": {
+              "target_language": "Vietnamese"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "translate",
+            "args": {
+              "text": "Artificial intelligence is reshaping the global economy.",
+              "target_language": "Vietnamese"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "translate",
+          "args": {
+            "text": "Artificial intelligence is reshaping the global economy.",
+            "target_language": "Vietnamese"
+          },
+          "result": {
+            "tool": "translate",
+            "original_text": "Artificial intelligence is reshaping the global economy.",
+            "target_language": "Vietnamese",
+            "translated_text": "[Vietnamese Translation] Artificial intelligence is reshaping the global economy.",
+            "status": "success"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09_missing_stock_symbol",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_symbol",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu xem giá cổ phiếu nhưng thiếu mã symbol -> ask_user hỏi lại mã chứng khoán."
+      },
+      "input": "Xem giúp mình giá cổ phiếu với",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn muốn xem giá cổ phiếu của công ty nào?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn muốn xem giá cổ phiếu của công ty nào?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn xem giá cổ phiếu của công ty nào?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_out_of_scope_creative_writing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_poetry",
+        "difficulty": "easy",
+        "what_it_tests": "Sáng tác thơ nghệ thuật ngoài phạm vi tin tức/nghiên cứu -> KHÔNG gọi tool."
+      },
+      "input": "Viết giúp mình một bài thơ tình 4 câu về mùa thu Hà Nội.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng tôi không thể viết thơ. Tuy nhiên, tôi có thể giúp bạn tìm hiểu về mùa thu Hà Nội hoặc các chủ đề liên quan khác. Bạn có muốn biết thêm thông tin nào không?",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M01_missing_handle_then_fill",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 1 thiếu handle → hỏi lại. Lượt 2 bổ sung Boston Dynamics → map thành BostonDynamics. Lượt 3 xác nhận limit=5."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem tweet mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Của Boston Dynamics nhé"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 5 tweet gần nhất"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "BostonDynamics",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "BostonDynamics",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "BostonDynamics",
+            "limit": 5
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "error": "RuntimeError",
+            "message": "Missing RAPIDAPI_KEY env var"
+          }
+        }
+      ]
+    },
+    {
+      "id": "M02_carryover_timeframe_robotics",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: Carry timeframe=day và topic=news từ lượt 1. Lượt 3 chỉ đổi query=drone."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin robotics hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Còn về drone thì sao?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm drone thôi, vẫn là hôm nay nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "drone",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "drone",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "drone",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "drone",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "How Ukraine’s long-range drones are changing what’s possible in war with Russia",
+                "url": "https://www.csmonitor.com/World/Europe/2026/0728/ukraine-zelenskyy-trump-drone-warfare-russia",
+                "source": "csmonitor.com",
+                "summary": "“For now, I see that the main diplomatic leverage that our country has, in terms of settling this war, comes out of such [drone] operations,” he says. “The psychology of the Russian population is that, unless they feel it in their homes ... unless they see it on their streets, they would conduct this war for decades more.”\n\nThe key is stopping Russia from resupplying troops with ammunition, food, and transport, as well as “maximizing damage” to the financial system that supports the war. [...] The videos are the visual record of the latest evolution of this war, now in its fifth year. In recent weeks, Ukraine has also stepped up drone strikes against Russia-linked ships carrying oil and grain shipments in the Black Sea and Sea of Azov.\n\nIn addition, Ukraine is ramping up midrange drone attacks to isolate the Crimean Peninsula, occupied by Russia since 2014, that are causing mass power outages and fuel shortages. [...] Fire Point now produces 300 drones per day and can “easily” reach 1,000, he says. Strikes against Russia – including targets in Moscow – sometimes involve hundreds of drones launched at a time, to overwhelm local air defenses.\n\n“The main idea must be simple, it must be cost-efficient, and it must be mass-produced,” says Mr. Shtilerman. “We don’t need the excellent weapon; we need the good weapon in the proper amount.”",
+                "score": 0.25635973
+              },
+              {
+                "title": "Russian industrial sites on fire after Ukrainian drone attacks",
+                "url": "https://www.aljazeera.com/news/2026/7/29/russian-industrial-sites-on-fire-after-ukrainian-drone-attacks",
+                "source": "aljazeera.com",
+                "summary": "Ukrainian drone attacks have hit industrial facilities in Russia’s western city of Ryazan, causing several to catch fire and forcing major retailer Wildberries to evacuate its local warehouses, according to authorities.\n\nRyazan Governor Pavel Malkov said 45 drones were shot down over the region overnight Tuesday, with falling debris causing a fire in an “industrial area” and damaging a home and a building. Six people were hospitalised with injuries, he said in a post on Telegram. [...] Five people, including a child, were also injured in Ukraine’s Dnipropetrovsk region, where Russia carried out dozens of attacks, using drones, aerial bombs and artillery, the head of the local military administration said.\n\nAdvertisement\n\nRussia’s Ministry of Defence ⁠said its drones hit two vessels carrying weapons and military equipment east of the Ukrainian port of Odesa. [...] Separately, a woman was killed ⁠and a man injured after missile debris hit an apartment building in the southern Russian city of Taganrog on the Sea of Azov, home to various industrial facilities and a grain terminal, ⁠regional Governor Yury Slyusar said.\n\nIn Ukraine’s Kherson, a man was killed and another three people wounded in a Russian ⁠drone attack, local authorities said.",
+                "score": 0.23842646
+              },
+              {
+                "title": "Drones attack industrial sites in Russia's Ryazan, Wildberries warehouse evacuated",
+                "url": "https://www.reuters.com/world/industrial-facilities-russias-ryazan-fire-after-drone-attack-regional-governor-2026-07-29",
+                "source": "reuters.com",
+                "summary": "Drones have damaged ​at least seven Wildberries warehouses in the past several days, destroying ⁠around 10% of the company's storage capacity, disrupting operations and inflicting losses ​on tens of thousands of small businesses that sell goods and services on ​the platform, according to the company and local authorities.\n\nThe Reuters Daily Briefing newsletter provides all the news you need to start your day. Sign up here.\n\nAdvertisement · Scroll to continue [...] Separately, a woman was killed and a man ‌injured ⁠after missile debris hit an apartment building in the southern Russian city of Taganrog on the Sea of Azov, home to various industrial facilities and a grain terminal, regional governor Yuri Slyusar said.\n\nIn Ukraine's Kherson, a man was killed and another ​three people injured ​in a Russian ⁠drone attack, local authorities said in Telegram.\n\nAdvertisement · Scroll to continue [...] Russia's defence ministry said its drones hit two vessels carrying weapons and military equipment ​east of the Ukrainian port of Odesa.\n\nUkraine and Russia have ​stepped up ⁠strikes on vessels in the Black Sea and Sea of Azov in recent weeks, which has led to a fall in oil and grain supplies in the ⁠region.\n\nReuters ​could not independently verify the reports. Both Russia ​and Ukraine deny targeting civilians in the war launched by Russia's full-scale invasion of Ukraine in February ​2022.",
+                "score": 0.21334475
+              },
+              {
+                "title": "Ukraine drone attack prompts evacuation of Wildberries logistics hub in central Russia",
+                "url": "https://www.aa.com.tr/en/russia-ukraine-war/ukraine-drone-attack-prompts-evacuation-of-wildberries-logistics-hub-in-central-russia/4012087",
+                "source": "aa.com.tr",
+                "summary": "logo\n\nlogo\n\nRussia-Ukraine WarEurasia\n\n# Ukraine drone attack prompts evacuation of Wildberries logistics hub in central Russia\n\n6 people hospitalized following attack on online retailer's warehouse in Ryazan region\n\nElena Teslova\n\n29 July 2026•Update: 29 July 2026\n\nContent media\n\nMOSCOW CITY\n\nA Wildberries warehouse in Russia's Ryazan region was evacuated on Wednesday after a Ukrainian drone attack, while six people were hospitalized, regional authorities and the company said. [...] The strike is the latest in a series of drone attacks targeting Wildberries logistics centers in Russia in recent weeks. Earlier this month, warehouses in the Tambov, Moscow, Krasnodar and Stavropol regions were hit, resulting in casualties and disrupting operations.\n\nUkraine drone attack prompts evacuation of Wildberries logistics hub in central Russia\n\nnews\\_share\n\nnews\\_share\\_descriptionsubscription\\_contact\n\nsubscription\n\n## LATEST NEWS [...] “At the moment, six people have been hospitalized. There is no threat to their lives, and doctors are providing the necessary medical assistance,” Malkov said on the Max messaging platform.\n\nHe later said the air raid alert had been lifted, and air defense operations concluded.\n\nUkraine did not immediately comment on the attack.",
+                "score": 0.1754536
+              },
+              {
+                "title": "Zelensky touts anti-drone tech to Trump in renewed plea for missiles",
+                "url": "https://www.washingtonpost.com/politics/2026/07/28/zelensky-pitches-anti-drone-technology-trump-seeks-patriots",
+                "source": "washingtonpost.com",
+                "summary": "## Sections\n\n## Get The Post\n\n## Contact Us\n\n## Terms of Use\n\n## Company\n\n## Sections\n\n## Get The Post\n\n## Contact Us\n\npixel [...] # Zelensky touts anti-drone tech to Trump in renewed plea for missiles\n\nThe Ukrainian president received a bipartisan hero’s welcome in Washington, contrasting with tense previous visits.\n\nUkrainian President Volodymyr Zelensky promoted his country’s anti-drone technology to President Donald Trump while renewing his appeal for American air-defense missiles, angling to find common cause between his resistance to Russia’s invasion and Trump’s standoff with Iran.\n\n## Company\n\n## Sections",
+                "score": 0.12123791
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M03_correction_robot_name",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 2 sửa robot từ Spot → Atlas. Lượt 3 thu hẹp spec_category=mobility."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cho mình xem thông số robot Spot"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, mình muốn xem Atlas"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ xem phần mobility thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robot_specs",
+            "args": {
+              "robot_name": "Atlas",
+              "spec_category": "mobility"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "robot_specs",
+            "args": {
+              "robot_name": "Atlas",
+              "spec_category": "mobility"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "robot_specs",
+          "args": {
+            "robot_name": "Atlas",
+            "spec_category": "mobility"
+          },
+          "result": {
+            "tool": "robot_specs",
+            "query": "Atlas",
+            "spec_category": "mobility",
+            "robot": "Atlas",
+            "manufacturer": "Boston Dynamics",
+            "type": "Humanoid",
+            "summary": "Atlas by Boston Dynamics (Humanoid) | Year: 2013 | Height: 150cm, Weight: 89kg | Max speed: 2.5 m/s | Notable: Can do parkour, backflips, gymnastics. 2024 model fully electric.",
+            "specs": {
+              "max_speed_ms": 2.5,
+              "jump_height_cm": 120,
+              "can_backflip": true,
+              "can_run": true,
+              "terrain": "All terrain including rough outdoor, stairs, obstacles",
+              "actuation": "Electric (2024 model); previously hydraulic"
+            },
+            "url": "https://bostondynamics.com/atlas"
+          }
+        }
+      ]
+    },
+    {
+      "id": "M04_switch_tool_twitter_to_web",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: Lượt 2 explicit chuyển từ social_search sang lookup. Lượt 3 giữ query Unitree."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mọi người đang bàn gì về Unitree robot trên Twitter?"
+        },
+        {
+          "role": "user",
+          "content": "Thôi bỏ Twitter, tìm trên web đi"
+        },
+        {
+          "role": "user",
+          "content": "Giữ chủ đề Unitree nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Unitree robot",
+              "topic": "news"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Unitree robot",
+              "topic": "news"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Unitree robot",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Unitree robot",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Viral video of new robot released by Chinese company raises questions about its abilities - NBC News",
+                "url": "https://www.nbcnews.com/video/viral-video-of-new-robot-released-by-chinese-unitree-freaks-out-social-media-267347013874",
+                "source": "nbcnews.com",
+                "summary": "Viral video of new robot released by Chinese company raises questions about its abilities. ## Inside the Growing Backlash Against Expansive AI Data Centers. * ## OpenAI says its AI models went rogue and hacked another tech company during test. * ## Inside the world of robot fight clubs. * ## How AI is Transforming the Way China’s Microdramas Are Made. * ## The future of public safety may start with a drone. * ## How Much of Social Media Health Trends Are Backed by Science? * ## How to Be a Tech-Savvy Traveler to Save Time and Money. * ## New Warning About Fake Invitation Scam: Here’s What to Know. * ## AI-powered robots are new tech searching ocean floors for mines. Chinese robotics company Unitree released a new video of its \"super athlete\" model. It's going viral for its impressive all-terrain capabilities. It's also raising questions about advancements in robotics and how it could be used in the future. ## Best of NBC News.",
+                "score": 0.5855047
+              },
+              {
+                "title": "White House Bans Foreign Humanoid Robots in Bid to Slow China’s Tech Explosion - Gizmodo",
+                "url": "https://gizmodo.com/white-house-bans-foreign-humanoid-robots-in-bid-to-slow-chinas-tech-explosion-2000792090",
+                "source": "gizmodo.com",
+                "summary": "The ban is largely seen as a way to target humanoid robots made by China, a traditional geopolitical adversary of the U.S. that has been making enormous strides in robotics and AI in recent years. Many of these same concerns were raised as the reason to ban TikTok before it was forced to sell a majority stake in the company to U.S. interests. The foreign robotics ban also includes power inverters created by foreign companies, but the new measures have exemptions on which countries may be allowed to sell their products in the U.S. and the kind of products. China’s Unitree is likely a major target of this new ban, and the company already sells humanoid robots and robotic dogs inside the U.S., as any American fan of robots is likely aware from watching social media videos.",
+                "score": 0.5455042
+              },
+              {
+                "title": "Trump administration bans new Chinese humanoid robots - BBC",
+                "url": "https://www.bbc.com/news/articles/cp9e2ex3ekyo",
+                "source": "bbc.com",
+                "summary": "# Trump administration bans new Chinese humanoid robots. The Trump administration on Tuesday announced a ban on new foreign-made humanoid robot imports to the US over \"unacceptable risks\" to the country's national security. The Federal Communications Commission (FCC) also banned the import of power inverters - a device used in data centres and solar panels - which it said could also pose a risk to the US economy. The BBC has contacted the Chinese embassy in Washington as well as major Chinese robot manufacturers Unitree, UBTech and AgiBot. The FCC has added the items to its Covered List - a register of goods and services that are deemed a risk to US national security. It added that the use of robots made outside the US could allow \"malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots.\".",
+                "score": 0.5363378
+              },
+              {
+                "title": "China’s humanoid robots have been taking over the global market. Now the US is banning them - CNN",
+                "url": "https://www.cnn.com/2026/07/29/tech/us-china-robot-ban-intl-hnk",
+                "source": "cnn.com",
+                "summary": "----- is driving the US market. * Employees at the world’s biggest AI companies are calling for a slowdown in AI development. # China’s humanoid robots have been taking over the global market. China, which supplies the vast majority of the world’s humanoid robots, has suddenly been cut off from its largest export market as the US government moves to curb its reliance on foreign technology. A visitor poses in front of a billboard showing a humanoid robot in the AI section at the Chinese International Supply Chain Expo (CISCE) on June 26, 2026 in Beijing. China’s humanoid robots have captivated the world. CNN has reached out to China’s Ministry of Commerce as well as top Chinese humanoid robot makers, including Unitree, Agibot, UBTech and Galbot, for comment. Last month, US tech giant Nvidia said it would partner with one of China’s top humanoid robot makers Unitree for research and development.",
+                "score": 0.53079647
+              },
+              {
+                "title": "Get this highly rated robot vacuum for 55% off for a limited time only - NBC News",
+                "url": "https://www.nbcnews.com/select/shopping/lefant-robot-vacuum-deal-of-the-day-2026-rcna589264",
+                "source": "nbcnews.com",
+                "summary": "scalp oilEverything you need to beat the heat this summerAmazon's secret sale on cooling productsBest new products of July 2026Talking Shop with Shay MitchellThe best spin shoes of 2026. # This popular robot vacuum is on sale for 55% off — bringing the price to under $100. This robot vacuum has a slim profile to fit under coffee tables, sofas and more.Amazon. Right now, the Lefant M210 Robot Vacuum is 55 percent off, bringing the price down to under $100 — a rare find in a category where many well-reviewed models still run $300 or more. If you’ve been putting off adding a robot vacuum to your cleaning routine because of the price tag, this is the kind of deal worth grabbing before it’s gone. The Lefant M210 is a compact robot vacuum built for small spaces and pet-heavy homes. ## Why this sale is worth it.",
+                "score": 0.044835445
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M05_confirm_before_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: Sau khi nhận được lời xác nhận ở lượt 3 ('Xác nhận gửi luôn nhé'), tiến hành gọi send với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin robotics hôm nay và gửi bản tóm tắt lên Telegram cho mình"
+        },
+        {
+          "role": "user",
+          "content": "Bản tin đó ổn rồi, gửi đi"
+        },
+        {
+          "role": "user",
+          "content": "Xác nhận gửi luôn nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "text": "Bản tin robotics hôm nay đã được tổng hợp và gửi đi!",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Bản tin robotics hôm nay đã được tổng hợp và gửi đi!",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM01_multiturn_stock_quote_fill",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_stock_fill",
+        "difficulty": "medium",
+        "what_it_tests": "Multi-turn: Lượt 1 đề cập công ty FPT, lượt 2 bổ sung mã chứng khoán FPT."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem giúp mình thông tin tài chính công ty FPT"
+        },
+        {
+          "role": "user",
+          "content": "Mã cổ phiếu là FPT nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "stock_quote",
+            "args": {
+              "symbol": "FPT"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "stock_quote",
+            "args": {
+              "symbol": "FPT",
+              "currency": "VND"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "stock_quote",
+          "args": {
+            "symbol": "FPT",
+            "currency": "VND"
+          },
+          "result": {
+            "tool": "stock_quote",
+            "symbol": "FPT",
+            "company": "FPT Corporation",
+            "price": 132000,
+            "change_percent": "+0.8%",
+            "currency": "VND"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM02_multiturn_translate_digest",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_translate",
+        "difficulty": "medium",
+        "what_it_tests": "Multi-turn: Lượt 1 hỏi tin tức, lượt 2 yêu cầu dịch kết quả sang tiếng Việt."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin tức công nghệ mới nhất hôm nay là gì?"
+        },
+        {
+          "role": "user",
+          "content": "Dịch tin tức trên sang tiếng Việt giúp mình"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "translate",
+            "args": {
+              "target_language": "Vietnamese"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "translate",
+            "args": {
+              "text": "Latest technology news today",
+              "target_language": "Vietnamese"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "translate",
+          "args": {
+            "text": "Latest technology news today",
+            "target_language": "Vietnamese"
+          },
+          "result": {
+            "tool": "translate",
+            "original_text": "Latest technology news today",
+            "target_language": "Vietnamese",
+            "translated_text": "[Vietnamese Translation] Latest technology news today",
+            "status": "success"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM03_multiturn_confirm_export",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirm_export",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn: Sau khi nhận xác nhận từ user ở lượt 2, tiến hành gọi export_report."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tổng hợp 3 tin AI nổi bật rồi xuất báo cáo ra file md cho mình"
+        },
+        {
+          "role": "user",
+          "content": "Đồng ý xuất báo cáo với tiêu đề 'AI Digest Today'"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "export_report",
+            "args": {
+              "title": "AI Digest Today",
+              "file_format": "markdown"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "export_report",
+            "args": {
+              "title": "AI Digest Today",
+              "content": "",
+              "file_format": "markdown"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "export_report",
+          "args": {
+            "title": "AI Digest Today",
+            "content": "",
+            "file_format": "markdown"
+          },
+          "result": {
+            "tool": "export_report",
+            "title": "AI Digest Today",
+            "file_path": "C:\\Documents\\AIinAction\\Labs\\DAY04-ARAMHONLOAN\\starter_v0\\exports\\AI_Digest_Today.md",
+            "file_format": "markdown",
+            "bytes_written": 20,
+            "status": "success"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM04_multiturn_search_then_format",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_search_format",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn: Thực hiện tìm kiếm web cho Gemini 2.0."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm trên web 3 bài viết mới nhất về Gemini 2.0"
+        },
+        {
+          "role": "user",
+          "content": "Trình bày các bài tìm được thành bản tin digest định dạng brief"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Gemini 2.0"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Gemini 2.0",
+              "topic": "news",
+              "max_results": 3
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Gemini 2.0",
+            "topic": "news",
+            "max_results": 3
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Gemini 2.0",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Google AI Outdiagnoses Doctors in Study of Nearly 14,000 Real Patients",
+                "url": "https://www.techtimes.com/articles/321455/20260724/google-ai-outdiagnoses-doctors-study-nearly-14000-real-patients.htm",
+                "source": "techtimes.com",
+                "summary": "Google Research promoted a preprint paper through an official blog post on July 22, 2026, describing SymptomAI: a conversational AI agent built on Gemini 2.0 Flash that conducts an active symptom interview — asking follow-up questions, probing for detail, adapting in real time — and then produces a ranked differential diagnosis (DDx), the same structured list of candidate conditions that a physician constructs during an office visit. The arxiv preprint itself was submitted May 5, 2026.",
+                "score": 0.5889134
+              },
+              {
+                "title": "AI Model Tracker",
+                "url": "https://sqmagazine.co.uk/ai-model-tracker",
+                "source": "sqmagazine.co.uk",
+                "summary": "| Context window  128K tokens  Parameters  1B-27B  Best at  Efficient open family  Benchmarks (developer-reported)  LiveCodeBench 29.7% · GPQA Diamond 42.4% · MMLU-Pro 67.5%  License terms  Gemma terms of use (restricted)  Primary source  Google model card ↗  Last confirmed  24 Jul 2026  Recent change  Open family (1B/4B/12B/27B); 4B/12B/27B support vision (text plus image). Built on Gemini 2.0 research. ShieldGemma 2 image safety checker built on Gemma 3.  Security & safety  Open weights under",
+                "score": 0.4302197
+              },
+              {
+                "title": "Google develops the Frozen v2 chip to improve Gemini",
+                "url": "https://inspenet.com/en/news/google-develops-the-frozen-v2-chip-to-increase-geminis-efficiency",
+                "source": "inspenet.com",
+                "summary": "Google anticipates a possible introduction of the chip starting in 2028; however, the timeline will depend on technical results, manufacturing tests, and the final definition of the Gemini components that would be integrated into the hardware. Meanwhile, TPUs will continue to play a central role in the company’s artificial intelligence infrastructure. Frozen v2 would expand that platform with a specialized option to meet Gemini’s growing demand. [...] Currently, artificial intelligence systems move large volumes of information between memory and processors. This movement consumes energy and can increase the time needed to generate a response. For this reason, Frozen v2 would incorporate certain elements of Gemini within the semiconductor itself. This configuration would make it possible to process requests with fewer data transfers and would reduce pressure on Google Cloud’s infrastructure. [...] ## The new chip would operate alongside Google’s TPUs\n\nFrozen v2 would be independent of Google’s tensor processing units; these TPUs are chips designed to train and run machine learning applications in data centers. Therefore, the new semiconductor would not directly replace TPUs; its role would be to complement the existing infrastructure with a design more closely tailored to Gemini’s characteristics.",
+                "score": 0.42634606
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM05_multiturn_clarify_then_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirm_send",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn: Lượt 1 yêu cầu gửi tin nhưng chưa confirmed, lượt 2 user xác nhận 'có' -> gọi send với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Gửi thông báo này qua Telegram giúp mình: Hôm nay có họp lúc 3h chiều"
+        },
+        {
+          "role": "user",
+          "content": "Xác nhận gửi tin nhắn này nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "text": "Hôm nay có họp lúc 3h chiều",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Hôm nay có họp lúc 3h chiều",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    }
+  ]
+}

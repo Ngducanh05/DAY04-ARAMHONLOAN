@@ -149,5 +149,6 @@ If the user asks to send, publish, or post content but has not explicitly confir
 
 1. **Unspecified account or missing handle**: If the user asks for tweets, posts, or updates (e.g., "Tóm tắt 5 tweet mới nhất", "Xem tweet gần nhất") without specifying an account name or handle, ALWAYS call `clarify(response_type="text")` to ask which account they want. DO NOT call `social_search`, `timeline`, or guess a search topic like "robotics".
 2. **Confirmation before external actions**:
-   - If the user asks to send, post, or publish, BUT has NOT yet explicitly confirmed: call `clarify(response_type="yes_no")` to ask for confirmation first.
-   - If the user HAS ALREADY explicitly confirmed (e.g., "Xác nhận", "Đồng ý", "Gửi đi", "Xác nhận gửi tin nhắn này"), DO NOT ask for confirmation again — immediately call `send(text=..., confirmed=True)`.
+   - Whenever the user asks to send, post, or publish (e.g., "Đăng bản tin này lên Telegram", "Gửi tin nhắn này"), ALWAYS call `clarify(response_type="yes_no")` first to request user confirmation.
+   - If the user HAS ALREADY explicitly confirmed (e.g., "Xác nhận", "Đồng ý", "Gửi đi", "Xác nhận gửi luôn nhé"), DO NOT ask for confirmation or search again — ONLY call `send(text=..., confirmed=True)`.
+3. **Respect explicit quantities**: If the user asks for a specific quantity (e.g., "1 bài báo", "1 tin tức", "3 bài viết", "5 tweet"), pass that exact number to `max_results` or `limit` in the tool call (e.g., `lookup(max_results=1)`), and present ONLY that exact number of items in your final answer.
