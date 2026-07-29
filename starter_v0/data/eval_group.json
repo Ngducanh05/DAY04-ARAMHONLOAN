@@ -3,5 +3,243 @@
   "dataset_role": "group",
   "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_robotics_doi_metadata",
+      "phase": "B",
+      "query": "Tra metadata paper DOI 10.1038/s41586-023-06004-9 giúp mình.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "10.1038/s41586-023-06004-9",
+              "lookup_type": "doi"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Single-turn DOI metadata request should route to robotics_paper_lookup with DOI lookup."
+      }
+    },
+    {
+      "id": "G02_robotics_doi_url_metadata",
+      "phase": "B",
+      "query": "Lay thong tin publication cho DOI URL nay: https://doi.org/10.15607/rss.2025.xxi.017",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "https://doi.org/10.15607/rss.2025.xxi.017",
+              "lookup_type": "doi"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "DOI URL should be treated as paper metadata lookup, not normal webpage fetch."
+      }
+    },
+    {
+      "id": "G03_robotics_keyword_metadata",
+      "phase": "B",
+      "query": "Tim 3 paper metadata ve vision language action robotics.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "vision language action robotics",
+              "lookup_type": "keyword",
+              "max_results": 3
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Robotics academic keyword search should use Crossref metadata with requested limit."
+      }
+    },
+    {
+      "id": "G04_arxiv_full_text_not_crossref",
+      "phase": "B",
+      "query": "Doc text 2 trang dau cua arXiv paper 1706.03762.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "paper_text",
+            "args": {
+              "arxiv_url": "1706.03762",
+              "max_pages": 2
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "arXiv full-text request should use paper_text, not robotics_paper_lookup."
+      }
+    },
+    {
+      "id": "G05_webpage_url_not_crossref",
+      "phase": "B",
+      "query": "Tom tat trang nay: https://openai.com/research/",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/research/"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Normal webpage URL should use fetch, not DOI metadata lookup."
+      }
+    },
+    {
+      "id": "G06_multi_title_metadata",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Minh dang lam demo ve Robotics paper."
+        },
+        {
+          "role": "user",
+          "content": "Tra publication metadata cho title Fine-Tuning Vision-Language-Action Models: Optimizing Speed and Success."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "Fine-Tuning Vision-Language-Action Models: Optimizing Speed and Success",
+              "lookup_type": "keyword"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn paper-title metadata request should route to Crossref keyword search."
+      }
+    },
+    {
+      "id": "G07_multi_switch_news_to_doi",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tim tin robotics hom nay."
+        },
+        {
+          "role": "user",
+          "content": "Thoi doi lai, chi tra metadata cho DOI 10.15607/rss.2025.xxi.017."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "10.15607/rss.2025.xxi.017",
+              "lookup_type": "doi"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Latest correction from web news to DOI metadata should override older lookup request."
+      }
+    },
+    {
+      "id": "G08_multi_keyword_limit_correction",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tim 8 paper metadata ve robot manipulation."
+        },
+        {
+          "role": "user",
+          "content": "A nham, chi lay 2 ket qua ve bimanual manipulation robotics thoi."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "robotics_paper_lookup",
+            "args": {
+              "query": "bimanual manipulation robotics",
+              "lookup_type": "keyword",
+              "max_results": 2
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Latest topic and limit correction should replace older Crossref search arguments."
+      }
+    },
+    {
+      "id": "G09_multi_missing_paper_info",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Minh can citation metadata cho bai robotics."
+        },
+        {
+          "role": "user",
+          "content": "Tra giup minh di."
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Missing DOI, title, author, or topic should ask for clarification instead of guessing."
+      }
+    },
+    {
+      "id": "G10_multi_cancel_research",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tim paper metadata ve humanoid robot navigation."
+        },
+        {
+          "role": "user",
+          "content": "Thoi bo qua request do. Chi noi ban co the dung tool nao."
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Cancelled research request should not trigger an older tool call."
+      }
+    }
+  ]
 }

@@ -187,3 +187,41 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  - name: robotics_paper_lookup
+    description: >
+      Retrieve structured academic publication metadata from Crossref using
+      either an exact DOI or a bibliographic keyword query. Use this tool when
+      the user provides a DOI, DOI URL, paper title, author, or Robotics research
+      topic and requests metadata such as title, authors, year, venue, publisher,
+      citation count, or DOI URL. Use lookup_type="doi" for an exact DOI and
+      lookup_type="keyword" for title, author, or topic search. Use "auto" when
+      the input may be either. Do not use this tool for general web news, normal
+      webpage URLs, arXiv full text, or social-media search. Never invent a DOI.
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: >
+            Exact DOI, DOI URL, paper title, author name, or Robotics research
+            keyword supplied by the user.
+        lookup_type:
+          type: string
+          enum:
+            - auto
+            - doi
+            - keyword
+          default: auto
+          description: >
+            Use doi for exact DOI metadata, keyword for bibliographic search,
+            or auto to detect a DOI automatically.
+        max_results:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 5
+          description: >
+            Maximum number of records returned for keyword search.
+      required:
+        - query

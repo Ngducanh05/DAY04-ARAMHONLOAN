@@ -122,6 +122,30 @@ Use `fetch` only when the user supplies a specific URL and asks to read, inspect
 
 Never infer or fabricate a missing URL.
 
+### `robotics_paper_lookup`
+
+Use `robotics_paper_lookup` for structured academic metadata from Crossref.
+
+Use it when the user provides:
+
+* an exact DOI;
+* a DOI URL;
+* a paper title;
+* an author name;
+* a Robotics research keyword and requests academic publication metadata.
+
+Use `lookup_type="doi"` for exact DOI retrieval and
+`lookup_type="keyword"` for title, author, or topic searches.
+
+Do not use this tool for:
+
+* general web or news searches;
+* social-media discussions;
+* reading a normal webpage URL;
+* extracting the full text of an arXiv paper.
+
+Never invent a DOI.
+
 ### `format`
 
 Use `format` only when research items have already been collected and the user requests a digest, briefing, report, bullet list, thread, or structured presentation.
