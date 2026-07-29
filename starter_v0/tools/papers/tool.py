@@ -11,7 +11,7 @@ import requests
 from tools._shared import TIMEOUT, err
 
 
-ARXIV_API_URL = "https://export.arxiv.org/api/query"
+ARXIV_API_URL = "https://arxiv.org/api/query"
 ARXIV_MIN_INTERVAL_SECONDS = 3.0
 _last_arxiv_request_at = 0.0
 
