@@ -1,0 +1,19 @@
+{
+  "session_id": "session_97ef47",
+  "version": "v3",
+  "user_message": "Hello",
+  "history_turns": 0,
+  "created_at": "2026-07-29T17:16:06",
+  "status": "answered",
+  "assistant_text": "Hello! How can I assist you today?",
+  "rounds": [
+    {
+      "round": 1,
+      "assistant_text": "Hello! How can I assist you today?",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "tool_events": [],
+  "artifact_version": "v3+pcd15c168d45f+t890b77c2a230"
+}
