@@ -1,7 +1,103 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "description": "Bộ 10 test case tự thiết kế bởi nhóm: 5 single-turn và 5 multi-turn phủ các loại failure_type bắt buộc.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_stock_quote_custom_tool",
+      "phase": "B", "suite": "group",
+      "query": "Giá cổ phiếu NVIDIA (NVDA) hôm nay là bao nhiêu?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "stock_quote", "args": {"symbol": "NVDA"}}]},
+      "metadata": {"skill": "routing_stock_quote", "difficulty": "easy", "what_it_tests": "Tra cứu giá cổ phiếu theo mã ticker NVDA dùng tool stock_quote."}
+    },
+    {
+      "id": "G02_export_report_custom_tool",
+      "phase": "B", "suite": "group",
+      "query": "Xuất báo cáo nghiên cứu này ra file markdown với tiêu đề 'Báo cáo AI 2026' và nội dung 'Tóm tắt thị trường AI'.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "export_report", "args": {"title": "Báo cáo AI 2026", "file_format": "markdown"}}]},
+      "metadata": {"skill": "routing_export_report", "difficulty": "easy", "what_it_tests": "Xuất báo cáo ra file markdown dùng tool export_report."}
+    },
+    {
+      "id": "G03_translate_custom_tool",
+      "phase": "B", "suite": "group",
+      "query": "Dịch đoạn văn này sang tiếng Việt: 'Artificial intelligence is reshaping the global economy.'",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "translate", "args": {"target_language": "Vietnamese"}}]},
+      "metadata": {"skill": "routing_translate", "difficulty": "easy", "what_it_tests": "Dịch văn bản sang tiếng Việt dùng tool translate."}
+    },
+    {
+      "id": "G04_missing_stock_symbol",
+      "phase": "B", "suite": "group",
+      "query": "Xem giúp mình giá cổ phiếu với",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "clarify_missing_symbol", "difficulty": "medium", "what_it_tests": "Yêu cầu xem giá cổ phiếu nhưng thiếu mã symbol -> ask_user hỏi lại mã chứng khoán."}
+    },
+    {
+      "id": "G05_out_of_scope_creative_writing",
+      "phase": "B", "suite": "group",
+      "query": "Viết giúp mình một bài thơ tình 4 câu về mùa thu Hà Nội.",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "out_of_scope_poetry", "difficulty": "easy", "what_it_tests": "Sáng tác thơ nghệ thuật ngoài phạm vi tin tức/nghiên cứu -> KHÔNG gọi tool."}
+    },
+    {
+      "id": "GM01_multiturn_stock_quote_fill",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Xem giúp mình thông tin tài chính công ty FPT"},
+        {"role": "user", "content": "Mã cổ phiếu là FPT nhé"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "stock_quote", "args": {"symbol": "FPT"}}]},
+      "metadata": {"skill": "multiturn_stock_fill", "difficulty": "medium", "what_it_tests": "Multi-turn: Lượt 1 đề cập công ty FPT, lượt 2 bổ sung mã chứng khoán FPT."}
+    },
+    {
+      "id": "GM02_multiturn_translate_digest",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tin tức công nghệ mới nhất hôm nay là gì?"},
+        {"role": "user", "content": "Dịch tin tức trên sang tiếng Việt giúp mình"}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "translate", "args": {"target_language": "Vietnamese"}}]},
+      "metadata": {"skill": "multiturn_translate", "difficulty": "medium", "what_it_tests": "Multi-turn: Lượt 1 hỏi tin tức, lượt 2 yêu cầu dịch kết quả sang tiếng Việt."}
+    },
+    {
+      "id": "GM03_multiturn_confirm_export",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tổng hợp 3 tin AI nổi bật rồi xuất báo cáo ra file md cho mình"},
+        {"role": "user", "content": "Đồng ý xuất báo cáo với tiêu đề 'AI Digest Today'"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "export_report", "args": {"title": "AI Digest Today", "file_format": "markdown"}}]},
+      "metadata": {"skill": "multiturn_confirm_export", "difficulty": "hard", "what_it_tests": "Multi-turn: Sau khi nhận xác nhận từ user ở lượt 2, tiến hành gọi export_report."}
+    },
+    {
+      "id": "GM04_multiturn_search_then_format",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm trên web 3 bài viết mới nhất về Gemini 2.0"},
+        {"role": "user", "content": "Trình bày các bài tìm được thành bản tin digest định dạng brief"}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "format", "args": {"template": "brief"}}]},
+      "metadata": {"skill": "multiturn_search_format", "difficulty": "hard", "what_it_tests": "Multi-turn: Lượt 2 yêu cầu trình bày kết quả đã tìm thành digest."}
+    },
+    {
+      "id": "GM05_multiturn_clarify_then_send",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Gửi thông báo này qua Telegram giúp mình: Hôm nay có họp lúc 3h chiều"},
+        {"role": "user", "content": "Xác nhận gửi tin nhắn này nhé"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "send", "args": {"confirmed": true}}]},
+      "metadata": {"skill": "multiturn_confirm_send", "difficulty": "hard", "what_it_tests": "Multi-turn: Lượt 1 yêu cầu gửi tin nhưng chưa confirmed, lượt 2 user xác nhận 'có' -> gọi send với confirmed=true."}
+    }
+  ]
 }

@@ -116,3 +116,32 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  # ---------------- Custom team tools ----------------
+  - name: export_report
+    description: "Xuất bản báo cáo nghiên cứu hoặc bản tin digest ra file báo cáo cục bộ (.md hoặc .txt)."
+    parameters:
+      type: object
+      properties:
+        title: {type: string, default: "", description: "Tiêu đề báo cáo"}
+        content: {type: string, default: "", description: "Nội dung báo cáo dạng markdown hoặc text"}
+        file_format: {type: string, enum: [markdown, txt], default: "markdown", description: "Định dạng file xuất ra"}
+      required: [title, content]
+
+  - name: stock_quote
+    description: "Tra cứu giá cổ phiếu, thông tin tài chính và biến động giá theo mã chứng khoán (như AAPL, NVDA, TSLA, FPT, VNM)."
+    parameters:
+      type: object
+      properties:
+        symbol: {type: string, default: "", description: "Mã chứng khoán / mã cổ phiếu"}
+        currency: {type: string, enum: [USD, VND], default: "USD", description: "Đơn vị tiền tệ"}
+      required: [symbol]
+
+  - name: translate
+    description: "Dịch nội dung hoặc bài viết digest sang ngôn ngữ chỉ định (như Vietnamese, English, French)."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Văn bản cần dịch"}
+        target_language: {type: string, default: "Vietnamese", description: "Ngôn ngữ đích"}
+      required: [text]

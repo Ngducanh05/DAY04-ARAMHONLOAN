@@ -7,14 +7,29 @@ from typing import Any
 from providers.base import ModelResponse, ToolCall
 
 
+def _uppercase_types(obj: Any) -> Any:
+    if isinstance(obj, dict):
+        new_dict: dict[str, Any] = {}
+        for k, v in obj.items():
+            if k == "type" and isinstance(v, str):
+                new_dict[k] = v.upper()
+            else:
+                new_dict[k] = _uppercase_types(v)
+        return new_dict
+    elif isinstance(obj, list):
+        return [_uppercase_types(item) for item in obj]
+    return obj
+
+
 def _to_gemini_declarations(tools: list[dict[str, Any]] | None) -> list[dict[str, Any]]:
     declarations: list[dict[str, Any]] = []
     for item in tools or []:
         function = item.get("function", item)
+        raw_params = function.get("parameters", {"type": "object", "properties": {}})
         declarations.append({
             "name": function["name"],
             "description": function.get("description", ""),
-            "parameters": function.get("parameters", {"type": "object", "properties": {}}),
+            "parameters": _uppercase_types(raw_params),
         })
     return declarations
 
@@ -73,7 +88,7 @@ class GeminiProvider:
         self,
         *,
         api_key_env: str = "GEMINI_API_KEY",
-        default_model: str = "gemini-3.5-flash",
+        default_model: str = "gemini-2.0-flash",
     ) -> None:
         self.api_key_env = api_key_env
         self.default_model = default_model
@@ -105,12 +120,23 @@ class GeminiProvider:
         if declarations:
             config_kwargs["tools"] = [types.Tool(function_declarations=declarations)]
 
+        import time
         client = genai.Client(api_key=api_key)
-        resp = client.models.generate_content(
-            model=model or self.default_model,
-            contents=contents,
-            config=types.GenerateContentConfig(**config_kwargs),
-        )
+        
+        resp = None
+        for attempt in range(5):
+            try:
+                resp = client.models.generate_content(
+                    model=model or self.default_model,
+                    contents=contents,
+                    config=types.GenerateContentConfig(**config_kwargs),
+                )
+                break
+            except Exception as exc:
+                if ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)) and attempt < 4:
+                    time.sleep(5 * (attempt + 1))
+                else:
+                    raise exc
 
         text_parts: list[str] = []
         calls: list[ToolCall] = []
