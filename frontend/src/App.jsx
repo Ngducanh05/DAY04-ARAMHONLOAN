@@ -216,9 +216,8 @@ function App() {
   function submitPrompt(event) {
     event.preventDefault()
     if (!draft.trim()) return
-    setNotice('Prompt đã được thêm vào demo queue. Backend adapter sẽ nhận input này khi ghép API.')
+    sendPromptToBackend(draft)
     setDraft('')
-    executeChat(message)
   }
 
   function clearChat() {
@@ -226,11 +225,6 @@ function App() {
     setActiveSessionId(`session_${Math.random().toString(36).substring(2, 8)}`)
     setNotice('Đã xoá lịch sử hội thoại.')
   }
-
-  const latestTurn = turns.length > 0 ? turns[turns.length - 1] : null
-  const allRounds = latestTurn?.rounds || []
-  const toolCount = allRounds.reduce((acc, r) => acc + (r.tool_calls?.length || 0), 0)
-  const selectedMetrics = versionRows.find((item) => item.version === version) || versionRows.at(-1)
 
   const isConnected = serverHealth && serverHealth.status === 'ok'
   const connectionLabel = isConnected
