@@ -108,6 +108,32 @@ const fallbackEvidence = {
   fallbackReason: 'Provider timeout after 10s; retained the last known scenario snapshot.',
 }
 
+const boundaryTurn = {
+  turn_index: 1,
+  user: 'Tóm tắt 5 tweet mới nhất giúp mình.',
+  assistant_text: 'Bạn muốn lấy 5 bài đăng gần nhất từ tài khoản nào?',
+  status: 'waiting_for_user',
+  rounds: [{
+    round: 1,
+    tool_calls: [{ name: 'clarify', args: { question: 'Bạn muốn lấy bài đăng từ tài khoản nào?', response_type: 'text' } }],
+    tool_results: [{
+      tool: 'clarify',
+      status: 'ok',
+      result: {
+        awaiting_user: true,
+        question: 'Bạn muốn lấy bài đăng từ tài khoản nào?',
+        response_type: 'text',
+      },
+    }],
+  }],
+}
+
+const providerModels = {
+  openrouter: 'openai/gpt-4o-mini',
+  openai: 'configured-model',
+  mock: 'local-fixture',
+}
+
 const versionRows = [
   { version: 'v0', label: 'Baseline', accuracy: 0.6, routing: 0.7, args: 0.6, delta: '—' },
   { version: 'v1', label: 'Routing hints', accuracy: 0.7, routing: 0.8, args: 0.7, delta: '+10%' },
@@ -163,14 +189,46 @@ function App() {
   const [theme, setTheme] = useState(getInitialTheme)
   const [mode, setMode] = useState('live')
   const [scenarioId, setScenarioId] = useState('main-news')
+  const [version, setVersion] = useState('v3')
+  const [provider, setProvider] = useState('openrouter')
   const [running, setRunning] = useState(false)
   const [notice, setNotice] = useState('')
   const [draft, setDraft] = useState('')
   const evidence = mode === 'fallback' ? fallbackEvidence : liveEvidence
   const scenario = scenarios.find((item) => item.id === scenarioId) || scenarios[0]
-  const turn = evidence.transcript.turns[0]
+  const baseTurn = scenarioId === 'missing-info' ? boundaryTurn : evidence.transcript.turns[0]
+  const turn = useMemo(() => {
+    if (mode !== 'fallback' || scenarioId === 'main-news') return baseTurn
+    return {
+      ...baseTurn,
+      status: 'fallback',
+      assistant_text: 'Đang dùng transcript dự phòng. Bạn muốn lấy 5 bài đăng gần nhất từ tài khoản nào?',
+      rounds: baseTurn.rounds.map((round) => ({
+        ...round,
+        tool_results: round.tool_results.map((event) => ({ ...event, status: 'fallback' })),
+      })),
+    }
+  }, [baseTurn, mode, scenarioId])
+  const selectedMetrics = versionRows.find((item) => item.version === version) || versionRows.at(-1)
+  const displayRun = useMemo(() => ({
+    ...evidence.run,
+    version,
+    artifact_version: mode === 'fallback'
+      ? `${version}+fallback-prompt+fallback-tools`
+      : `${version}+p${evidence.run.prompt_hash}+t${evidence.run.tools_hash}`,
+    provider,
+    model: providerModels[provider],
+    status: mode === 'fallback' ? 'fallback' : turn.status,
+  }), [evidence.run, mode, provider, turn.status, version])
+  const displayTranscript = useMemo(() => ({
+    ...evidence.transcript,
+    transcript_id: `${mode === 'fallback' ? 'fallback' : 'mock'}_${version}_${provider}_${scenarioId}`,
+    status: displayRun.status,
+    turns: [turn],
+  }), [displayRun.status, evidence.transcript, mode, provider, scenarioId, turn, version])
   const toolCount = turn.rounds.reduce((count, round) => count + (round.tool_calls?.length || 0), 0)
-  const payloadPreview = useMemo(() => ({ run: evidence.run, transcript: evidence.transcript }), [evidence])
+  const payloadPreview = useMemo(() => ({ run: displayRun, transcript: displayTranscript }), [displayRun, displayTranscript])
+  const statusTone = mode === 'fallback' || turn.status !== 'answered' ? 'warning' : 'success'
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -202,7 +260,7 @@ function App() {
         </div>
         <div className="topbar-actions">
           <StatusBadge tone={mode === 'fallback' ? 'warning' : 'success'}>{evidence.connection}</StatusBadge>
-          <span className="version-pill">{evidence.run.version} <b>current</b></span>
+          <span className="version-pill">{displayRun.version} <b>{version === 'v3' ? 'current' : 'preview'}</b></span>
           <button
             className="theme-toggle"
             type="button"
@@ -219,14 +277,14 @@ function App() {
 
       <section className="control-bar panel">
         <div className="control-group"><label htmlFor="scenario">Scenario</label><select id="scenario" value={scenarioId} onChange={(event) => setScenarioId(event.target.value)}>{scenarios.map((item) => <option key={item.id} value={item.id}>{item.label} · {item.title}</option>)}</select></div>
-        <div className="control-group"><label htmlFor="version">Artifact version</label><select id="version" defaultValue="v3"><option>v3 · current</option><option>v2 · argument rules</option><option>v1 · routing hints</option><option>v0 · baseline</option></select></div>
-        <div className="control-group"><label htmlFor="provider">Provider / model</label><select id="provider" defaultValue="openrouter"><option>OpenRouter · gpt-4o-mini</option><option>OpenAI · configured model</option><option>Mock provider · local</option></select></div>
+        <div className="control-group"><label htmlFor="version">Artifact version</label><select id="version" value={version} onChange={(event) => setVersion(event.target.value)}><option value="v3">v3 · current</option><option value="v2">v2 · argument rules</option><option value="v1">v1 · routing hints</option><option value="v0">v0 · baseline</option></select></div>
+        <div className="control-group"><label htmlFor="provider">Provider / model</label><select id="provider" value={provider} onChange={(event) => setProvider(event.target.value)}><option value="openrouter">OpenRouter · gpt-4o-mini</option><option value="openai">OpenAI · configured model</option><option value="mock">Mock provider · local</option></select></div>
         <div className="mode-switch" role="group" aria-label="Evidence source"><button className={mode === 'live' ? 'active' : ''} onClick={() => setMode('live')}>Live mock</button><button className={mode === 'fallback' ? 'active fallback' : ''} onClick={() => setMode('fallback')}>Fallback</button></div>
       </section>
 
       <main className="dashboard-grid">
         <section className="panel conversation-panel">
-          <div className="section-heading"><div><p className="eyebrow">LIVE SCENARIO</p><h2>{scenario.title}</h2></div><StatusBadge tone={mode === 'fallback' ? 'warning' : 'success'}>{evidence.run.status}</StatusBadge></div>
+          <div className="section-heading"><div><p className="eyebrow">LIVE SCENARIO</p><h2>{scenario.title}</h2></div><StatusBadge tone={statusTone}>{displayRun.status}</StatusBadge></div>
           <div className="scenario-prompt"><span>REQUEST</span><p>{scenario.prompt}</p></div>
           <div className="conversation">
             <div className="message user-message"><div className="avatar user-avatar">U</div><div><div className="message-meta">USER <time>09:15</time></div><p>{turn.user}</p></div></div>
@@ -238,16 +296,16 @@ function App() {
         </section>
 
         <aside className="evidence-column">
-          <section className="panel summary-panel"><div className="section-heading"><div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div><span className="source-label">{evidence.source}</span></div><div className="metric-grid"><Metric label="Case accuracy" value="100%" tone="blue" /><Metric label="Tool routing" value="100%" tone="purple" /><Metric label="Argument accuracy" value="100%" tone="green" /><Metric label="Tool events" value={toolCount} tone="orange" /></div></section>
-          <section className="panel artifact-panel"><div className="section-heading"><div><p className="eyebrow">ARTIFACT IDENTITY</p><h2>Version is visible</h2></div><span className="hash-icon">#</span></div><div className="artifact-version">{evidence.run.artifact_version}</div>{evidence.run.error && <div className="error-strip"><strong>{evidence.run.error.code}</strong><span>{evidence.run.error.message}</span></div>}<div className="hash-list"><div><span>prompt hash</span><code>{evidence.run.prompt_hash}</code></div><div><span>tools hash</span><code>{evidence.run.tools_hash}</code></div><div><span>provider</span><code>{evidence.run.provider}</code></div><div><span>generated</span><code>{evidence.run.generated_at}</code></div></div></section>
-          <section className="panel files-panel"><div className="section-heading"><div><p className="eyebrow">SAVED EVIDENCE</p><h2>Files to hand off</h2></div></div><div className="file-list"><div className="file-row"><span className="file-icon">{'{ }'}</span><div><strong>Run JSON</strong><small>{evidence.run.files.run}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">≡</span><div><strong>Transcript JSON</strong><small>{evidence.run.files.transcript}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">▤</span><div><strong>Version log</strong><small>{evidence.run.files.versionLog}</small></div><span className="file-status">ready</span></div></div></section>
+          <section className="panel summary-panel"><div className="section-heading"><div><p className="eyebrow">RUN SUMMARY</p><h2>Evidence snapshot</h2></div><span className="source-label">{evidence.source}</span></div><div className="metric-grid"><Metric label="Case accuracy" value={`${Math.round(selectedMetrics.accuracy * 100)}%`} tone="blue" /><Metric label="Tool routing" value={`${Math.round(selectedMetrics.routing * 100)}%`} tone="purple" /><Metric label="Argument accuracy" value={`${Math.round(selectedMetrics.args * 100)}%`} tone="green" /><Metric label="Tool events" value={toolCount} tone="orange" /></div></section>
+          <section className="panel artifact-panel"><div className="section-heading"><div><p className="eyebrow">ARTIFACT IDENTITY</p><h2>Version is visible</h2></div><span className="hash-icon">#</span></div><div className="artifact-version">{displayRun.artifact_version}</div>{displayRun.error && <div className="error-strip"><strong>{displayRun.error.code}</strong><span>{displayRun.error.message}</span></div>}<div className="hash-list"><div><span>prompt hash</span><code>{displayRun.prompt_hash}</code></div><div><span>tools hash</span><code>{displayRun.tools_hash}</code></div><div><span>provider</span><code>{displayRun.provider}</code></div><div><span>generated</span><code>{displayRun.generated_at}</code></div></div></section>
+          <section className="panel files-panel"><div className="section-heading"><div><p className="eyebrow">SAVED EVIDENCE</p><h2>Files to hand off</h2></div></div><div className="file-list"><div className="file-row"><span className="file-icon">{'{ }'}</span><div><strong>Run JSON</strong><small>{displayRun.files.run}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">≡</span><div><strong>Transcript JSON</strong><small>{displayRun.files.transcript}</small></div><span className="file-status">ready</span></div><div className="file-row"><span className="file-icon">▤</span><div><strong>Version log</strong><small>{displayRun.files.versionLog}</small></div><span className="file-status">ready</span></div></div></section>
         </aside>
       </main>
 
       <section className="panel trace-panel"><div className="section-heading trace-section-heading"><div><p className="eyebrow">OBSERVABILITY</p><h2>Tool trace / result / error</h2></div><div className="trace-summary"><span><i className="legend-dot success-dot" />{toolCount} successful calls</span><span><i className="legend-dot warning-dot" />fallback is selectable</span></div></div><ToolTrace turns={evidence.transcript.turns} /></section>
 
       <section className="bottom-grid">
-        <section className="panel comparison-panel"><div className="section-heading"><div><p className="eyebrow">VERSION COMPARISON</p><h2>Same scenario, visible progress</h2></div></div><div className="comparison-table"><div className="table-row table-head"><span>VERSION</span><span>CASE ACC.</span><span>ROUTING</span><span>ARGS</span><span>CHANGE</span></div>{versionRows.map((row) => <div className={`table-row ${row.version === 'v3' ? 'current-row' : ''}`} key={row.version}><span><b>{row.version}</b> {row.label}</span><span>{Math.round(row.accuracy * 100)}%</span><span>{Math.round(row.routing * 100)}%</span><span>{Math.round(row.args * 100)}%</span><span className="delta">{row.delta}</span></div>)}</div></section>
+        <section className="panel comparison-panel"><div className="section-heading"><div><p className="eyebrow">VERSION COMPARISON</p><h2>Same scenario, visible progress</h2></div></div><div className="comparison-table"><div className="table-row table-head"><span>VERSION</span><span>CASE ACC.</span><span>ROUTING</span><span>ARGS</span><span>CHANGE</span></div>{versionRows.map((row) => <div className={`table-row ${row.version === version ? 'current-row' : ''}`} key={row.version}><span><b>{row.version}</b> {row.label}</span><span>{Math.round(row.accuracy * 100)}%</span><span>{Math.round(row.routing * 100)}%</span><span>{Math.round(row.args * 100)}%</span><span className="delta">{row.delta}</span></div>)}</div></section>
         <section className="panel raw-panel"><div className="section-heading"><div><p className="eyebrow">DEBUG PAYLOAD</p><h2>Contract preview</h2></div></div><details><summary>Open run + transcript JSON</summary><JsonBlock value={payloadPreview} /></details></section>
       </section>
 
