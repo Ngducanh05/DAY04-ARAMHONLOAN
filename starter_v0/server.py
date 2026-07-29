@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
@@ -11,6 +12,10 @@ import yaml
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+ROOT = Path(__file__).parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from env_loader import load_lab_env
 from providers import make_provider
