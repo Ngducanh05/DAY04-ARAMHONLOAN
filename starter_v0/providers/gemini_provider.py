@@ -124,7 +124,7 @@ class GeminiProvider:
         client = genai.Client(api_key=api_key)
         
         resp = None
-        for attempt in range(5):
+        for attempt in range(8):
             try:
                 resp = client.models.generate_content(
                     model=model or self.default_model,
@@ -133,8 +133,8 @@ class GeminiProvider:
                 )
                 break
             except Exception as exc:
-                if ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)) and attempt < 4:
-                    time.sleep(5 * (attempt + 1))
+                if ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)) and attempt < 7:
+                    time.sleep(16)
                 else:
                     raise exc
 
